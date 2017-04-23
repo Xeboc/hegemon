@@ -1,0 +1,45 @@
+---
+# This is the top-level playbook for a local computer                                       
+
+- hosts: all
+  gather_facts: False
+  tasks:
+    - name: Check for single host being run
+      fail: msg="Single host check failed. Use '-l hostname'"
+      when: "{{ play_hosts | length }} != 1"
+
+- hosts: local
+  become: True
+  gather_facts: True
+
+  roles:
+    - { role: common, tags: common }
+
+- hosts: home
+  remote_user: deploy
+  become: True
+  gather_facts: True
+
+  roles:
+    - common
+
+- hosts: remote
+  remote_user: deploy
+  become: True
+  gather_facts: True
+
+  roles:
+    - common
+    - remote
+    - mailserver
+    - webmail
+    - blog
+    - ircbouncer
+    - xmpp
+    - owncloud
+    - vpn
+    - tarsnap
+    - news
+    - git
+    - readlater
+    - monitoring  # Monitoring role should be last. See roles/monitoring/README.md

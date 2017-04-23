@@ -1,0 +1,42 @@
+---
+- name: Update apt cache
+  apt: update_cache=yes
+  tags:
+    - dependencies
+
+- name: Upgrade all packages (Debian)
+  apt: upgrade=safe
+  when: ansible_distribution == "Debian"
+  tags:
+    - dependencies
+
+- name: Upgrade all packages (Ubuntu)
+  apt: upgrade=dist
+  when: ansible_distribution == "Ubuntu"
+  tags:
+    - dependencies
+
+- name: Install commonly used software packages
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - apt-transport-https
+    - build-essential
+    - debian-goodies
+    - git
+    - htop
+    - iftop
+    - iotop
+    - molly-guard
+    - mosh
+    - python-software-properties
+    - ruby
+    - sudo
+    - unattended-upgrades
+    - vim-nox
+  tags:
+    - dependencies
+
+- name: Ensure locale en_US.UTF-8 locale is present
+  locale_gen:
+    name: en_US.UTF-8
+    state: present

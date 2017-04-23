@@ -1,0 +1,11 @@
+[remote]
+# Hosts in the remote group use vars defined in `group_vars/remote`
+# This is for external servers
+host.example.net
+
+[home]
+# Hosts for local server
+server
+
+[local]
+localhost ansible_connection=local

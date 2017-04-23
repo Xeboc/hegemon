@@ -1,0 +1,20 @@
+---
+# Defines tasks applicable for NTP (Network Time Protocol)
+
+- name: Install ntp
+  apt: pkg=ntp state=installed
+  tags:
+    - dependencies
+
+- name: Configure ntp
+  template: src=ntp.conf.j2 dest=/etc/ntp.conf
+  notify:
+    - restart ntp
+
+- name: Ensure ntpd is running
+  service: name=ntp state=started
+
+# Work around https://github.com/ansible/ansible-modules-core/issues/915
+# otherwise we'd use enabled=yes in previous task
+- name: Ensure ntp is enabled
+  command: update-rc.d ntp enable creates=/etc/rc3.d/S03ntp
