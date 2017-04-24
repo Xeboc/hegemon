@@ -1,0 +1,95 @@
+---
+# Remote variables are here.  Overrides any of the role's variables.
+
+# common
+domain: "{{ vault_domain }}"
+main_user_name: "{{ vault_main_user_name }}"
+main_user_shell: "/bin/bash"
+friendly_networks:
+  - ""
+
+# admin email
+# fail2ban reports will be sent to this address
+admin_email: "{{ main_user_name }}@{{ domain }}"
+
+# encfs
+# secret_root: '{{ inventory_dir | realpath }}'
+# secret_name: 'secret'
+# secret: '{{ secret_root + "/" + secret_name }}'
+# encfs_password: "{{ lookup('password', secret + '/' + 'encfs_password', length=32) }}"
+encfs_password: "{{ vault_encfs_password }}"
+
+# let's encrypt
+letsencrypt_server: "https://acme-v01.api.letsencrypt.org/directory"
+
+# ssh
+kex_algorithms: "diffie-hellman-group-exchange-sha256"
+ciphers: "aes256-ctr,aes192-ctr,aes128-ctr"
+macs: "hmac-sha2-512,hmac-sha2-256,hmac-ripemd160"
+
+# ntp
+ntp_servers:
+  # use nearby ntp servers by default
+  - 0.pool.ntp.org
+  - 1.pool.ntp.org
+  - 2.pool.ntp.org
+  - 3.pool.ntp.org
+  # use servers tailored to the server location
+  # See http://www.pool.ntp.org/en/use.html
+  # - 0.north-america.pool.ntp.org
+  # - 1.north-america.pool.ntp.org
+  # - 2.north-america.pool.ntp.org
+  # - 3.north-america.pool.ntp.org
+
+# mail
+mail_virtual_domains:
+  - name: "{{ domain }}"
+    pk_id: 1
+mail_virtual_users:
+  - account: "{{ main_user_name }}"
+    domain: "{{ domain }}"
+    password_hash: "{{ vault_mail_virtual_users_password_hash }}"
+    domain_pk_id: 1
+mail_virtual_aliases:
+  - source: "root@{{ domain }}"
+    destination: "{{ admin_email }}"
+    domain_pk_id: 1
+  - source: "postmaster@{{ domain }}"
+    destination: "{{ admin_email }}"
+    domain_pk_id: 1
+  - source: "webmaster@{{ domain }}"
+    destination: "{{ admin_email }}"
+    domain_pk_id: 1
+  - source: "abuse@{{ domain }}"
+    destination: "{{ admin_email }}"
+    domain_pk_id: 1
+
+# timezone
+# common_timezone will be used in the common and mailserver roles
+common_timezone: 'Etc/UTC'
+
+# znc
+irc_nick: "{{ vault_irc_nick }}"
+irc_ident: "{{ valut_irc_ident }}"
+irc_realname: "{{ vault_irc_realname }}"
+irc_quitmsg: "{{ vault_irc_quitmsg }}"
+irc_password_hash: "{{ vault_irc_password_hash }}"
+irc_password_salt: "{{ valut_irc_password_salt }}"
+
+# xmpp
+prosody_admin: "{{ admin_email }}"
+prosody_virtual_domain: "{{ domain }}"
+prosody_accounts:
+  - name: "{{ main_user_name }}"
+    password: "{{ vault_prosody_accounts_password }}"
+
+# openvpn
+openvpn_key_country: "{{ vault_openvpn_key_country }}"
+openvpn_key_province: "{{ vault_openvpn_key_province }}"
+openvpn_key_city: "{{ vault_openvpn_key_city }}"
+openvpn_key_org: "{{ vault_openvpn_key_org }}"
+openvpn_key_ou: "{{ vault_openvpn_key_ou }}"
+openvpn_clients:
+  - laptop
+  - phone
+  - tablet

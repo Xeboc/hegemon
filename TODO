@@ -1,2 +1,2 @@
-change lookup() to ansible-vault encrypted variables
 owncloud to nextcloud
+move all variables to one location

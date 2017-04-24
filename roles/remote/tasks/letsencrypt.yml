@@ -1,3 +1,6 @@
+---
+# Sets up the regular updates of SSL certificates from LetsEncrypt
+
 - name: Download LetsEncrypt release
   git: repo=https://github.com/letsencrypt/letsencrypt
        dest=/root/letsencrypt

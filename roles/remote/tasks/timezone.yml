@@ -1,4 +1,6 @@
 ---
+# Configure timezone for UTC
+
 - name: timezone - configure /etc/timezone
   copy:
     content: "{{ common_timezone | regex_replace('$', '\n') }}"

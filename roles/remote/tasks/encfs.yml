@@ -1,3 +1,6 @@
+---
+# Installs a encfs folder set for several other services
+
 - name: Create decrypted directory even if encfs isn't used
   file: state=directory path=/decrypted
 

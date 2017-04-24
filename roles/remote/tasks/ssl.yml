@@ -1,3 +1,6 @@
+---
+# Install SSL capabilities in Apache
+
 - name: Create strong Diffie-Hellman group
   command: openssl dhparam -out /etc/ssl/private/dhparam2048.pem 2048
     creates=/etc/ssl/private/dhparam2048.pem

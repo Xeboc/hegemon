@@ -1,4 +1,6 @@
 ---
+# Installs and configures apticron to email package update information
+
 - name: Install apticron
   apt: pkg={{ item }} state=installed
   with_items:
