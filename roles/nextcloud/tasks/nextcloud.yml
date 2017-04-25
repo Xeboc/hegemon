@@ -54,6 +54,16 @@
   command: mv /var/www/nextcloud/data /decrypted/nextcloud-data creates=/decrypted/nextcloud-data
 - file: src=/decrypted/nextcloud-data dest=/var/www/nextcloud/data owner=www-data group=www-data state=link
 
+- name: Make sure apache modules are loaded
+  apache2_module:
+    state: present
+    name:
+      - rewrite
+      - headers
+      - env
+      - dir
+      - mime
+
 - name: Configure Apache for nextcloud
   template: src=etc_apache2_sites-available_nextcloud.j2 dest=/etc/apache2/sites-available/nextcloud.conf group=root
   notify: restart apache
