@@ -5,3 +5,4 @@ nextcloud_domain: "cloud.{{ domain }}"
 nextcloud_db_username: nextcloud
 nextcloud_db_password: "{{ vault_nextcloud_db_password }}"
 nextcloud_db_database: nextcloud
+nextcloud_user_password: "{{ valult_nextcloud_user_password }}"

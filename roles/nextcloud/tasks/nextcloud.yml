@@ -74,3 +74,6 @@
 
 - name: Install nextcloud cronjob
   cron: name="nextcloud" user="www-data" minute="*/5" job="php -f /var/www/nextcloud/cron.php > /dev/null"
+
+- name: Configure nextcloud
+  command: sudo -u www-data php occ maintenance:install --database \"pgsql\" --database-name \"nextcloud\" --database-user \"{{ nextcloud_db_username }}\" --database-pass \"{{ nextcloud_db_password }}\" --admin-user \"{{ main_user_name }}\" --admin-pass \"{{ nextcloud_user_password }}\"
