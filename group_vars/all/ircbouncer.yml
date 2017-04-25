@@ -1,0 +1,10 @@
+---
+# IRC bouncer variables
+
+irc_timezone: "{{ common_timezone|default('Etc/UTC') }}"
+irc_nick: "{{ vault_irc_nick }}"
+irc_ident: "{{ valut_irc_ident }}"
+irc_realname: "{{ vault_irc_realname }}"
+irc_quitmsg: "{{ vault_irc_quitmsg }}"
+irc_password_hash: "{{ vault_irc_password_hash }}"
+irc_password_salt: "{{ valut_irc_password_salt }}"

@@ -1,0 +1,31 @@
+---
+# Remote variables are here.
+
+main_user_shell: "/bin/bash"
+
+# encfs
+# secret_root: '{{ inventory_dir | realpath }}'
+# secret_name: 'secret'
+# secret: '{{ secret_root + "/" + secret_name }}'
+# encfs_password: "{{ lookup('password', secret + '/' + 'encfs_password', length=32) }}"
+encfs_password: "{{ vault_encfs_password }}"
+
+# let's encrypt
+letsencrypt_server: "https://acme-v01.api.letsencrypt.org/directory"
+
+# ssh
+kex_algorithms: "diffie-hellman-group-exchange-sha256"
+ciphers: "aes256-ctr,aes192-ctr,aes128-ctr"
+macs: "hmac-sha2-512,hmac-sha2-256,hmac-ripemd160"
+
+# ntp
+ntp_servers:
+  - 0.pool.ntp.org
+  - 1.pool.ntp.org
+  - 2.pool.ntp.org
+  - 3.pool.ntp.org
+  # use servers tailored to the server location
+  # - 0.north-america.pool.ntp.org
+  # - 1.north-america.pool.ntp.org
+  # - 2.north-america.pool.ntp.org
+  # - 3.north-america.pool.ntp.org

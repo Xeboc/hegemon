@@ -1,0 +1,47 @@
+# secret_root: '{{ inventory_dir | realpath }}'
+# secret_name: 'secret'
+# secret: '{{ secret_root + "/" + secret_name }}'
+
+mail_db_username: 'mailuser'
+# mail_db_password: "{{ lookup('password', secret + '/' + 'mail_db_password', length=32) }}"
+mail_db_password: "{{ vault_mail_db_password }}"
+mail_db_database: 'mailserver'
+
+mail_server_hostname: "mail.{{ domain }}"
+mail_server_autoconfig_hostname: "autoconfig.{{ domain }}"
+mail_header_privacy: 1
+
+# virtual domains
+mail_virtual_domains:
+  - name: "{{ domain }}"
+    pk_id: 1
+mail_virtual_users:
+  - account: "{{ main_user_name }}"
+    domain: "{{ domain }}"
+    password_hash: "{{ vault_mail_virtual_users_password_hash }}"
+    domain_pk_id: 1
+mail_virtual_aliases:
+  - source: "root@{{ domain }}"
+    destination: "{{ admin_email }}"
+    domain_pk_id: 1
+  - source: "postmaster@{{ domain }}"
+    destination: "{{ admin_email }}"
+    domain_pk_id: 1
+  - source: "webmaster@{{ domain }}"
+    destination: "{{ admin_email }}"
+    domain_pk_id: 1
+  - source: "abuse@{{ domain }}"
+    destination: "{{ admin_email }}"
+    domain_pk_id: 1
+
+# opendmarc
+mail_db_opendmarc_username: opendmarc
+mail_db_opendmarc_database: opendmarc
+# mail_db_opendmarc_password: "{{ lookup('password', secret + '/' + 'mail_db_opendmarc_password', length=32) }}"
+mail_db_opendmarc_password: "{{ vault_mail_db_opendmarc_password }}"
+
+# zpush
+zpush_version: 2.1.1-1788
+
+# common_timezone is a sovereign variable
+zpush_timezone: "{{ common_timezone|default('Etc/UTC') }}"
