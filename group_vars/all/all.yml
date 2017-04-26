@@ -11,4 +11,4 @@ friendly_networks:
 
 db_admin_username: 'postgres'
 # db_admin_password: "{{ lookup('password', secret + '/' + 'db_admin_password', length=32) }}"
-db_admin_password: "{{ vault_db_admin_apssword }}"
+db_admin_password: "{{ vault_db_admin_password }}"
