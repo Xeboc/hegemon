@@ -1,2 +1,4 @@
 - name: restart znc
-  service: name=znc state=restarted
+  service:
+    name: znc
+    state: restarted

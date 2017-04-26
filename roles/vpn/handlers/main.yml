@@ -1,5 +1,9 @@
 - name: restart dnsmasq
-  service: name=dnsmasq state=restarted
+  service:
+    name: dnsmasq
+    state: restarted
 
 - name: restart openvpn
-  service: name=openvpn@server state=restarted
+  service:
+    name: openvpn@server
+    state: restarted

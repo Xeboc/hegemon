@@ -1,5 +1,9 @@
 - name: restart monit
-  service: name=monit state=restarted
+  service:
+    name: monit
+    state: restarted
 
 - name: restart collectd
-  service: name=collectd state=restarted
+  service:
+    name: collectd
+    state: restarted

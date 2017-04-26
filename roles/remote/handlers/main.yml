@@ -2,13 +2,21 @@
 # Defines handlers applicable across all machines in the infrastructure.
 
 - name: restart ntp
-  service: name=ntp state=restarted
+  service:
+    name: ntp
+    state: restarted
 
 - name: restart apache
-  service: name=apache2 state=restarted
+  service:
+    name: apache2
+    state: restarted
 
 - name: restart fail2ban
-  service: name=fail2ban state=restarted
+  service:
+    name: fail2ban
+    state: restarted
 
 - name: restart ssh
-  service: name=ssh state=restarted
+  service:
+    name: ssh
+    state: restarted
