@@ -7,7 +7,6 @@
 - name: Install commonly used software packages
   apt: pkg={{ item }} state=installed
   with_items:
-    - aptitude
     - apt-transport-https
     - build-essential
     - debian-goodies
@@ -26,8 +25,7 @@
     - dependencies
 
 - name: Upgrade all packages
-  apt: upgrade=safe
-  when: ansible_distribution == "Debian"
+  apt: upgrade=dist
   tags:
     - dependencies
 
