@@ -1,5 +1,7 @@
 ---
 
+- include: hostname.yml
+  tags: hostname
 - include: timezone.yml
   tags: timezone
 - include: encfs.yml

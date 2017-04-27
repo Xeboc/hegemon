@@ -20,3 +20,13 @@
   service:
     name: ssh
     state: restarted
+
+- name: restart systemd-hostnamed
+  service:
+    name: systemd-hostnamed
+    state: restarted
+
+- name: restart systemd-logind
+  service:
+    name: systemd-logind
+    state: restarted

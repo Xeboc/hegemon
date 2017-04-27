@@ -1,0 +1,24 @@
+---
+# Changes hostname of systemd-logind
+
+- name: Set Hostname with hostname command
+  hostname:
+    name: "{{ domain }}"
+  notify:
+    - restart systemd-hostnamed
+    - restart systemd-logind
+
+- name: Re-gather facts
+  action: setup
+
+- name: Change hosts file with a backup
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "^127.0.1.1"
+    line: "127.0.1.1       {{ domain }}"
+    state: present
+    backup: yes
+    backrefs: yes
+  notify:
+    - restart systemd-hostnamed
+    - restart systemd-logind
