@@ -45,3 +45,10 @@
   notify:
     - restart opendkim
     - restart postfix
+
+- name: Retrieve OpenDKIM txt record from server
+  fetch: src=/etc/opendkim/keys/{{ domain }}/default.txt
+         dest=~/opendkim
+
+- name: "OpenDKIM txt record is at ~/opendkim."
+  pause: seconds=5
