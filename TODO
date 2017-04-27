@@ -1,1 +1,11 @@
-Run it
+check for decrypted/lock directory before plays
+create a post-restart script
+add more programs to common
+add host and hostname change to remote server
+pull in user files and configurations
+link user files and configurations to root user
+z-push remove files command to state=absent
+bring blocklist checker locally
+freenet
+tor
+i2p
