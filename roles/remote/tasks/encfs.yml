@@ -26,11 +26,11 @@
   register: encfs_check
 
 - name: If /encrypted is empty, create the encfs there
-  shell: command="printf 'p\n{{ encfs_password }}' | encfs /encrypted /decrypted --public --stdinpass && touch /decrypted/lock"
+  shell: printf "p\n{{ encfs_password }}" | encfs /encrypted /decrypted --public --stdinpass && touch /decrypted/lock
   when: encfs_check.rc > 0
 
 - name: If /encrypted isn't empty, mount it (but only if /decrypted/lock doesn't exist)
-  shell: command="printf '{{ encfs_password }}' | encfs /encrypted /decrypted --public --stdinpass" creates="/decrypted/lock"
+  shell: printf "{{ encfs_password }}" | encfs /encrypted /decrypted --public --stdinpass creates="/decrypted/lock"
   when: encfs_check.rc == 0
 
 - name: Set decrypted directory permissions

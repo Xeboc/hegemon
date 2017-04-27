@@ -8,6 +8,10 @@
     - whois
     - lynis
     - rkhunter
+    - apparmor
+    - apparmor-profiles
+    - apparmor-profiles-extra
+    - apparmor-utils
   tags:
     - dependencies
 
@@ -28,3 +32,9 @@
 
 - name: Update ssh config for more secure defaults
   template: src=etc_ssh_ssh_config.j2 dest=/etc/ssh/ssh_config
+
+- name: Update rkhunter config file for non-existant location
+  lineinfile: dest=/etc/rkhunter.conf
+              regexp=^SCRIPTWHITELIST=/usr/bin/lwp-request
+              line="#SCRIPTWHITELIST=/usr/bin/lwp-request"
+              state=present
