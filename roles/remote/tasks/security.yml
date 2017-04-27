@@ -38,3 +38,4 @@
               regexp=^SCRIPTWHITELIST=/usr/bin/lwp-request
               line="#SCRIPTWHITELIST=/usr/bin/lwp-request"
               state=present
+              backrefs=yes
