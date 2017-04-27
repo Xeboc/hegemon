@@ -5,6 +5,9 @@
     - python-mysqldb
     - opendmarc
 
+- name: get public IP
+  ipify_facts:
+
 - name: Patch opendmarc scripts (https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=742447)
   lineinfile: dest=/usr/sbin/{{ item }} regexp='^require DBD::' line='require DBD::mysql;'
   with_items:

@@ -1,5 +1,6 @@
 127.0.0.1
 {{ ansible_default_ipv4.address }}
+{{ ipify_public_ip }}
 {% for domain in mail_virtual_domains %}
 {{ domain.name }}
 {% endfor %}
