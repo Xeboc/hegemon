@@ -2,6 +2,7 @@
 # Remote variables are here.
 
 main_user_shell: "/bin/bash"
+main_user_dotfiles_repo: "{{ vault_main_user_dotfiles_repo }}"
 
 # encfs
 # secret_root: '{{ inventory_dir | realpath }}'

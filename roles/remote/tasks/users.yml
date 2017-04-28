@@ -6,3 +6,32 @@
 
 - name: Give main user account sudo power
   template: src=sudoers.j2 dest=/etc/sudoers.d/sudoers owner=root group=root mode=0440 validate='visudo -cf %s'
+
+- name: Make sure stow is installed
+  apt: pkg=stow state=present update_cache=yes
+  tags:
+    - dependencies
+
+- name: Create dotfiles directory
+  file: path=/home/{{ main_user_name }}/dotfiles state=directory
+
+- name: Download user configuration files
+  git:
+    repo: "{{ main_user_dotfiles_repo }}"
+    dest: "/home/{{ main_user_name }}/dotfiles"
+    accept_hostkey: yes
+
+- name: Backup exisiting profile dotfiles
+  command: "mv /home/{{ main_user_name }}/{{ item }} /home/{{ main_user_name }}/{{ item }}.bak"
+  args:
+    creates: "/home/{{ main_user_name }}/{{ item }}.bak"
+    removes: "/home/{{ main_user_name }}/{{ item }}"
+  with_items:
+    - .bashrc
+    - .profile
+
+- name: Link dotfiles with stow
+  shell: stow *
+  args:
+    chdir: /home/{{ main_user_name }}/dotfiles
+    creates: "/home/{{ main_user_name }}/.vimrc"
