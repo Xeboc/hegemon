@@ -2,8 +2,9 @@ check for decrypted/lock directory before plays
 create a post-restart script
 add more programs to common
 link user files and configurations to root user
-z-push remove files command to state=absent
 bring blocklist checker locally
 freenet
 tor
 i2p
+switch all a2ensite to ansible apache commands
+user setup vim plugins install + you complete me
