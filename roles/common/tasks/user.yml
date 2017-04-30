@@ -1,0 +1,77 @@
+---
+# Create a main user accoutn with sudo powers
+
+- name: Create main user account
+  user: name={{ main_user_name }} state=present shell={{ main_user_shell }} groups=sudo,adm
+
+- name: Give main user account sudo power
+  template: src=sudoers.j2 dest=/etc/sudoers.d/{{ main_user_name }} owner=root group=root mode=0440 validate='visudo -cf %s'
+
+- name: Make sure stow is installed
+  apt: pkg=stow state=present update_cache=yes
+  tags:
+    - dependencies
+
+- name: Create dotfiles directory
+  file: path=/home/{{ main_user_name }}/dotfiles state=directory
+  become: true
+  become_user: "{{ main_user_name }}"
+
+- name: Download user configuration files
+  git:
+    repo: "{{ main_user_dotfiles_repo }}"
+    dest: "/home/{{ main_user_name }}/dotfiles"
+    accept_hostkey: yes
+  become: true
+  become_user: "{{ main_user_name }}"
+
+- name: Backup exisiting profile dotfiles
+  command: "mv /home/{{ main_user_name }}/{{ item }} /home/{{ main_user_name }}/{{ item }}.bak"
+  args:
+    creates: "/home/{{ main_user_name }}/{{ item }}.bak"
+    removes: "/home/{{ main_user_name }}/{{ item }}"
+  with_items:
+    - .bashrc
+    - .profile
+  become: true
+  become_user: "{{ main_user_name }}"
+
+- name: Link dotfiles with stow
+  shell: stow *
+  args:
+    chdir: /home/{{ main_user_name }}/dotfiles
+    creates: "/home/{{ main_user_name }}/.vimrc"
+  become: true
+  become_user: "{{ main_user_name }}"
+
+- name: Install vim Vundle
+  git: "repo=https://github.com/gmarik/Vundle.vim.git dest=/home/{{ main_user_name }}/.vim/bundle/Vundle.vim update=no"
+  become: true
+  become_user: "{{ main_user_name }}"
+  register: vundle_installed
+
+- name: Install Vim plugins
+  shell: "vim -E -s -c 'source /home/{{ main_user_name }}/.vimrc' -c PluginInstall -c qall"
+  become: true
+  become_user: "{{ main_user_name }}"
+  register: vim_plugins_installed
+  changed_when: vim_plugins_installed.rc != 0
+  when: vundle_installed|changed
+  ignore_errors: yes
+
+- name: Run You Complete Me installer
+  shell: "/home/{{ main_user_name }}/.vim/bundle/YouCompleteMe/install.py"
+  become: true
+  become_user: "{{ main_user_name }}"
+  args:
+    creates: "/home/{{ main_user_name }}/.vim/bundle/YouCompleteMe/third_party/ycmd/PYTHON_USED_DURING_BUILDING"
+  when: vundle_installed|changed
+
+- name: Link .vimrc files to root user
+  file:
+    src: '/home/{{ main_user_name }}/{{ item }}'
+    dest: '/root/{{ item }}'
+    state: link
+  with_items:
+    - .vimrc
+    - .vim

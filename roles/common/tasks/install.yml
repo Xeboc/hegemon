@@ -9,18 +9,43 @@
   with_items:
     - apt-transport-https
     - build-essential
+    - ca-certificates
+    - curl
+    - cmake
     - debian-goodies
+    - debian-keyring
+    - dnsutils
     - git
     - htop
     - iftop
+    - inxi
+    - intel-microcode
+    - inxi
+    - irqbalance
     - iotop
+    - libpq-dev
+    - lm-sensors
+    - mcelog
     - molly-guard
     - mosh
+    - most
+    - mtr
+    - p7zip-full
+    - p7zip-rar
+    - python-dev
+    - python3-dev
     - python-software-properties
-    - ruby
+    - ruby-full
+    - silversearcher-ag
+    - software-properties-common
+    - smartmontools
     - sudo
     - unattended-upgrades
     - vim-nox
+    - wget
+    - zip
+    - unrar
+    - unzip
   tags:
     - dependencies
 

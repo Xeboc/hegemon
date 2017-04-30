@@ -6,8 +6,6 @@
   tags: timezone
 - include: encfs.yml
   tags: encfs
-- include: users.yml
-  tags: users
 - include: apache.yml
   tags: apache
 - include: apticron.yml
