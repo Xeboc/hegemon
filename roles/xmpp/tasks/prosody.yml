@@ -36,3 +36,4 @@
     - 5222  # xmpp c2s
     - 5269  # xmpp s2s
   tags: ufw
+  notify: restart ufw

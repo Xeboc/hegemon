@@ -74,6 +74,7 @@
     - imaps
     - pop3s
   tags: ufw
+  notify: restart ufw
 
 - name: Update post-certificate-renewal task
   copy:
@@ -82,3 +83,6 @@
     mode: 0755
     owner: root
     group: root
+
+- name: Disable systemd listening on port 143
+  service: name=dovecot.socket state=stopped enabled=no

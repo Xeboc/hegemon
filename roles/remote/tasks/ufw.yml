@@ -7,8 +7,11 @@
   tags:
     - dependencies
 
-- name: Deny everything
-  ufw: policy=deny
+- name: Deny everything incoming
+  ufw: policy=deny direction=incoming
+
+- name: Allow outgoing traffic
+  ufw: policy=allow direction=outgoing
 
 - name: Set firewall rule for DNS
   ufw: rule=allow port=domain
@@ -16,12 +19,8 @@
 - name: Set firewall rule for mosh
   ufw: rule=allow port=60000:61000 proto=udp
 
-- name: Set firewall rules for web traffic and SSH
-  ufw: rule=allow port={{ item }} proto=tcp
-  with_items:
-    - http
-    - https
-    - ssh
+- name: Set firewall rules for SSH
+  ufw: rule=allow port=ssh proto=tcp
 
 - name: Enable UFW
   ufw: state=enabled

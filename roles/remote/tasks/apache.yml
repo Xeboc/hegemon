@@ -9,7 +9,7 @@
     - dependencies
 
 - name: Disable default Apache site
-  command: a2dissite 000-default removes=/etc/apache2/sites-enabled/000-default
+  command: a2dissite 000-default removes=/etc/apache2/sites-enabled/000-default.conf
   notify: restart apache
 
 - name: Enable Apache headers module
@@ -17,8 +17,15 @@
   notify: restart apache
 
 - name: Create ServerName configuration file for Apache
-  template: src=fqdn.j2 dest=/etc/apache2/conf-available/fqdn.conf
+  template: src=etc_apache2_conf-available_fqdn.conf.j2 dest=/etc/apache2/conf-available/fqdn.conf
 
 - name: Set ServerName for Apache
   command: a2enconf fqdn creates=/etc/apache2/conf-enabled/fqdn.conf
   notify: restart apache
+
+- name: Set firewall rules for web traffic
+  ufw: rule=allow port={{ item }} proto=tcp
+  with_items:
+    - http
+    - https
+  notify: restart ufw

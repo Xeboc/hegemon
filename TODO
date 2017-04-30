@@ -2,5 +2,6 @@ check for decrypted/lock directory before plays
 freenet
 tor
 i2p
-ufw restart
 split sites up to different playbooks
+fail2ban check own logs and ban further
+disable ipv6

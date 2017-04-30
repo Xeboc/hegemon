@@ -51,7 +51,7 @@
   register: vundle_installed
 
 - name: Install Vim plugins
-  shell: "vim -E -s -c 'source /home/{{ main_user_name }}/.vimrc' -c PluginInstall -c qall"
+  shell: "vim -E -s -c 'source /home/{{ main_user_name }}/.vimrc' -c PluginInstall -c qall -c PluginClean!"
   become: true
   become_user: "{{ main_user_name }}"
   register: vim_plugins_installed

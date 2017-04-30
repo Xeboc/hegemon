@@ -30,3 +30,6 @@
   service:
     name: systemd-logind
     state: restarted
+
+- name: restart ufw
+  ufw: state=reloaded
