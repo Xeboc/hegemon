@@ -1,0 +1,9 @@
+---
+# This file will change certain common system variables
+
+- name: Turn off ipv6
+  sysctl:
+    name: net.ipv6.conf.all.disable_ipv6
+    value: 1
+    sysctl_set: yes
+    reload: yes

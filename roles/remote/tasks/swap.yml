@@ -1,0 +1,34 @@
+---
+# Create a 1G swap file if none exists
+
+- name: Check if swap file exists
+  stat:
+    path: /swapfile
+  register: swap_file_check
+
+- name: Create swap file
+  command: fallocate -l 1G /swapfile
+  when: not swap_file_check.stat.exists
+
+- name: Change swap file permissions
+  file: path=/swapfile
+        owner=root
+        group=root
+        mode=0600
+
+- name: Format swap file
+  command: mkswap /swapfile
+  when: not swap_file_check.stat.exists
+
+- name: Write swap entry in fstab
+  mount: name=none
+         src=/swapfile
+         fstype=swap
+         opts=sw
+         passno=0
+         dump=0
+         state=present
+
+- name: Turn on swap
+  command: swapon -a
+  when: not swap_file_check.stat.exists

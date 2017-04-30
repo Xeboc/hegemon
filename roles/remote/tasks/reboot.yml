@@ -1,0 +1,33 @@
+---
+# Reboot a computer and re-mount encfs
+
+- name: Restart the server
+  shell: sleep 2 && systemctl reboot
+  async: 1
+  poll: 0
+  ignore_errors: true
+  when: confirmation == "yes"
+
+- name: Wait for the server to reboot
+  local_action: wait_for host="{{ inventory_hostname }}" delay=30 state=started port=22 connect_timeout=10 timeout=180
+  become: False
+  when: confirmation == "yes"
+
+- name: Check if /decrypted/lock exisits
+  stat:
+    path: /decrypted/lock
+  register: lock_file_check
+
+- name: If /encrypted isn't already mounted, mount it
+  shell: printf "{{ encfs_password }}" | encfs /encrypted /decrypted --public --stdinpass creates="/decrypted/lock"
+  when: not lock_file_check.stat.exists
+
+- name: restart services dependent upon /decrypted
+  service: name="{{ item }}" state=restarted
+  with_items:
+        - dovecot
+        - tomcat7
+        - apache2
+        - prosody
+  ignore_errors: True
+  when: not lock_file_check.stat.exists
