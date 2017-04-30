@@ -1,12 +1,6 @@
 ---
 # Installs a encfs folder set for several other services
 
-- name: Create decrypted directory even if encfs isn't used
-  file: state=directory path=/decrypted
-
-- name: Set decrypted directory permissions
-  file: state=directory path=/decrypted group=mail mode=0775
-
 - name: Install encfs & fuse
   apt: pkg={{ item }} state=installed
   with_items:
@@ -15,6 +9,12 @@
     - libfuse-dev
   tags:
     - dependencies
+
+- name: Create decrypted directory
+  file: state=directory path=/decrypted
+
+- name: Set decrypted directory permissions
+  file: state=directory path=/decrypted group=mail mode=0775
 
 - name: Create encrypted directory
   file: state=directory path=/encrypted
@@ -29,7 +29,7 @@
   shell: printf "p\n{{ encfs_password }}" | encfs /encrypted /decrypted --public --stdinpass && touch /decrypted/lock
   when: encfs_check.rc > 0
 
-- name: If /encrypted isn't empty, mount it
+- name: If /encrypted isn't empty and already mounted, mount it
   shell: printf "{{ encfs_password }}" | encfs /encrypted /decrypted --public --stdinpass creates="/decrypted/lock"
   when: encfs_check.rc == 0
 

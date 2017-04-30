@@ -4,6 +4,5 @@ tor
 i2p
 split sites up to different playbooks
 fail2ban check own logs and ban further
-disable ipv6
 name it.  hegemon?
 setup dns server.  resolving nameserver, DNSSEC-aware.  bind9 or unbound

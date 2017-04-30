@@ -2,5 +2,7 @@
 
 - include: install.yml
   tags: install
+- include: system.yml
+  tags: system
 - include: user.yml
   tags: user

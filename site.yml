@@ -23,18 +23,15 @@
   roles:
     - { role: common, tags: common }
 
-- hosts: reboot
-  remote_user: deploy
-  become: True
-  gather_facts: True
-
-  roles:
-    - { role: reboot, tags: reboot }
-
 - hosts: remote
   remote_user: deploy
   become: True
   gather_facts: True
+  vars_prompt:
+    - name: "confirmation"
+      prompt: "Do you want to reboot the server after initial setup? Answer with 'yes'"
+      default: "no"
+      private: no
 
   roles:
     - { role: common, tags: common }

@@ -24,3 +24,7 @@
   tags: google_auth
 - include: postgres.yml
   tags: postgres
+- include: swap.yml
+  tags: swap
+- include: reboot.yml
+  tags: reboot
