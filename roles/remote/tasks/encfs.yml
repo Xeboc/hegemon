@@ -29,7 +29,7 @@
   shell: printf "p\n{{ encfs_password }}" | encfs /encrypted /decrypted --public --stdinpass && touch /decrypted/lock
   when: encfs_check.rc > 0
 
-- name: If /encrypted isn't empty, mount it (but only if /decrypted/lock doesn't exist)
+- name: If /encrypted isn't empty, mount it
   shell: printf "{{ encfs_password }}" | encfs /encrypted /decrypted --public --stdinpass creates="/decrypted/lock"
   when: encfs_check.rc == 0
 

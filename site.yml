@@ -1,5 +1,5 @@
 ---
-# This is the top-level playbook for a local computer                                       
+# This is the top-level playbook for a local computer
 
 - hosts: all
   gather_facts: False
@@ -22,6 +22,14 @@
 
   roles:
     - { role: common, tags: common }
+
+- hosts: reboot
+  remote_user: deploy
+  become: True
+  gather_facts: True
+
+  roles:
+    - { role: reboot, tags: reboot }
 
 - hosts: remote
   remote_user: deploy

@@ -1,6 +1,6 @@
 check for decrypted/lock directory before plays
-create a post-restart script
 freenet
 tor
 i2p
-switch all a2ensite to ansible apache commands
+ufw restart
+split sites up to different playbooks

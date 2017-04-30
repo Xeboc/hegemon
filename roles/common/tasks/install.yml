@@ -40,6 +40,7 @@
     - software-properties-common
     - smartmontools
     - sudo
+    - traceroute
     - unattended-upgrades
     - vim-nox
     - wget

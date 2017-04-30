@@ -1,0 +1,31 @@
+---
+# Reboot a computer and re-mount encfs
+
+- name: restart server
+  shell: sleep 2 && systemctl reboot
+  async: 1
+  poll: 0
+  ignore_errors: true
+
+- name: Wait for the server to reboot
+  local_action: wait_for host="{{ inventory_hostname }}" delay=30 state=started port=22 connect_timeout=10 timeout=180
+  become: False
+
+- name: Check if the /encrypted directory is empty
+  shell: ls /encrypted/*
+  ignore_errors: True
+  changed_when: False  # never report as "changed"
+  register: encfs_check
+
+- name: If /encrypted isn't empty, mount it
+  shell: printf "{{ encfs_password }}" | encfs /encrypted /decrypted --public --stdinpass creates="/decrypted/lock"
+  when: encfs_check.rc == 0
+
+- name: restart services dependent upon /decrypted
+  service: name="{{ item }}" state=restarted
+  with_items:
+        - dovecot
+        - tomcat7
+        - apache2
+        - prosody
+  ignore_errors: True
