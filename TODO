@@ -1,6 +1,5 @@
 check for decrypted/lock directory before plays
 create a post-restart script
-bring blocklist checker locally
 freenet
 tor
 i2p
