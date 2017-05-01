@@ -47,17 +47,20 @@
 - name: Remove installer directory
   file: path=/var/www/roundcube/installer state=absent
 
+- name: Generate Roundcube des_key password
+  set_fact: roundcube_password="{{ lookup('password', '/dev/null chars=ascii_letters,digits,punctuation') }}" 
+
 - name: Install Roundcube configuration
-  template: src=var_www_roundcube_config_config.inc.j2 dest=/var/www/roundcube/config/config.inc.php
+  template: src=var_www_roundcube_config_config.inc.php.j2 dest=/var/www/roundcube/config/config.inc.php
 
 - name: Create db directory
   file: path=/decrypted/roundcube group=www-data mode=0775 state=directory
 
 - name: Make logs and temp directories writable by web server
-  file: path=/var/www/roundcube/{{ item }} mode=0775 state=directory
+  file: path={{ item }} mode=0775 group=www-data recurse=yes state=directory
   with_items:
-    - temp
-    - logs
+    - /var/log/roundcubemail/errors
+    - /tmp/roundcubemail
 
 - name: Make roundcube directory accessible to web server
   file: path=/var/www/roundcube group=www-data recurse=yes state=directory

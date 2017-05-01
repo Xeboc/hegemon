@@ -9,11 +9,14 @@
     group: root
     mode: 0644
   register: common_timezone_config
+  notify: restart rsyslog
 
 - name: timezone - Set localtime to UTC
   file: src=/usr/share/zoneinfo/Etc/UTC dest=/etc/localtime
   when: common_timezone_config.changed
+  notify: restart rsyslog
 
 - name: timezone - reconfigure tzdata
   command: dpkg-reconfigure --frontend noninteractive tzdata
   when: common_timezone_config.changed
+  notify: restart rsyslog

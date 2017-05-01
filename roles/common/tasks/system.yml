@@ -21,3 +21,6 @@
     value: 1024
     sysctl_set: yes
     reload: yes
+
+- name: Initilaize random number generator with seeds
+  command: dd if=/dev/random of=/dev/urandom bs=1 count=32

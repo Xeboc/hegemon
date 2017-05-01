@@ -19,6 +19,10 @@
 
 $config = array();
 
+$config['log_dir'] = '/var/log/roundcubemail/';
+$config['temp_dir'] = '/tmp/roundcubemail/';
+$config['password_charset'] = 'UTF-8';
+
 // Database connection string (DSN) for read+write operations
 // Format (compatible with PEAR MDB2): db_provider://user:password@host/database
 // Currently supported db_providers: mysql, pgsql, sqlite, mssql, sqlsrv, oracle
@@ -68,13 +72,13 @@ $config['smtp_pass'] = '%p';
 $config['support_url'] = '';
 
 // Name your service. This is displayed on the login screen and in the window title
-$config['product_name'] = 'Roundcube Webmail';
+$config['product_name'] = '{{ webmail_domain }} Roundcube Webmail';
 
 // this key is used to encrypt the users imap password which is stored
 // in the session record (and the client cookie if remember password is enabled).
 // please provide a string of exactly 24 chars.
 // YOUR KEY MUST BE DIFFERENT THAN THE SAMPLE VALUE FOR SECURITY REASONS
-$config['des_key'] = 'fwef42cna12wefew9fewfmac';
+$config['des_key'] = '{{ roundcube_password }}';
 
 // List of active plugins (in plugins/ directory)
 $config['plugins'] = array(
