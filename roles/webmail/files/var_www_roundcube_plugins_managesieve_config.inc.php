@@ -10,7 +10,7 @@ $config['managesieve_port'] = null;
 // %n - http hostname ($_SERVER['SERVER_NAME'])
 // %d - domain (http hostname without the first part)
 // For example %n = mail.domain.tld, %d = domain.tld
-$config['managesieve_host'] = 'localhost';
+$config['managesieve_host'] = '127.0.0.1';
 
 // authentication method. Can be CRAM-MD5, DIGEST-MD5, PLAIN, LOGIN, EXTERNAL
 // or none. Optional, defaults to best method supported by server.

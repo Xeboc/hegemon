@@ -24,7 +24,7 @@
     - dependencies
 
 - name: Create database user for wallabag
-  postgresql_user: login_host=localhost
+  postgresql_user: login_host=127.0.0.1
                    login_user={{ db_admin_username }}
                    login_password="{{ db_admin_password }}"
                    name={{ wallabag_db_username }}
@@ -32,7 +32,7 @@
                    state=present
 
 - name: Create database for wallabag
-  postgresql_db: login_host=localhost
+  postgresql_db: login_host=127.0.0.1
                  login_user={{ db_admin_username }}
                  login_password="{{ db_admin_password }}"
                  name={{ wallabag_db_database }}

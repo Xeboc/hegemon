@@ -12,11 +12,11 @@
     - dependencies
 
 - name: Create database user for mail server
-  postgresql_user: login_host=localhost login_user={{ db_admin_username }} login_password="{{ db_admin_password }}" name={{ mail_db_username }} password="{{ mail_db_password }}" encrypted=yes state=present
+  postgresql_user: login_host=127.0.0.1 login_user={{ db_admin_username }} login_password="{{ db_admin_password }}" name={{ mail_db_username }} password="{{ mail_db_password }}" encrypted=yes state=present
   notify: import sql postfix
 
 - name: Create database for mail server
-  postgresql_db: login_host=localhost login_user={{ db_admin_username }} login_password="{{ db_admin_password }}" name={{ mail_db_database }} state=present owner={{ mail_db_username }}
+  postgresql_db: login_host=127.0.0.1 login_user={{ db_admin_username }} login_password="{{ db_admin_password }}" name={{ mail_db_database }} state=present owner={{ mail_db_username }}
   notify: import sql postfix
 
 - name: Copy import.sql

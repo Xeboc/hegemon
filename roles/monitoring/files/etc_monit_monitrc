@@ -54,7 +54,7 @@
 #                localhost                   # fallback relay
 #
 
-set mailserver localhost
+set mailserver 127.0.0.1
 
 ## By default Monit will drop alert events if no mail servers are available.
 ## If you want to keep the alerts for later delivery retry, you can use the
@@ -118,8 +118,8 @@ set mailserver localhost
 ## Monit Wiki if you want to enable SSL for the web server.
 #
 set httpd port 2812 and
-    use address localhost  # only accept connection from localhost
-    allow localhost        # allow localhost to connect to the server and
+    use address 127.0.0.1  # only accept connection from localhost
+    allow 127.0.0.1        # allow localhost to connect to the server and
     allow admin:monit      # require user 'admin' with password 'monit'
 #    allow @monit           # allow users of group 'monit' to connect (rw)
 #    allow @users readonly  # allow users of group 'users' to connect readonly
@@ -247,4 +247,3 @@ set httpd port 2812 and
 ## directories.
 #
    include /etc/monit/conf.d/*
-

@@ -16,6 +16,7 @@
     - debian-keyring
     - dnsutils
     - git
+    - haveged
     - htop
     - iftop
     - inxi

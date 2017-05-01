@@ -16,7 +16,7 @@ define ('STORAGE', 'postgres'); # postgres, mysql or sqlite
 define ('STORAGE_SQLITE', ROOT . '/db/poche.sqlite'); # if you are using sqlite, where the database file is located
 
 # only for postgres & mysql
-define ('STORAGE_SERVER', 'localhost');
+define ('STORAGE_SERVER', '127.0.0.1');
 define ('STORAGE_DB', '{{ wallabag_db_database }}');
 define ('STORAGE_USER', '{{ wallabag_db_username }}');
 define ('STORAGE_PASSWORD', '{{ wallabag_db_password }}');

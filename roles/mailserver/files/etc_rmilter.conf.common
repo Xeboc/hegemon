@@ -1,10 +1,10 @@
 spamd {
-	servers = r:localhost:11333;
+	servers = r:127.0.0.1:11333;
 	whitelist = 127.0.0.1/32, 192.168.0.0/16, [::1]/128;
 };
 
 redis {
-	servers_id = localhost;
+	servers_id = 127.0.0.1;
 	id_prefix = "message_id.";
 };
 
