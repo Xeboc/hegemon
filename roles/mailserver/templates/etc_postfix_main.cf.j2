@@ -38,21 +38,26 @@ unverified_sender_reject_code = 554
 # TLS parameters
 smtpd_tls_mandatory_protocols=!SSLv2,!SSLv3
 smtp_tls_mandatory_protocols=!SSLv2,!SSLv3
-smtp_tls_protocols = !SSLv2,!SSLv3
 smtpd_tls_protocols = !SSLv2,!SSLv3
+smtp_tls_protocols = !SSLv2,!SSLv3
 smtpd_tls_cert_file=/etc/letsencrypt/live/{{ domain }}/fullchain.pem
 smtpd_tls_key_file=/etc/letsencrypt/live/{{ domain }}/privkey.pem
 smtpd_use_tls=yes
 smtpd_tls_auth_only = yes
-smtp_tls_security_level = may
+smtp_tls_security_level = dane
+smtpd_tls_security_level = may
 smtp_tls_loglevel = 2
 smtpd_tls_received_header = yes
 smtp_tls_note_starttls_offer = yes
 smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt
 # http://www.postfix.org/FORWARD_SECRECY_README.html
 smtp_tls_ciphers = medium
+smtpd_tls_ciphers = medium
+smtpd_tls_exclude_ciphers=aNULL,RC4
+smtp_tls_exclude_ciphers=aNULL,RC4
 smtpd_tls_dh1024_param_file = /etc/ssl/private/dhparam2048.pem
 
+smtp_dns_support_level=dnssec
 smtpd_sasl_type = dovecot
 smtpd_sasl_path = private/auth
 smtpd_sasl_auth_enable = yes

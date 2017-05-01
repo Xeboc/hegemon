@@ -14,3 +14,10 @@
     value: 3 4 1 3
     sysctl_set: yes
     reload: yes
+
+- name: Increase max open folders for IMAP IDLE connections
+  sysctl:
+    name: fs.inotify.max_user_instances
+    value: 1024
+    sysctl_set: yes
+    reload: yes

@@ -20,7 +20,7 @@
   with_items: "{{ mail_virtual_domains }}"
 
 - name: Generate OpenDKIM keys
-  command: opendkim-genkey -b 2048 -r -d {{ item.name }} -D /etc/opendkim/keys/{{ item.name }}/ creates=/etc/opendkim/keys/{{ item.name }}/default.private
+  command: opendkim-genkey -r -d {{ item.name }} -D /etc/opendkim/keys/{{ item.name }}/ creates=/etc/opendkim/keys/{{ item.name }}/default.private
   with_items: "{{ mail_virtual_domains }}"
 
 - name: Put opendkim.conf into place
