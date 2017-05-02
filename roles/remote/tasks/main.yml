@@ -16,6 +16,8 @@
   tags: letsencrypt
 - include: ufw.yml
   tags: ufw
+- include: unbound.yml
+  tags: unbound
 - include: security.yml
   tags: security
 - include: ntp.yml

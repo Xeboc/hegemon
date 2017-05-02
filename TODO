@@ -5,6 +5,6 @@ i2p
 split sites up to different playbooks
 fail2ban check own logs and ban further
 name it.  hegemon?
-setup dns server.  resolving nameserver, DNSSEC-aware.  bind9 or unbound
 munin
 update z-push wiht caldav, carddav, and combined backend from mail in a box
+check roundcube's setup

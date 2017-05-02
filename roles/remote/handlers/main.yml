@@ -38,3 +38,8 @@
   service:
     name: rsyslog
     state: restarted
+
+- name: restart unbound
+  service:
+    name: unbound
+    state: restarted

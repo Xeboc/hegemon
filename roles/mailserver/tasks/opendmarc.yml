@@ -52,7 +52,7 @@
   template: src=etc_opendmarc_report.sh.j2 dest=/etc/opendmarc/report.sh owner=root group=root mode=0755
 
 - name: Ensure initial report dat file exists with correct permissions
-  copy: content="" dest=/var/run/opendmarc/opendmarc.dat owner=opendmarc group=opendmarc creates=/var/run/opendmarc/opendmarc.dat
+  file: state=touch dest=/var/run/opendmarc/opendmarc.dat owner=opendmarc group=opendmarc
 
 - name: Activate OpenDMARC report cronjob
   cron: name="OpenDMARC report" hour="2" minute="0" job="/bin/bash /etc/opendmarc/report.sh >> /var/log/opendmarc_report.log 2>&1 || tail /var/log/opendmarc_report.log"

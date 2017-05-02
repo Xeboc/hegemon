@@ -1,0 +1,33 @@
+---
+# Install unbound DNS recursive caching server
+
+- name: Install unbound package
+  apt: pkg=unbound state=installed
+  tags: dependencies
+
+- name: Fetch current root.hints file
+  get_url: url=http://www.internic.net/domain/named.root dest=/etc/unbound/root.hints
+  notify: restart unbound
+
+- name: Fetch current yoyo.org anti-advertising
+  get_url: url=http://pgl.yoyo.org/adservers/serverlist.php?hostformat=unbound&showintro=0&mimetype=plaintext dest=/etc/unbound/unbound_ad_servers
+  notify: restart unbound
+
+- name: Copy unbound configuration file
+  copy: src=etc_unbound_unbound.conf.d_local.conf dest=/etc/unbound/unbound.conf.d/local.conf
+    owner=root group=root mode=0644
+    validate='/usr/sbin/unbound-checkconf %s'
+  notify:
+    - restart unbound
+
+- name: Copy resolv.conf and make it immutable
+  template: src=etc_resolv.conf.j2 dest=/etc/resolv.conf backup=yes
+    owner=root group=root mode=0644 attributes=i
+
+- name: Install monthly root.hints update
+  cron: name="Unbound root.hints" special_time=monthly
+    job="wget -c http://www.internic.net/domain/named.root -O /etc/unbound/root.hints"
+
+- name: Install monthly yoyo.org update
+  cron: name="Unbound yoyo.org" special_time=monthly
+    job="wget -c http://pgl.yoyo.org/adservers/serverlist.php?hostformat=unbound&showintro=0&mimetype=plaintext -O /etc/unbound/unbound_ad_servers"
