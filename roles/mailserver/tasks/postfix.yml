@@ -11,6 +11,9 @@
   tags:
     - dependencies
 
+- name: Get public IP
+  ipify_facts:
+
 - name: Create database user for mail server
   postgresql_user: login_host=127.0.0.1 login_user={{ db_admin_username }} login_password="{{ db_admin_password }}" name={{ mail_db_username }} password="{{ mail_db_password }}" encrypted=yes state=present
   notify: import sql postfix
@@ -28,7 +31,7 @@
   when: mail_header_privacy == 1
 
 - name: Copy smtp_header_checks.pcre
-  copy: src=etc_postfix_maps_smtp_header_checks.pcre dest=/etc/postfix/maps/smtp_header_checks.pcre owner=root group=root
+  template: src=etc_postfix_maps_smtp_header_checks.pcre.j2 dest=/etc/postfix/maps/smtp_header_checks.pcre owner=root group=root
   when: mail_header_privacy == 1
 
 - name: Copy main.cf
