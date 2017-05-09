@@ -19,20 +19,20 @@
 
     <Directory /opt/roundcube/config>
         AllowOverride None
-	Require all denied
+	      Require all denied
     </Directory>
 
     <Directory /opt/roundcube/temp>
         AllowOverride None
-	Require all denied
+        Require all denied
     </Directory>
 
     <Directory /opt/roundcube/logs>
         AllowOverride None
-	Require all denied
+        Require all denied
     </Directory>
 
-    LogLevel		    warn
+    LogLevel		            warn
     ErrorLog                /var/log/apache2/roundcube.info-error_log
     CustomLog               /var/log/apache2/roundcube.info-access_log common
 </VirtualHost>

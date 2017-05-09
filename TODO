@@ -7,4 +7,5 @@ fail2ban check own logs and ban further
 name it.  hegemon?
 munin
 update z-push wiht caldav, carddav, and combined backend from mail in a box
-check roundcube's setup
+assume local network isn't secure
+one database? (roundcube from sqlite to postgres) (opendmarc from mysql to postgres)

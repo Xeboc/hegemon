@@ -1,7 +1,3 @@
-- name: Determine whether roundcube is configured
-  stat: path=/var/www/roundcube/config.inc.php
-  register: roundcube_config
-
 - name: Install roundcube dependencies
   apt: pkg={{ item }} state=present
   with_items:
@@ -30,9 +26,9 @@
 
 - name: Copy composer configuration
   copy: src=var_www_roundcube_composer.json dest=/var/www/roundcube/composer.json
-    owner=root
-    group=www-data
-    mode=0644
+        owner=root
+        group=www-data
+        mode=0644
 
 - name: Install Composer
   command: php /tmp/composer-installer
@@ -48,7 +44,7 @@
   file: path=/var/www/roundcube/installer state=absent
 
 - name: Generate Roundcube des_key password
-  set_fact: roundcube_password="{{ lookup('password', '/dev/null chars=ascii_letters,digits,punctuation') }}" 
+  set_fact: roundcube_password="{{ lookup('password', '/dev/null chars=ascii_letters,digits,punctuation length=24') }}"
 
 - name: Install Roundcube configuration
   template: src=var_www_roundcube_config_config.inc.php.j2 dest=/var/www/roundcube/config/config.inc.php
@@ -57,9 +53,9 @@
   file: path=/decrypted/roundcube group=www-data mode=0775 state=directory
 
 - name: Make logs and temp directories writable by web server
-  file: path={{ item }} mode=0775 group=www-data recurse=yes state=directory
+  file: path={{ item }} mode=0775 owner=www-data group=www-data state=directory
   with_items:
-    - /var/log/roundcubemail/errors
+    - /var/log/roundcubemail
     - /tmp/roundcubemail
 
 - name: Make roundcube directory accessible to web server
@@ -96,7 +92,8 @@
 - name: Configure Apache for Roundcube
   template: src=etc_apache2_sites-available_roundcube.j2
     dest=/etc/apache2/sites-available/roundcube.conf
-    group=root owner=root force=yes
+    owner=root
+    group=root
 
 - name: Enable Roundcube site
   command: a2ensite roundcube.conf creates=/etc/apache2/sites-enabled/roundcube.conf

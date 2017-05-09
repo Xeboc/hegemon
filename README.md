@@ -19,6 +19,7 @@ Services Provided
 -   An IRC bouncer via [ZNC](http://wiki.znc.in/ZNC).
 -   [Monit](http://mmonit.com/monit/) to keep everything running smoothly (and alert you when it’s not).
 -   [collectd](http://collectd.org/) to collect system statistics.
+-   Validating, recursive, and caching DNS resolver provided by [unbound](https://www.unbound.net/).
 -   Web hosting (ex: for your blog) via [Apache](https://www.apache.org/).
 -   Firewall management via [Uncomplicated Firewall (ufw)](https://wiki.ubuntu.com/UncomplicatedFirewall).
 -   Intrusion prevention via [fail2ban](http://www.fail2ban.org/) and rootkit detection via [rkhunter](http://rkhunter.sourceforge.net).
@@ -169,7 +170,9 @@ The `dependencies` tag just installs dependencies, performing no other operation
 
 Create an `MX` record for `example.com` which assigns `mail.example.com` as the domain’s mail server.
 
-To ensure your emails pass DKIM checks you need to add a `txt` record. The name field will be `default._domainkey.EXAMPLE.COM.` The value field contains the public key used by OpenDKIM. The exact value needed can be found in the file `/etc/opendkim/keys/EXAMPLE.COM/default.txt` it’ll look something like this:
+To ensure your emails pass DKIM checks you need to add a `txt` record. The name field will be `default._domainkey.EXAMPLE.COM.` The value field contains the public key used by OpenDKIM. The exact value needed can be found in the file `/etc/opendkim/keys/EXAMPLE.COM/default.txt` and is also copied locally.
+
+Example:
 
     v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDKKAQfMwKVx+oJripQI+Ag4uTwYnsXKjgBGtl7Tk6UMTUwhMqnitqbR/ZQEZjcNolTkNDtyKZY2Z6LqvM4KsrITpiMbkV1eX6GKczT8Lws5KXn+6BHCKULGdireTAUr3Id7mtjLrbi/E3248Pq0Zs39hkDxsDcve12WccjafJVwIDAQAB
 

@@ -23,7 +23,7 @@
   notify: import sql postfix
 
 - name: Copy import.sql
-  template: src=mailserver.sql.j2 dest=/etc/postfix/import.sql owner=root group=root mode=0600
+  template: src=etc_postfix_import.sql.j2 dest=/etc/postfix/import.sql owner=root group=root mode=0600
   notify: import sql postfix
 
 - name: Create postfix maps directory

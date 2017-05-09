@@ -22,6 +22,12 @@ $config = array();
 $config['log_dir'] = '/var/log/roundcubemail/';
 $config['temp_dir'] = '/tmp/roundcubemail/';
 $config['password_charset'] = 'UTF-8';
+$config['junk_mbox'] = 'Junk';
+
+// 0, meaning no parts of the login form should be remembered by the browser.
+// 1, meaning the login username may be remembered.
+// 2, meaning the login username and password may both be remembered.
+$config['login_autocomplete'] = 2;
 
 // Database connection string (DSN) for read+write operations
 // Format (compatible with PEAR MDB2): db_provider://user:password@host/database
@@ -42,6 +48,8 @@ $config['db_dsnw'] = 'sqlite:////decrypted/roundcube/sqlite.db?mode=0664';
 // %s - domain name after the '@' from e-mail address provided at login screen
 // For example %n = mail.domain.tld, %t = domain.tld
 $config['default_host'] = 'ssl://{{ webmail_domain }}:993';
+$config['default_port'] = 993;
+$config['imap_timeout'] = 15;
 
 // SMTP server host (for sending mails).
 // To use SSL/TLS connection, enter hostname with prefix ssl:// or tls://
