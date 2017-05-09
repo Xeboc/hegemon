@@ -23,6 +23,14 @@
   command: a2enconf fqdn creates=/etc/apache2/conf-enabled/fqdn.conf
   notify: restart apache
 
+- name: Turn off site indexing
+  command: a2dismod autoindex -f removes=/etc/apache2/mods-enabled/autoindex.conf
+  notify: restart apache
+
+- name: Copy default Apache configuration
+  copy: src=etc_apache2_apache2.conf dest=/etc/apache2/apache2.conf
+  notify: restart apache
+
 - name: Set firewall rules for web traffic
   ufw: rule=allow port={{ item }} proto=tcp
   with_items:
