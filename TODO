@@ -7,7 +7,8 @@ fail2ban check own logs and ban further
 name it.  hegemon?
 munin
 update z-push with caldav, carddav, and combined backend from mail in a box
-assume local network isn't secure
 one database? (roundcube from sqlite to postgres) (opendmarc from mysql to postgres)
 roundcube carddav config, password plugin, maybe others?
 apache mod_security & mod_evasive
+rewrite readme
+Consistent play structure
