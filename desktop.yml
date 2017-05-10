@@ -1,0 +1,9 @@
+---
+# This is the top-level playbook for a local home server
+
+- hosts: local
+  become: True
+  gather_facts: True
+
+  roles:
+    - { role: common, tags: common }

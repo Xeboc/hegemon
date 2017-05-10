@@ -2,7 +2,6 @@ check for decrypted/lock directory before plays
 freenet
 tor
 i2p
-split sites up to different playbooks
 fail2ban check own logs and ban further
 name it.  hegemon?
 munin

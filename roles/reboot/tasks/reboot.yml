@@ -18,9 +18,16 @@
     path: /decrypted/lock
   register: lock_file_check
 
+- name: Check if /encrypted exisits
+  stat:
+    path: /encrypted
+  register: encrypted_file_check
+
 - name: If /encrypted isn't already mounted, mount it
   shell: printf "{{ encfs_password }}" | encfs /encrypted /decrypted --public --stdinpass creates="/decrypted/lock"
-  when: not lock_file_check.stat.exists
+  when:
+    - not lock_file_check.stat.exists
+    - encrypted_file_check.stat.exists
 
 - name: restart services dependent upon /decrypted
   service: name="{{ item }}" state=restarted
@@ -30,4 +37,6 @@
         - apache2
         - prosody
   ignore_errors: True
-  when: not lock_file_check.stat.exists
+  when:
+    - not lock_file_check.stat.exists
+    - encrypted_file_check.stat.exists
