@@ -62,10 +62,6 @@
       - mime
   notify: restart apache
 
-- name: Enable Apache rewrite module
-  command: a2enmod rewrite creates=/etc/apache2/mods-enabled/rewrite.load
-  notify: restart apache
-
 - name: Configure Apache for nextcloud
   template: src=etc_apache2_sites-available_nextcloud.j2 dest=/etc/apache2/sites-available/nextcloud.conf group=root
   notify: restart apache
@@ -75,7 +71,7 @@
   notify: restart apache
 
 - name: Install nextcloud cronjob
-  cron: name="nextcloud" user="www-data" minute="*/5" job="php -f /var/www/nextcloud/cron.php > /dev/null"
+  cron: name="nextcloud" user="www-data" minute="*/15" job="php -f /var/www/nextcloud/cron.php > /dev/null"
 
 # - name: Configure nextcloud
 #  command: sudo -u www-data php occ maintenance:install --database \"pgsql\" --database-name \"nextcloud\" --database-user \"{{ nextcloud_db_username }}\" --database-pass \"{{ nextcloud_db_password }}\" --admin-user \"{{ main_user_name }}\" --admin-pass \"{{ nextcloud_user_password }}\"
