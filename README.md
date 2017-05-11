@@ -1,46 +1,49 @@
 Services Provided
 -----------------
 
+-   Common package installation with useful programs, including nice-to-have tools like [mosh](http://mosh.mit.edu) and [htop](http://htop.sourceforge.net) that make life with a server a little easier.
+-   User configuration with a remote git dotfiles directory, [Stow](https://www.gnu.org/software/stow/) linking, and Vim, Vundle, and plugins.
 -   [IMAP](https://en.wikipedia.org/wiki/Internet_Message_Access_Protocol) over SSL via [Dovecot](http://dovecot.org/), complete with full text search provided by [Solr](https://lucene.apache.org/solr/).
--   [POP3](https://en.wikipedia.org/wiki/Post_Office_Protocol) over SSL, also via Dovecot
--   [SMTP](https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol) over SSL via Postfix, including a nice set of [DNSBLs](https://en.wikipedia.org/wiki/DNSBL) to discard spam before it ever hits your filters.
--   Webmail via [Roundcube](http://www.roundcube.net/).
--   Mobile push notifications via [Z-Push](http://z-push.sourceforge.net/soswp/index.php?pages_id=1&t=home).
+-   [POP3](https://en.wikipedia.org/wiki/Post_Office_Protocol) over SSL, also via Dovecot.
+-   [SMTP](https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol) over SSL via [Postfix](http://www.postfix.org/)
+-   [DNSBLs](https://en.wikipedia.org/wiki/DNSBL) to discard spam before it ever hits your filters.
+-   Webmail via [Roundcube](http://www.roundcube.net/), with Carddav, managesieve, and 2-factor authenitication plugins.
+-   Mobile push notifications via [Z-Push](http://z-push.org/).
 -   Email client [automatic configuration](https://developer.mozilla.org/en-US/docs/Mozilla/Thunderbird/Autoconfiguration).
+-   Mail server verification via [OpenDKIM](http://www.opendkim.org/) and [OpenDMARC](http://www.trusteddomain.org/opendmarc/) so the Internet knows your mailserver is legit.
+-   Spam fighting via [Rspamd](https://www.rspamd.com/) and [Postgrey](http://postgrey.schweikert.ch/).
+-   Virtual domains for your email, backed by [PostgreSQL](http://www.postgresql.org/).
+-   Private storage cloud via [ownCloud](http://owncloud.org/) or [nextCloud](https://nextcloud.com/).
+-   [CalDAV](https://en.wikipedia.org/wiki/CalDAV) and [CardDAV](https://en.wikipedia.org/wiki/CardDAV) to keep your calendars and contacts in sync, via [ownCloud](http://owncloud.org/) or [nextCloud](https://nextcloud.com/).
 -   Jabber/[XMPP](http://xmpp.org/) instant messaging via [Prosody](http://prosody.im/).
 -   An RSS Reader via [Selfoss](http://selfoss.aditu.de/).
--   Virtual domains for your email, backed by [PostgreSQL](http://www.postgresql.org/).
--   Secure on-disk storage for email and more via [EncFS](http://www.arg0.net/encfs).
--   Spam fighting via [Rspamd](https://www.rspamd.com/) and [Postgrey](http://postgrey.schweikert.ch/).
--   Mail server verification via [OpenDKIM](http://www.opendkim.org/) and [OpenDMARC](http://www.trusteddomain.org/opendmarc/) so the Internet knows your mailserver is legit.
--   [CalDAV](https://en.wikipedia.org/wiki/CalDAV) and [CardDAV](https://en.wikipedia.org/wiki/CardDAV) to keep your calendars and contacts in sync, via [ownCloud](http://owncloud.org/).
--   Your own private storage cloud via [ownCloud](http://owncloud.org/).
--   Your own VPN server via [OpenVPN](http://openvpn.net/index.php/open-source.html).
 -   An IRC bouncer via [ZNC](http://wiki.znc.in/ZNC).
+-   Git hosting via [cgit](http://git.zx2c4.com/cgit/about/) and [gitolite](https://github.com/sitaramc/gitolite).
+-   Read-it-later via [Wallabag](https://www.wallabag.org/)
+-   Web hosting via [Apache](https://www.apache.org/).
+-   SSL certificates obtained from [Let's Encrypt](https://letsencrypt.org/) automatically.
+-   [RFC6238](http://tools.ietf.org/html/rfc6238) two-factor authentication compatible with [Google Authenticator](http://en.wikipedia.org/wiki/Google_Authenticator) and various hardware tokens
+-   Secure on-disk storage for email and more via [EncFS](http://www.arg0.net/encfs).
+-   VPN server via [OpenVPN](http://openvpn.net/index.php/open-source.html).
 -   [Monit](http://mmonit.com/monit/) to keep everything running smoothly (and alert you when it’s not).
 -   [collectd](http://collectd.org/) to collect system statistics.
 -   Validating, recursive, and caching DNS resolver provided by [unbound](https://www.unbound.net/).
--   Web hosting (ex: for your blog) via [Apache](https://www.apache.org/).
 -   Firewall management via [Uncomplicated Firewall (ufw)](https://wiki.ubuntu.com/UncomplicatedFirewall).
 -   Intrusion prevention via [fail2ban](http://www.fail2ban.org/) and rootkit detection via [rkhunter](http://rkhunter.sourceforge.net).
--   SSH configuration preventing root login and insecure password authentication
--   [RFC6238](http://tools.ietf.org/html/rfc6238) two-factor authentication compatible with [Google Authenticator](http://en.wikipedia.org/wiki/Google_Authenticator) and various hardware tokens
+-   SSH configuration preventing root login and insecure password authentication.
+-   Improved security with rkhunter, lynis, and apparmor.
+-   NTP, Apticron, and unattended-upgrades for server maintenance.
 -   Nightly backups to [Tarsnap](https://www.tarsnap.com/).
--   Git hosting via [cgit](http://git.zx2c4.com/cgit/about/) and [gitolite](https://github.com/sitaramc/gitolite).
--   Read-it-later via [Wallabag](https://www.wallabag.org/)
--   A bunch of nice-to-have tools like [mosh](http://mosh.mit.edu) and [htop](http://htop.sourceforge.net) that make life with a server a little easier.
 
 Usage
 =====
 
-What You’ll Need
+What's Needed:
 ----------------
 
-1.  A VPS (or bare-metal server if you wanna ball hard). My VPS is hosted at [Linode](http://www.linode.com/?r=45405878277aa04ee1f1d21394285da6b43f963b). You’ll probably want at least 512 MB of RAM between Apache, Solr, and PostgreSQL. Mine has 1024.
-2.  [64-bit Debian 8.3](http://www.debian.org/) or an equivalent Linux distribution. (You can use whatever distro you want, but deviating from Debian will require more tweaks to the playbooks. See Ansible’s different [packaging](http://docs.ansible.com/ansible/list_of_packaging_modules.html) modules.)
+1.  A VPS (or bare-metal server). [Linode](http://www.linode.com) and [Scaleway](https://www.scaleway.com/) are two great options. Get at least 512 MB of RAM between Apache, Solr, and PostgreSQL.
+2.  [64-bit Debian 8.3](http://www.debian.org/) or an equivalent Linux distribution. (Deviating from Debian will require more tweaks to the playbooks. See Ansible’s different [packaging](http://docs.ansible.com/ansible/list_of_packaging_modules.html) modules.)
 3.  A [Tarsnap](http://www.tarsnap.com) account with some credit in it. You could comment this out if you want to use a different backup service. Consider paying your hosting provider for backups or using an additional backup service for redundancy.
-
-You do not need to acquire an SSL certificate.  The SSL certificates you need will be obtained from [Let's Encrypt](https://letsencrypt.org/) automatically when you deploy your server.
 
 
 Installation
@@ -66,22 +69,23 @@ Change the root password:
 
     passwd
 
-Create a user account for Ansible to do its thing through:
+Create a deploy user account for Ansible:
 
-    useradd deploy
-    passwd deploy
-    mkdir /home/deploy
+    adduser deploy
 
-Authorize your ssh key if you want passwordless ssh login (optional):
+Authorize an ssh key for the deploy account:
 
     mkdir /home/deploy/.ssh
     chmod 700 /home/deploy/.ssh
     nano /home/deploy/.ssh/authorized_keys
     chmod 400 /home/deploy/.ssh/authorized_keys
     chown deploy:deploy /home/deploy -R
+
+If you want passwordless sudo actions:
+
     echo 'deploy ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/deploy
 
-Your new account will be automatically set up for passwordless `sudo`. Or you can just add your `deploy` user to the sudo group.
+Or add the `deploy` user to the sudo group:
 
     adduser deploy sudo
 
@@ -147,7 +151,7 @@ Create `A` or `CNAME` records which point to your server's IP address:
 * `sync.example.com` (for z-push syncronization)
 * `read.example.com` (for Wallabag)
 * `news.example.com` (for Selfoss)
-* `cloud.example.com` (for ownCloud)
+* `cloud.example.com` (for ownCloud/nextCloud)
 * `git.example.com` (for cgit)
 
 ### 6. Run the Ansible Playbooks
@@ -178,9 +182,15 @@ Example:
 
 For DMARC you'll also need to add a `txt` record. The name field should be `_dmarc.EXAMPLE.COM` and the value should be `v=DMARC1; p=none`. More info on DMARC can be found [here](https://dmarc.org)
 
-Set up SPF and reverse DNS [as per this post](http://sealedabstract.com/code/nsa-proof-your-e-mail-in-2-hours/). Make sure to validate that it’s all working, for example by sending an email to <a href="mailto:check-auth@verifier.port25.com">check-auth@verifier.port25.com</a> and reviewing the report that will be emailed back to you.
+Add an SPF `txt` record.  The name should be `v=spf1 mx -all`.  
+
+Set the reverse DNS with the server provider.
+
+For reference, see [this post](http://sealedabstract.com/code/nsa-proof-your-e-mail-in-2-hours/). Make sure to validate that it’s all workin by sending an email to <a href="mailto:check-auth@verifier.port25.com">check-auth@verifier.port25.com</a> and reviewing the report that will be emailed back to you.  Also, visit [DKIMValidator.com](http://dkimvalidator.com/) for another test.
 
 ### 8. Miscellaneous Configuration
+
+Make sure to allow SMTP outbound mail with the server provider.  Most providers have this turned off by default.
 
 Sign in to the ZNC web interface and set things up to your liking. It isn’t exposed through the firewall, so you must first set up an SSH tunnel:
 

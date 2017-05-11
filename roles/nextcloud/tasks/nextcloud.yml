@@ -32,23 +32,20 @@
 - name: Create database user for nextcloud
   postgresql_user: login_host=127.0.0.1 login_user={{ db_admin_username }} login_password="{{ db_admin_password }}" name={{ nextcloud_db_username }} password="{{ nextcloud_db_password }}" role_attr_flags=CREATEDB state=present
 
-- name: Ensure repository key for nextcloud is in place
-  apt_key: url=https://repo.morph027.de/gpg.key state=present
-  tags:
-    - dependencies
+- name: Download Nextcloud source
+  get_url:
+    url="https://download.nextcloud.com/server/releases/nextcloud-11.0.3.tar.bz2"
+    dest="/root/nextcloud-11.0.3.tar.bz2"
+    sha256sum=28d5ee39f31c6be20f037ad2eb300272ad9bb72a7d428eb0152c7a3fde87d545
 
-- name: Add nextcloud repository
-  apt_repository: repo='deb [arch=amd64] https://repo.morph027.de/nextcloud jessie main'
-  tags:
-    - dependencies
+- name: Extract Nextcloud into location
+  unarchive: src=/root/nextcloud-11.0.3.tar.bz2 dest=/var/www/nextcloud creates=/var/www/nextcloud remote_src=yes
 
-- name: Install nextcloud
-  apt: pkg=nextcloud update_cache=yes
-  tags:
-    - dependencies
+- name: Remove downloaded installation file
+  file: path=/root/nextcloud-11.0.3.tar.bz2 state=absent
 
-- name: Ensure nextcloud directory is in place
-  file: state=directory path=/var/www/nextcloud
+- name: Ensure correct Nextcloud directory ownership
+  file: state=directory path=/var/www/nextcloud owner=www-data group=www-data recurse=yes
 
 - name: Move nextcloud data to encrypted filesystem
   command: mv /var/www/nextcloud/data /decrypted/nextcloud-data creates=/decrypted/nextcloud-data
@@ -63,6 +60,11 @@
       - env
       - dir
       - mime
+  notify: restart apache
+
+- name: Enable Apache rewrite module
+  command: a2enmod rewrite creates=/etc/apache2/mods-enabled/rewrite.load
+  notify: restart apache
 
 - name: Configure Apache for nextcloud
   template: src=etc_apache2_sites-available_nextcloud.j2 dest=/etc/apache2/sites-available/nextcloud.conf group=root
