@@ -1,8 +1,18 @@
 ---
 # Install and configure packages related to security
 
+- name: Ensure repository key for Lynis is in place
+  apt_key: url=http://packages.cisofy.com/keys/cisofy-software-public.key state=present
+  tags:
+    - dependencies
+
+- name: Add Lynis repository
+  apt_repository: repo="deb https://packages.cisofy.com/community/lynis/deb/ {{ ansible_distribution_release }} main"
+  tags:
+    - dependencies
+
 - name: Install security-related packages
-  apt: pkg={{ item }} state=installed
+  apt: pkg={{ item }} state=installed update_cache=yes
   with_items:
     - fail2ban
     - whois
@@ -42,3 +52,9 @@
               line="#SCRIPTWHITELIST=/usr/bin/lwp-request"
               state=present
               backrefs=yes
+
+- name: Create Lynis log directory
+  file: state=directory path=/var/log/lynis mode=0755
+
+- name: Copy Lynis cronjob task
+  template: src=etc_cron.weekly_lynis dest=/etc/cron.weekly/lynis mode=0755

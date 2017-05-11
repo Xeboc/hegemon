@@ -11,3 +11,4 @@ roundcube carddav config, password plugin, maybe others?
 apache mod_security & mod_evasive
 rewrite readme
 Consistent play structure
+add sha256sum to all downloads

@@ -1,0 +1,19 @@
+---
+# Installs and configures apticron and unattended upgrades
+
+- name: Install apticron
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - apticron
+    - unattended-upgrades
+  tags:
+    - dependencies
+
+- name: Apticron email configuration
+  template: src=etc_apticron_apticron.conf.j2 dest=/etc/apticron/apticron.conf
+
+- name: Copy unattended upgrades settings in place
+  copy: src={{ item.src }} dest={{ item.dest }} group=root owner=root
+  with_items:
+    - { src: 'etc_apt_apt.conf.d_20auto-upgrades', dest: '/etc/apt/apt.conf.d/20auto-upgrades' }
+    - { src: 'etc_apt_apt.conf.d_50unattended-upgrades', dest: '/etc/apt/apt.conf.d/50unattended-upgrades' }

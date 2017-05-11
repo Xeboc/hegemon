@@ -42,7 +42,6 @@
     - smartmontools
     - sudo
     - traceroute
-    - unattended-upgrades
     - vim-nox
     - wget
     - zip

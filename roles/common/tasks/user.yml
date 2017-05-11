@@ -1,5 +1,5 @@
 ---
-# Create a main user accoutn with sudo powers
+# Create a main user account with sudo powers
 
 - name: Create main user account
   user: name={{ main_user_name }} state=present shell={{ main_user_shell }} groups=sudo,adm
@@ -66,6 +66,7 @@
   args:
     creates: "/home/{{ main_user_name }}/.vim/bundle/YouCompleteMe/third_party/ycmd/PYTHON_USED_DURING_BUILDING"
   when: vundle_installed|changed
+  ignore_errors: True
 
 - name: Link .vimrc files to root user
   file:

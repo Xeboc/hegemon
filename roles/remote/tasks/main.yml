@@ -8,8 +8,8 @@
   tags: encfs
 - include: apache.yml
   tags: apache
-- include: apticron.yml
-  tags: apticron
+- include: apt.yml
+  tags: apt
 - include: ssl.yml
   tags: ssl
 - include: letsencrypt.yml
