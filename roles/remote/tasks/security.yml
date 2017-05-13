@@ -46,12 +46,18 @@
 - name: Update ssh config for more secure defaults
   template: src=etc_ssh_ssh_config.j2 dest=/etc/ssh/ssh_config
 
-- name: Update rkhunter config file for non-existant location
-  lineinfile: dest=/etc/rkhunter.conf
-              regexp=^SCRIPTWHITELIST=/usr/bin/lwp-request
-              line="#SCRIPTWHITELIST=/usr/bin/lwp-request"
-              state=present
-              backrefs=yes
+- name: Update rkhunter config file
+  lineinfile: dest=/etc/rkhunter.conf regexp="{{ item.regexp }}" line="{{ item.line}}" backup=yes state=present backrefs=yes
+  with_items:
+  - { regexp: ^#ALLOWHIDDENDIR=/etc/.java, line: "ALLOWHIDDENDIR=/etc/.java" }
+  - { regexp: ^SCRIPTWHITELIST=/usr/bin/lwp-request, line: "#SCRIPTWHITELIST=/usr/bin/lwp-request" }
+
+- name: Copy rkhunter configuration into place
+  copy: src=etc_default_rkhunter dest=/etc/default/rkhunter
+
+- name: Create rkhunter's database of key system files
+  command: rkhunter --propupd
+    creates=/var/lib/rkhunter/db/rkhunter.dat
 
 - name: Create Lynis log directory
   file: state=directory path=/var/log/lynis mode=0755

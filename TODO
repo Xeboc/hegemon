@@ -12,3 +12,4 @@ apache mod_security & mod_evasive
 rewrite readme
 Consistent play structure
 add sha256sum to all downloads
+chkrootkit, clamAV, Linux Malware Detect, AIDE, samhain, Tripwire
