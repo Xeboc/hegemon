@@ -1,0 +1,15 @@
+---
+# This is the top-level playbook for rebooting a remote server
+
+- hosts: remote
+  remote_user: deploy
+  become: True
+  gather_facts: True
+  vars_prompt:
+    - name: "confirmation"
+      prompt: "Do you want to reboot the server? Answer with 'yes'"
+      default: "no"
+      private: no
+
+  roles:
+    - { role: reboot, tags: reboot }

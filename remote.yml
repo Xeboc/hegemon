@@ -26,4 +26,3 @@
     - { role: git, tags: git }
     - { role: readlater, tags: readlater }
     - { role: monitoring, tags: monitoring } # Monitoring role should be last. See roles/monitoring/README.md
-    - { role: reboot, tags: reboot }
