@@ -18,6 +18,7 @@
     - whois
     - lynis
     - rkhunter
+    - unhide
     - apparmor
     - apparmor-profiles
     - apparmor-profiles-extra
@@ -46,14 +47,11 @@
 - name: Update ssh config for more secure defaults
   template: src=etc_ssh_ssh_config.j2 dest=/etc/ssh/ssh_config
 
-- name: Update rkhunter config file
-  lineinfile: dest=/etc/rkhunter.conf regexp="{{ item.regexp }}" line="{{ item.line}}" backup=yes state=present backrefs=yes
+- name: Copy rkhunter configurations into place
+  copy: src={{ item.src }} dest={{ item.dest }} group=root owner=root
   with_items:
-  - { regexp: ^#ALLOWHIDDENDIR=/etc/.java, line: "ALLOWHIDDENDIR=/etc/.java" }
-  - { regexp: ^SCRIPTWHITELIST=/usr/bin/lwp-request, line: "#SCRIPTWHITELIST=/usr/bin/lwp-request" }
-
-- name: Copy rkhunter configuration into place
-  copy: src=etc_default_rkhunter dest=/etc/default/rkhunter
+  - { src: 'etc_default_rkhunter', dest: '/etc/default/rkhunter' }
+  - { src: 'etc_rkhunter.conf', dest: '/etc/rkhunter.conf' }
 
 - name: Create rkhunter's database of key system files
   command: rkhunter --propupd
