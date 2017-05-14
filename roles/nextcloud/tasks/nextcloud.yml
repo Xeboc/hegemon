@@ -119,6 +119,7 @@
     - tasks
   become: true
   become_user: www-data
+  notify: restart apache
 
 - name: Enable extra Apps, disable usage survey
   command: php occ app:{{ item.state }} "{{ item.name }}"
@@ -139,3 +140,4 @@
   ignore_errors: yes
   args:
     chdir: /var/www/nextcloud
+  notify: restart apache

@@ -9,7 +9,6 @@
   with_items:
     - aptitude
     - apt-transport-https
-    - build-essential
     - ca-certificates
     - curl
     - cmake

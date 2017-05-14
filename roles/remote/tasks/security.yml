@@ -23,6 +23,8 @@
     - apparmor-profiles
     - apparmor-profiles-extra
     - apparmor-utils
+    - logcheck
+    - samhain
   tags:
     - dependencies
 
@@ -73,3 +75,12 @@
 
 - name: Adjust init.d/rc umask
   lineinfile: dest=/etc/init.d/rc regexp=^umask line="umask 027" backup=yes state=present backrefs=yes
+
+- name: Remove compilers
+  apt: pkg={{ item }} state=absent autoremove=yes purge=yes
+  with_items:
+    - gcc
+    - g++
+
+- name: Change logcheck to send mail to root
+  lineinfile: dest=/etc/logcheck/logcheck.conf regexp=^SENDMAILTO line="SENDMAILTO=\"root\"" backup=yes state=present backrefs=yes

@@ -16,8 +16,8 @@
     - { role: xmpp, tags: xmpp }
     - { role: nextcloud, tags: nextcloud }
     - { role: vpn, tags: vpn }
-    - { role: tarsnap, tags: tarsnap }
     - { role: news, tags: news }
     - { role: git, tags: git }
     - { role: readlater, tags: readlater }
+    - { role: tarsnap, tags: tarsnap }
     - { role: monitoring, tags: monitoring } # Monitoring role should be last. See roles/monitoring/README.md
