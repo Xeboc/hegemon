@@ -7,6 +7,7 @@
 - name: Install commonly used software packages
   apt: pkg={{ item }} state=installed
   with_items:
+    - aptitude
     - apt-transport-https
     - build-essential
     - ca-certificates
@@ -14,6 +15,7 @@
     - cmake
     - debian-goodies
     - debian-keyring
+    - debsums
     - dnsutils
     - git
     - haveged

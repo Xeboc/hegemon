@@ -29,6 +29,12 @@
 - name: Configure rmilter service
   copy: src=lib_systemd_system_rmilter.socket dest=/lib/systemd/system/rmilter.socket
 
+- name: Make redis.conf more secure
+  file: path=/etc/redis/redis.conf mode=0600 owner=redis
+
+- name: Make redis folder more secure
+  file: path=/var/lib/redis owner=redis group=redis mode=0700 recurse=yes
+
 - name: Start redis
   service: name=redis-server state=started
 

@@ -40,7 +40,7 @@
 - name: Ensure fail2ban is started
   service: name=fail2ban state=started
 
-- name: Update sshd config for PFS and more secure defaults
+- name: Update sshd config for more secure defaults
   template: src=etc_ssh_sshd_config.j2 dest=/etc/ssh/sshd_config
   notify: restart ssh
 
@@ -62,3 +62,14 @@
 
 - name: Copy Lynis cronjob task
   template: src=etc_cron.weekly_lynis dest=/etc/cron.weekly/lynis mode=0755
+
+- name: Adjust login password defaults and umask
+  lineinfile: dest=/etc/login.defs regexp="{{ item.regexp }}" line="{{ item.line}}" backup=yes state=present backrefs=yes
+  with_items:
+    - { regexp: ^UMASK, line: "UMASK   027" }
+    - { regexp: ^PASS_MIN_DAYS, line: "PASS_MIN_DAYS 1" }
+    - { regexp: ^PASS_MAX_DAYS, line: "PASS_MAX_DAYS 980" }
+    - { regexp: ^PASS_WARN_AGE, line: "PASS_WARN_AGE 21" }
+
+- name: Adjust init.d/rc umask
+  lineinfile: dest=/etc/init.d/rc regexp=^umask line="umask 027" backup=yes state=present backrefs=yes

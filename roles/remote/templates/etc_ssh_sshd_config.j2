@@ -11,7 +11,7 @@ HostKey /etc/ssh/ssh_host_rsa_key
 #HostKey /etc/ssh/ssh_host_ecdsa_key
 #HostKey /etc/ssh/ssh_host_ed25519_key
 #Privilege Separation is turned on for security
-UsePrivilegeSeparation yes
+UsePrivilegeSeparation sandbox
 
 KexAlgorithms {{ kex_algorithms }}
 Ciphers {{ ciphers }}
@@ -23,7 +23,7 @@ ServerKeyBits 1024
 
 # Logging
 SyslogFacility AUTH
-LogLevel INFO
+LogLevel VERBOSE
 
 # Authentication:
 LoginGraceTime 120
@@ -50,11 +50,19 @@ ChallengeResponseAuthentication yes
 PasswordAuthentication no
 
 
-X11Forwarding yes
+X11Forwarding no
 X11DisplayOffset 10
 PrintMotd no
 PrintLastLog yes
-TCPKeepAlive yes
+TCPKeepAlive no
+
+AllowTcpForwarding local
+ClientAliveCountMax 2
+ClientAliveInterval 60
+Compression no
+MaxAuthTries 2
+MaxSessions 2
+UseDNS no
 
 # Allow client to pass locale environment variables
 AcceptEnv LANG LC_*
