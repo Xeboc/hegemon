@@ -13,3 +13,5 @@ rewrite readme
 Consistent play structure
 add sha256sum to all downloads
 chkrootkit, clamAV, Linux Malware Detect, AIDE, samhain, Tripwire
+fail2ban nextcloud
+nextcloud collabora

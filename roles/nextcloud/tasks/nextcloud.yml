@@ -5,22 +5,17 @@
   apt: pkg={{ item }} state=present
   with_items:
     - postgresql
-    - libapache2-mod-php7.0
-    - python-psycopg2
-    - php7.0-gd
-    - php7.0-json
-    - php7.0-pgsql
-    - php7.0-curl
-    - php7.0-mbstring
-    - php7.0-intl
-    - php7.0-mcrypt
-    - php-imagick
-    - php7.0-xml
-    - php7.0-zip
-    - php7.0-fileinfo
-    - php7.0-bz2
-    - php7.0-openssl
+    - libapache2-mod-php5
+    - php5-apcu
+    - php5-curl
+    - php5-gd
+    - php5-intl
+    - php5-imagick
+    - php5-json
+    - php5-mcrypt
+    - php5-pgsql
     - ffmpeg
+    - python-psycopg2
   tags:
     - dependencies
 
@@ -39,7 +34,7 @@
     sha256sum=28d5ee39f31c6be20f037ad2eb300272ad9bb72a7d428eb0152c7a3fde87d545
 
 - name: Extract Nextcloud into location
-  unarchive: src=/root/nextcloud-11.0.3.tar.bz2 dest=/var/www/nextcloud creates=/var/www/nextcloud remote_src=yes
+  unarchive: src=/root/nextcloud-11.0.3.tar.bz2 dest=/var/www remote_src=yes creates=/var/www/nextcloud/index.html
 
 - name: Remove downloaded installation file
   file: path=/root/nextcloud-11.0.3.tar.bz2 state=absent
@@ -47,19 +42,14 @@
 - name: Ensure correct Nextcloud directory ownership
   file: state=directory path=/var/www/nextcloud owner=www-data group=www-data recurse=yes
 
-- name: Move nextcloud data to encrypted filesystem
-  command: mv /var/www/nextcloud/data /decrypted/nextcloud-data creates=/decrypted/nextcloud-data
-- file: src=/decrypted/nextcloud-data dest=/var/www/nextcloud/data owner=www-data group=www-data state=link
-
-- name: Make sure apache modules are loaded
-  apache2_module:
-    state: present
-    name:
-      - rewrite
-      - headers
-      - env
-      - dir
-      - mime
+- name: Make sure required apache modules are loaded
+  apache2_module: name="{{ item }}" state=present
+  with_items:
+    - rewrite
+    - headers
+    - env
+    - dir
+    - mime
   notify: restart apache
 
 - name: Configure Apache for nextcloud
@@ -73,5 +63,79 @@
 - name: Install nextcloud cronjob
   cron: name="nextcloud" user="www-data" minute="*/15" job="php -f /var/www/nextcloud/cron.php > /dev/null"
 
-# - name: Configure nextcloud
-#  command: sudo -u www-data php occ maintenance:install --database \"pgsql\" --database-name \"nextcloud\" --database-user \"{{ nextcloud_db_username }}\" --database-pass \"{{ nextcloud_db_password }}\" --admin-user \"{{ main_user_name }}\" --admin-pass \"{{ nextcloud_user_password }}\"
+- name: Configure nextcloud
+  command: php occ maintenance:install
+    --database "pgsql"
+    --database-name "nextcloud"
+    --database-user "{{ nextcloud_db_username }}"
+    --database-pass "{{ nextcloud_db_password }}"
+    --admin-user "{{ main_user_name }}"
+    --admin-pass "{{ nextcloud_user_password }}"
+    --data-dir "/decrypted/nextcloud-data"
+  become: yes
+  become_user: www-data
+  args:
+    chdir: /var/www/nextcloud
+    creates: /var/www/nextcloud/config/config.php
+  notify: restart apache
+
+- name: Set admin email
+  command: php occ user:setting {{ main_user_name }} settings email "{{ main_user_name }}@{{ domain }}"
+  become: yes
+  become_user: www-data
+  args:
+    chdir: /var/www/nextcloud
+
+- name: Add trusted domain to config.php
+  lineinfile:
+    dest: /var/www/nextcloud/config/config.php
+    line: "    1 => '{{ nextcloud_domain }}',"
+    insertafter: "0 => '"
+    state: present
+
+- name: Add local cache, urandom, and email to config.php
+  lineinfile:
+    dest: /var/www/nextcloud/config/config.php
+    line: "{{ item }}"
+    insertbefore: "\\);"
+    state: present
+  with_items:
+    - "  'memcache.local' => '\\OC\\Memcache\\APCu',"
+    - "  'open_basedir' => '/dev/urandom',"
+    - "  'mail_smtpmode' => 'sendmail',"
+    - "  'mail_from_address' => 'admin',"
+    - "  'mail_domain' => '{{ nextcloud_domain }}',"
+
+- name: Download additional Apps
+  git:
+    repo: "https://github.com/nextcloud/{{ item }}.git"
+    dest: "/var/www/nextcloud/apps/{{ item }}"
+    accept_hostkey: yes
+  with_items:
+    - twofactor_totp
+    - calendar
+    - contacts
+    - bookmarks
+    - tasks
+  become: true
+  become_user: www-data
+
+- name: Enable extra Apps, disable usage survey
+  command: php occ app:{{ item.state }} "{{ item.name }}"
+  with_items:
+  - { state: 'enable', name: 'admin_audit' }
+  - { state: 'enable', name: 'external' }
+  - { state: 'enable', name: 'files_accesscontrol' }
+  - { state: 'enable', name: 'files_automatedtagging' }
+  - { state: 'enable', name: 'files_external' }
+  - { state: 'enable', name: 'twofactor_totp' }
+  - { state: 'enable', name: 'calendar' }
+  - { state: 'enable', name: 'contacts' }
+  - { state: 'enable', name: 'bookmarks' }
+  - { state: 'enable', name: 'tasks' }
+  - { state: 'disable', name: 'survey_client' }
+  become: yes
+  become_user: www-data
+  ignore_errors: yes
+  args:
+    chdir: /var/www/nextcloud
