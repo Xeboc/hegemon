@@ -35,11 +35,9 @@
 - name: Make redis folder more secure
   file: path=/var/lib/redis owner=redis group=redis mode=0700 recurse=yes
 
-- name: Start redis
-  service: name=redis-server state=started
-
-- name: Start rspamd systemd listener
-  service: name=rspamd state=started
-
-- name: Start rmilter systemd listener
-  service: name=rmilter state=started
+- name: Restart redis, rspamd, and rmilter
+  service: name={{ item }} state=restarted enabled=yes
+  with_items:
+    - redis-server
+    - rspamd
+    - rmilter

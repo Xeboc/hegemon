@@ -25,6 +25,8 @@
     - apparmor-utils
     - logcheck
     - samhain
+    - clamav-daemon
+    - inotify-tools
   tags:
     - dependencies
 
@@ -38,9 +40,6 @@
 - name: Copy fail2ban dovecot configuration into place
   copy: src=etc_fail2ban_filter.d_dovecot-pop3imap.conf dest=/etc/fail2ban/filter.d/dovecot-pop3imap.conf
   notify: restart fail2ban
-
-- name: Ensure fail2ban is started
-  service: name=fail2ban state=started
 
 - name: Update sshd config for more secure defaults
   template: src=etc_ssh_sshd_config.j2 dest=/etc/ssh/sshd_config
@@ -84,3 +83,29 @@
 
 - name: Change logcheck to send mail to root
   lineinfile: dest=/etc/logcheck/logcheck.conf regexp=^SENDMAILTO line="SENDMAILTO=\"root\"" backup=yes state=present backrefs=yes
+
+- name: Download Linux Malware Detect installer
+  unarchive:
+    src=http://www.rfxn.com/downloads/maldetect-current.tar.gz
+    dest=/root
+    remote_src=yes
+
+- name: Install Linux Malware Detect
+  shell: /root/maldetect-1.6/install.sh chdir=/root/maldetect-1.6/ creates=/usr/local/maldetect
+
+- name: Change Malware Detect configuration
+  lineinfile: dest=/usr/local/maldetect/conf.maldet regexp="{{ item.regexp }}" line="{{ item.line}}" backup=yes state=present backrefs=yes
+  with_items:
+    - { regexp: ^email_alert, line: "email_alert=\"1\"" }
+    - { regexp: ^email_addr, line: "email_addr=\"root\"" }
+    - { regexp: ^# default_monitor_mode=\"users\", line: "default_monitor_mode=\"users\"" }
+
+- name: Ensure services are started
+  service: name={{ item }} state=restarted enabled=yes
+  with_items:
+    - fail2ban
+    - clamav-daemon
+    - clamav-freshclam
+    - samhain
+    - maldet
+  ignore_errors: yes

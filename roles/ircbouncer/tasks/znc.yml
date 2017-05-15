@@ -63,4 +63,4 @@
   notify: restart ufw
 
 - name: Ensure znc is a system service
-  service: name=znc state=restarted enabled=true
+  service: name=znc state=restarted enabled=yes
