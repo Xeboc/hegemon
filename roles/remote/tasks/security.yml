@@ -37,9 +37,17 @@
   template: src=etc_fail2ban_jail.local.j2 dest=/etc/fail2ban/jail.local
   notify: restart fail2ban
 
-- name: Copy fail2ban dovecot configuration into place
-  copy: src=etc_fail2ban_filter.d_dovecot-pop3imap.conf dest=/etc/fail2ban/filter.d/dovecot-pop3imap.conf
+- name: Copy fail2ban dovecot & ssh re-ban configurations into place
+  copy: src={{ item.src }} dest={{ item.dest }} group=root owner=root
+  with_items:
+  - { src: 'etc_fail2ban_filter.d_dovecot-pop3imap.conf', dest: '/etc/fail2ban/filter.d/dovecot-pop3imap.conf' }
+  - { src: 'etc_fail2ban_jail.d_dovecot-pop3imap.conf', dest: '/etc/fail2ban/jail.d/dovecot-pop3imap.conf' }
+  - { src: 'etc_fail2ban_filter.d_fail2ban-ssh.conf', dest: '/etc/fail2ban/filter.d/fail2ban-ssh.conf' }
+  - { src: 'etc_fail2ban_jail.d_fail2ban-ssh.conf', dest: '/etc/fail2ban/jail.d/fail2ban-ssh.conf' }
   notify: restart fail2ban
+
+- name: Create fail2ban daily cron report
+  copy: src=etc_cron.daily_fail2ban dest=/etc/cron.daily/fail2ban mode=0755
 
 - name: Update sshd config for more secure defaults
   template: src=etc_ssh_sshd_config.j2 dest=/etc/ssh/sshd_config

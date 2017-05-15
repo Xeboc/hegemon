@@ -1,8 +1,5 @@
 check for decrypted/lock directory before plays
-freenet
-tor
-i2p
-fail2ban check own logs and ban further
+freenet, tor, i2p
 name it.  hegemon?
 munin
 update z-push with caldav, carddav, and combined backend from mail in a box
@@ -12,6 +9,6 @@ apache mod_security & mod_evasive
 rewrite readme
 Consistent play structure
 add sha256sum to all downloads
-chkrootkit, clamAV, Linux Malware Detect
-fail2ban nextcloud
+fail2ban nextcloud, roundmail
+fail2ban re-ban other jails
 nextcloud collabora

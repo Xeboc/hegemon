@@ -1,0 +1,15 @@
+date
+
+printf "Fail2ban Daily Report\n"
+
+printf "\nDaily IP ban\n"
+
+grep " Ban " /var/log/fail2ban.log | awk -F[\ \:] '{print $10,"("$10")",$8}' | sort | logresolve | uniq -c | sort -n
+
+printf "\nAll time IP ban\n"
+
+zgrep -h " Ban " /var/log/fail2ban.log* | awk -F[\ \:] '{print $10,"("$10")",$8}' | sort | logresolve | uniq -c | sort -n
+
+printf "\nDay to day trends\n"
+
+zgrep -h " Ban " /var/log/fail2ban.log* | awk '{print $5,$1}' | sort | uniq -c
