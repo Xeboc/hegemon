@@ -1,3 +1,8 @@
+#!/bin/sh
+
+# This file is a daily cron report of the types of of bans that fail2ban
+# has added.  It's useful to spot trends in the firewall configurations.
+
 date
 
 printf "Fail2ban Daily Report\n"
