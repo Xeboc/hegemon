@@ -7,7 +7,7 @@
     - dependencies
 
 - name: Add Rspamd repository
-  apt_repository: repo="deb https://rspamd.com/apt-stable/ {{ ansible_distribution_release }} main"
+  apt_repository: repo="deb https://rspamd.com/apt-stable/ sid main"
   tags:
     - dependencies
 

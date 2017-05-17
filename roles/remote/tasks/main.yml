@@ -6,18 +6,18 @@
   tags: timezone
 - include: encfs.yml
   tags: encfs
-- include: apache.yml
-  tags: apache
+- include: ufw.yml
+  tags: ufw
 - include: apt.yml
   tags: apt
 - include: ssl.yml
   tags: ssl
 - include: letsencrypt.yml
   tags: letsencrypt
-- include: ufw.yml
-  tags: ufw
 - include: fail2ban.yml
   tags: fail2ban
+- include: apache.yml
+  tags: apache
 - include: unbound.yml
   tags: unbound
 - include: security.yml

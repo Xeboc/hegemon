@@ -1,0 +1,68 @@
+- name: "Set kernel facts"
+  set_fact:
+    scaleway_upstream_kernel: "{{ansible_kernel|regex_replace('-.*$', '')}}"
+    scaleway_local_kernel: "{{ansible_kernel|regex_replace('^[^-]+', '')}}"
+
+- name: "Create a home for the kernel sources"
+  become: yes
+  file:
+    path: "/usr/src"
+    state: "directory"
+
+- name: "Download the upstream kernel source"
+  become: yes
+  unarchive:
+    src: "https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-{{scaleway_upstream_kernel}}.tar.xz"
+    creates: "/usr/src/linux-{{scaleway_upstream_kernel}}"
+    dest: "/usr/src/"
+    remote_src: yes
+
+- name: "Symlink kernel sources"
+  become: yes
+  file:
+    state: "link"
+    src: "/usr/src/linux-{{scaleway_upstream_kernel}}"
+    dest: "{{item}}"
+  with_items:
+    - "/usr/src/linux"
+    - "/lib/modules/{{ansible_kernel}}/build"
+
+- name: "Unpack the local config"
+  become: yes
+  shell: "zcat /proc/config.gz > /usr/src/linux/.config"
+  args:
+    creates: "/usr/src/linux/.config"
+
+- name: "Set build config"
+  become: yes
+  lineinfile:
+    dest: "/usr/src/linux/.config"
+    line: "{{item}}"
+  with_items:
+    - "CONFIG_LOCALVERSION=\"{{scaleway_local_kernel}}\""
+    - "CONFIG_CROSS_COMPILE=\"\""
+
+- name: "Download module symvers"
+  become: yes
+  fetch:
+    src: "http://mirror.scaleway.com/kernel/{{ansible_architecture}}/{{ansible_kernel}}/Module.symvers"
+    dest: "/usr/src/linux/Module.symvers"
+    flat: yes
+
+- name: "Install packages necessary for kernel compilation"
+  become: yes
+  apt:
+    name: "{{item}}"
+    update_cache: True
+  with_items:
+    - "build-essential"
+    - "libssl-dev"
+
+- name: "Prepare sources"
+  become: yes
+  make:
+    chdir: "/usr/src/linux"
+    target: "{{item}}"
+  with_items:
+    - "prepare"
+    - "modules_prepare"

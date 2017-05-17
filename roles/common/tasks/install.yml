@@ -1,14 +1,11 @@
 ---
-- name: Update apt cache
-  apt: update_cache=yes
-  tags:
-    - dependencies
-
 - name: Install commonly used software packages
-  apt: pkg={{ item }} state=installed
+  apt: pkg={{ item }} state=installed update_cache=yes
   with_items:
+    - acl
     - aptitude
     - apt-transport-https
+    - build-essential
     - ca-certificates
     - curl
     - cmake

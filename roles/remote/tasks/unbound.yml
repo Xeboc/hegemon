@@ -31,3 +31,6 @@
 - name: Install monthly yoyo.org update
   cron: name="Unbound yoyo.org" special_time=monthly
     job="wget -c http://pgl.yoyo.org/adservers/serverlist.php?hostformat=unbound&showintro=0&mimetype=plaintext -O /etc/unbound/unbound_ad_servers"
+
+- name: Flush handles to restart unbound immediately
+  meta: flush_handlers

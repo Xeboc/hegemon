@@ -1,0 +1,10 @@
+---
+# This is the top-level playbook for rebooting a remote server
+
+- hosts: remote
+  remote_user: deploy
+  become: True
+  gather_facts: True
+
+  roles:
+    - { role: scaleway, tags: scaleway }

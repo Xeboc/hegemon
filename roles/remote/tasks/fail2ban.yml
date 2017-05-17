@@ -1,4 +1,4 @@
-- name: Install fail2ban and iptables packages
+- name: Install fail2ban and xtables packages
   apt: pkg={{ item }} state=installed update_cache=yes
   with_items:
     - fail2ban
@@ -27,11 +27,10 @@
   copy: src=etc_cron.daily_fail2ban dest=/etc/cron.daily/fail2ban mode=0755
 
 - name: Copy xtables geoip weekly cron task
-  copy: src=etc_cron.weekly_xtables dest=/etc/cron.weekly/xtables mode=755
+  copy: src=etc_cron.weekly_xtables dest=/etc/cron.weekly/xtables mode=0755
 
 - name: Run initial download of geoip database
-  command: /etc/cron.weekly/xtables
-    creates=/usr/share/xt_geoip/
+  command: /etc/cron.weekly/xtables creates=/usr/share/xt_geoip/
 
 - name: Ensure services are started
   service: name=fail2ban state=started enabled=yes
