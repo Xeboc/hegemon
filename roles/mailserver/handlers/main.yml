@@ -31,3 +31,13 @@
   service:
     name: rspamd
     state: restarted
+
+- name: restart redis-server
+  service:
+    name: redis-server
+    state: restarted
+
+- name: restart rmilter
+  service:
+    name: rmilter
+    state: restarted

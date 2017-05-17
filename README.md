@@ -2,7 +2,7 @@ Services Provided
 -----------------
 
 -   Common package installation with useful programs, including nice-to-have tools like [mosh](http://mosh.mit.edu) and [htop](http://htop.sourceforge.net) that make life with a server a little easier.
--   User configuration with a remote git dotfiles directory, [Stow](https://www.gnu.org/software/stow/) linking, and Vim, Vundle, and plugins.
+-   User configuration with a remote git dotfiles directory, [Stow](https://www.gnu.org/software/stow/) linking, and Vim, Vundle, and Vim plugins.
 -   [IMAP](https://en.wikipedia.org/wiki/Internet_Message_Access_Protocol) over SSL via [Dovecot](http://dovecot.org/), complete with full text search provided by [Solr](https://lucene.apache.org/solr/).
 -   [POP3](https://en.wikipedia.org/wiki/Post_Office_Protocol) over SSL, also via Dovecot.
 -   [SMTP](https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol) over SSL via [Postfix](http://www.postfix.org/)
@@ -21,7 +21,7 @@ Services Provided
 -   Git hosting via [cgit](http://git.zx2c4.com/cgit/about/) and [gitolite](https://github.com/sitaramc/gitolite).
 -   Read-it-later via [Wallabag](https://www.wallabag.org/)
 -   Web hosting via [Apache](https://www.apache.org/).
--   SSL certificates obtained from [Let's Encrypt](https://letsencrypt.org/) automatically.
+-   SSL certificates obtained from [Let's Encrypt](https://letsencrypt.org/) automatically and refreshed daily.
 -   [RFC6238](http://tools.ietf.org/html/rfc6238) two-factor authentication compatible with [Google Authenticator](http://en.wikipedia.org/wiki/Google_Authenticator) and various hardware tokens
 -   Secure on-disk storage for email and more via [EncFS](http://www.arg0.net/encfs).
 -   VPN server via [OpenVPN](http://openvpn.net/index.php/open-source.html).
@@ -29,9 +29,12 @@ Services Provided
 -   [collectd](http://collectd.org/) to collect system statistics.
 -   Validating, recursive, and caching DNS resolver provided by [unbound](https://www.unbound.net/).
 -   Firewall management via [Uncomplicated Firewall (ufw)](https://wiki.ubuntu.com/UncomplicatedFirewall).
--   Intrusion prevention via [fail2ban](http://www.fail2ban.org/) and rootkit detection via [rkhunter](http://rkhunter.sourceforge.net).
--   SSH configuration preventing root login and insecure password authentication.
--   Improved security with rkhunter, lynis, and apparmor.
+-   Intrusion prevention via [fail2ban](http://www.fail2ban.org/)
+-   GeoIP blocking using [Xtables-addons](http://xtables-addons.sourceforge.net/)
+-   Malware detection via [rkhunter](http://rkhunter.sourceforge.net), [ClamAV](https://www.clamav.net/), and [LMD](https://www.rfxn.com/projects/linux-malware-detect/)
+-   SSH configuration preventing root login and insecure password authentication with improved defaults.
+-   File integrity monitoring with [Samhain](http://www.la-samhna.de/samhain/index.html).
+-   Improved security with weekly [lynis](https://cisofy.com/lynis/) checks, and [apparmor](http://wiki.apparmor.net) security.
 -   NTP, Apticron, and unattended-upgrades for server maintenance.
 -   Nightly backups to [Tarsnap](https://www.tarsnap.com/).
 
@@ -80,14 +83,11 @@ Authorize an ssh key for the deploy account:
     nano /home/deploy/.ssh/authorized_keys
     chmod 400 /home/deploy/.ssh/authorized_keys
     chown deploy:deploy /home/deploy -R
+    adduser deploy sudo
 
 If you want passwordless sudo actions:
 
     echo 'deploy ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/deploy
-
-Or add the `deploy` user to the sudo group:
-
-    adduser deploy sudo
 
 ### 4. Configure your installation
 
@@ -156,25 +156,25 @@ Create `A` or `CNAME` records which point to your server's IP address:
 
 ### 6. Run the Ansible Playbooks
 
-First, make sure you’ve [got Ansible 1.9.3+ installed](http://docs.ansible.com/intro_installation.html#getting-ansible).
+First, make sure [Ansible] (http://docs.ansible.com/intro_installation.html#getting-ansible) 2.2+ is installed.
 
-To run the whole dang thing:
+To run the remote playbook:
 
-    ansible-playbook -i ./hosts --ask-sudo-pass site.yml
+    ansible-playbook remote.yml --ask-vault-pass -K
 
-If you chose to make a passwordless sudo deploy user, you can omit the `--ask-sudo-pass` argument.
+If you chose to make a passwordless sudo deploy user, you can omit the `-K` argument.
 
-To run just one or more piece, use tags. I try to tag all my includes for easy isolated development. For example, to focus in on your firewall setup:
+To run one or more piece, use tags. I try to tag all my includes for easy isolated development. For example, to focus in on your firewall setup:
 
-    ansible-playbook -i ./hosts --tags=ufw site.yml
+    ansible-playbook remote.yml --ask-vault-pass -K -t uwf
 
-The `dependencies` tag just installs dependencies, performing no other operations. The tasks associated with the `dependencies` tag do not rely on the user-provided settings that live in `group_vars/sovereign`. Running the playbook with the `dependencies` tag is particularly convenient for working with Docker images.
+The `dependencies` tag just installs dependencies, performing no other operations. The tasks associated with the `dependencies` tag do not rely on the user-provided settings that live in `group_vars`. Running the playbook with the `dependencies` tag is particularly convenient for working with Docker images.
 
 ### 7. Finish DNS set-up
 
 Create an `MX` record for `example.com` which assigns `mail.example.com` as the domain’s mail server.
 
-To ensure your emails pass DKIM checks you need to add a `txt` record. The name field will be `default._domainkey.EXAMPLE.COM.` The value field contains the public key used by OpenDKIM. The exact value needed can be found in the file `/etc/opendkim/keys/EXAMPLE.COM/default.txt` and is also copied locally.
+To ensure your emails pass DKIM checks you need to add a `txt` record. The name field will be `default._domainkey.EXAMPLE.COM.` The value field contains the public key used by OpenDKIM. The exact value needed can be found in the file `/etc/opendkim/keys/EXAMPLE.COM/default.txt`, which is also copied locally.
 
 Example:
 
@@ -184,13 +184,13 @@ For DMARC you'll also need to add a `txt` record. The name field should be `_dma
 
 Add an SPF `txt` record.  The name should be `v=spf1 mx -all`.  
 
-Set the reverse DNS with the server provider.
+Set the reverse DNS with the server provider to `mail.example.com`.
 
-For reference, see [this post](http://sealedabstract.com/code/nsa-proof-your-e-mail-in-2-hours/). Make sure to validate that it’s all workin by sending an email to <a href="mailto:check-auth@verifier.port25.com">check-auth@verifier.port25.com</a> and reviewing the report that will be emailed back to you.  Also, visit [DKIMValidator.com](http://dkimvalidator.com/) for another test.
+For reference, see [this post](http://sealedabstract.com/code/nsa-proof-your-e-mail-in-2-hours/). Make sure to validate functionality by sending an email to <a href="mailto:check-auth@verifier.port25.com">check-auth@verifier.port25.com</a> and reviewing the report that will be emailed back to you.  Also, visit [DKIMValidator.com](http://dkimvalidator.com/) for another test.
 
 ### 8. Miscellaneous Configuration
 
-Make sure to allow SMTP outbound mail with the server provider.  Most providers have this turned off by default.
+Make sure to allow SMTP outbound mail with the server provider.  Most providers have this turned off by default.  Scaleway requires a hard boot of the server to change firewall rules and allow SMTP traffic.
 
 Sign in to the ZNC web interface and set things up to your liking. It isn’t exposed through the firewall, so you must first set up an SSH tunnel:
 
@@ -198,18 +198,11 @@ Sign in to the ZNC web interface and set things up to your liking. It isn’t ex
 
 Then proceed to http://localhost:6643 in your web browser.
 
-Similarly, to access the server monitoring page, use another SSH tunnel:
+Similarly, to access the monit server monitoring page, use another SSH tunnel:
 
     ssh deploy@example.com -L 2812:localhost:2812
 
 Again proceeding to http://localhost:2812 in your web browser.
-
-Finally, sign into ownCloud with a new administrator account to set it
-up. You should select PostgreSQL as the configuration backend. Use
-`owncloud` as the database user and the database name. For the
-database password ansible has created a set of random passwords for
-each service and stores them in your local folder `secret`, use the
-one in the file `owncloud_db_password`.
 
 How To Use Your New Personal Cloud
 ----------------------------------

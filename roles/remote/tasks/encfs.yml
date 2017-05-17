@@ -30,7 +30,8 @@
   when: encfs_check.rc > 0
 
 - name: If /encrypted isn't empty and already mounted, mount it
-  shell: printf "{{ encfs_password }}" | encfs /encrypted /decrypted --public --stdinpass creates="/decrypted/lock"
+  shell: printf "{{ encfs_password }}" | encfs /encrypted /decrypted --public --stdinpass
+    creates="/decrypted/lock"
   when: encfs_check.rc == 0
 
 - name: Set decrypted directory permissions

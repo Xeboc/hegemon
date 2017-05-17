@@ -34,4 +34,4 @@
     creates=/usr/share/xt_geoip/
 
 - name: Ensure services are started
-  service: name=fail2ban state=restarted enabled=yes
+  service: name=fail2ban state=started enabled=yes

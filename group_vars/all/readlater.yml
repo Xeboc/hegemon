@@ -1,8 +1,4 @@
-# secret_root: '{{ inventory_dir | realpath }}'
-# secret_name: 'secret'
-# secret: '{{ secret_root + "/" + secret_name }}'
-
-wallabag_version: 1.9.1
+wallabag_version: 2.2.2
 wallabag_domain: "read.{{ domain }}"
 # wallabag_salt: "{{ lookup('password', secret + '/' + 'wallabag_salt', length=32) }}"
 wallabag_salt: "{{ vault_wallabag_salt }}"

@@ -20,4 +20,4 @@
     - { role: git, tags: git }
     - { role: readlater, tags: readlater }
     - { role: tarsnap, tags: tarsnap }
-    - { role: monitoring, tags: monitoring } # Monitoring role should be last. See roles/monitoring/README.md
+    - { role: monitoring, tags: monitoring }

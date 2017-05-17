@@ -22,12 +22,15 @@
 
 - name: Configure rmilter.common
   copy: src=etc_rmilter.conf.common dest=/etc/rmilter.conf.common
+  notify: restart rmilter
 
 - name: Configure rmilter socket
   lineinfile: dest=/etc/rmilter.conf regexp=^bind_socket line="bind_socket = inet:9900@127.0.0.1"
+  notify: restart rmilter
 
 - name: Configure rmilter service
   copy: src=lib_systemd_system_rmilter.socket dest=/lib/systemd/system/rmilter.socket
+  notify: restart rmilter
 
 - name: Make redis.conf more secure
   file: path=/etc/redis/redis.conf mode=0600 owner=redis
@@ -35,8 +38,8 @@
 - name: Make redis folder more secure
   file: path=/var/lib/redis owner=redis group=redis mode=0700 recurse=yes
 
-- name: Restart redis, rspamd, and rmilter
-  service: name={{ item }} state=restarted enabled=yes
+- name: Make sure redis, rspamd, and rmilter are started
+  service: name={{ item }} state=started enabled=yes
   with_items:
     - redis-server
     - rspamd

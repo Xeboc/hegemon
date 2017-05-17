@@ -43,3 +43,8 @@
   service:
     name: unbound
     state: restarted
+
+- name: restart maldet
+  service:
+    name: maldet
+    state: restarted

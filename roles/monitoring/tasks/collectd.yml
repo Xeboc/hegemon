@@ -6,4 +6,4 @@
   notify: restart collectd
 
 - name: Ensure collectd is started
-  service: name=collectd state=restarted enabled=yes
+  service: name=collectd state=started enabled=yes

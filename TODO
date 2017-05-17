@@ -14,3 +14,4 @@ fail2ban re-ban other jails
 nextcloud collabora
 monit nextcloud, z-push
 get geoip blocking functioning
+postgreSQL to /decrypted?

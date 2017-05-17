@@ -12,4 +12,4 @@
     - restart ntp
 
 - name: Ensure ntpd is running
-  service: name=ntp state=restarted enabled=yes
+  service: name=ntp state=started enabled=yes

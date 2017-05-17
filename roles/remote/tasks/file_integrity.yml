@@ -4,4 +4,4 @@
     - dependencies
 
 - name: Ensure samhain is started
-  service: name=samhain state=restarted enabled=yes
+  service: name=samhain state=started enabled=yes
