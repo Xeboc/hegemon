@@ -2,5 +2,7 @@
   tags: monit
 - include: logwatch.yml
   tags: logwatch
+- include: logcheck.yml
+  tags: logcheck
 - include: collectd.yml
   tags: collectd

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+LOGFILE="/var/log/clamav/clamav-$(date +'%Y-%m-%d').log";
+RECEIVER="root@{{ domain }}"
+DIRTOSCAN="/"
+
+for D in ${DIRTOSCAN}; do
+
+  DIRSIZE=$(du -sh "$D" 2>/dev/null | cut -f1)
+
+  printf "Starting a daily scan of "$D" directory.
+  Amount of data to be scanned is "$DIRSIZE"."
+
+  clamscan -ri "$D" 2>/dev/null > ${LOGFILE}
+
+  MALWARE=$(tail "$LOGFILE" | grep Infected | cut -d" " -f3)
+
+  # if the value is not equal to zero, send an email with the log file attached
+  if [ "$MALWARE" -ne "0" ]; then
+    cat $LOGFILE | mailx -s "Malware Found" $RECEIVER
+  fi 
+
+done

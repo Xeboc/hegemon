@@ -1,4 +1,4 @@
-check process tomcat with pidfile "/var/run/tomcat7.pid"
+check process tomcat with pidfile /var/run/tomcat7.pid
   group mail
   start program = "systemctl start tomcat7"
   stop program = "systemctl stop tomcat7"

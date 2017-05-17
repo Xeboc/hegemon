@@ -1,0 +1,7 @@
+- name: Install samhain file integrity checking packages
+  apt: pkg=samhain state=installed update_cache=yes
+  tags:
+    - dependencies
+
+- name: Ensure samhain is started
+  service: name=samhain state=restarted enabled=yes

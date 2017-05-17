@@ -5,4 +5,4 @@
   copy: src=opt_check-rbl.pl dest=/opt/check-rbl.pl
 
 - name: Install nightly check-rbl cronjob
-  cron: name="check-rbl" hour="2" minute="0" job="perl /opt/check-rbl.pl -i {{ ipify_public_ip }}"
+  cron: name="check-rbl" hour="2" minute="0" job="perl /opt/check-rbl.pl -i {{ ipify_public_ip }} -v"

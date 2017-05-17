@@ -9,7 +9,7 @@
 - name: Configure logwatch
   template: src=etc_logwatch_conf_logwatch.conf.j2 dest=/etc/logwatch/conf/logwatch.conf
 
-- name: Remove logwatch's dist cronjob
+- name: Remove logwatch's daily cronjob
   file: state=absent path=/etc/cron.daily/00logwatch
 
 - name: Configure weekly logwatch cronjob

@@ -1,8 +1,6 @@
 ---
-#
 # Autoconfig XML file for email clients
 # https://developer.mozilla.org/en-US/docs/Mozilla/Thunderbird/Autoconfiguration
-#
 
 - name: Create directory for mail autoconfiguration virtualhost
   file: state=directory path=/var/www/autoconfig group=www-data owner=root

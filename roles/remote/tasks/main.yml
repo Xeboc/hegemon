@@ -16,10 +16,16 @@
   tags: letsencrypt
 - include: ufw.yml
   tags: ufw
+- include: fail2ban.yml
+  tags: fail2ban
 - include: unbound.yml
   tags: unbound
 - include: security.yml
   tags: security
+- include: malware.yml
+  tags: malware
+- include: file_integrity.yml
+  tags: file_integrity
 - include: ntp.yml
   tags: ntp
 - include: google_auth.yml

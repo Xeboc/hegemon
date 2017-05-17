@@ -24,8 +24,3 @@
 
 - name: Enable UFW
   ufw: state=enabled
-
-- name: Check config of ufw
-  command: cat /etc/ufw/ufw.conf
-  register: ufw_config
-  changed_when: False  # never report as "changed"

@@ -11,10 +11,10 @@
     - { role: remote, tags: remote }
     - { role: mailserver, tags: mailserver }
     - { role: webmail, tags: webmail }
+    - { role: nextcloud, tags: nextcloud }
     - { role: blog, tags: blog }
     - { role: ircbouncer, tags: ircbouncer }
     - { role: xmpp, tags: xmpp }
-    - { role: nextcloud, tags: nextcloud }
     - { role: vpn, tags: vpn }
     - { role: news, tags: news }
     - { role: git, tags: git }

@@ -6,9 +6,9 @@ HOST=$(hostname)
 RECEIVER="root@{{ domain }}"
 LOG_DIR="/var/log/lynis"
 REPORT="$LOG_DIR/report-${HOST}.${DATE}"
-DATA="$LOG_DIR/report-data-${HOST}.${DATE}.txt"
 
 # Run Lynis
 lynis audit system --auditor "${AUDITOR}" --cronjob > ${REPORT}
 
+# Send email
 cat /var/log/lynis/report-${HOST}.${DATE} | mailx -s Lynis-report_$HOST $RECEIVER

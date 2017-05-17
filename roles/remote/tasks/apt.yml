@@ -10,7 +10,7 @@
     - dependencies
 
 - name: Apticron email configuration
-  template: src=etc_apticron_apticron.conf.j2 dest=/etc/apticron/apticron.conf
+  copy: src=etc_apticron_apticron.conf dest=/etc/apticron/apticron.conf
 
 - name: Copy unattended upgrades settings in place
   copy: src={{ item.src }} dest={{ item.dest }} group=root owner=root
