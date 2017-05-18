@@ -19,8 +19,8 @@
   with_items:
   - { src: 'etc_fail2ban_filter.d_dovecot-pop3imap.conf', dest: '/etc/fail2ban/filter.d/dovecot-pop3imap.conf' }
   - { src: 'etc_fail2ban_jail.d_dovecot-pop3imap.conf', dest: '/etc/fail2ban/jail.d/dovecot-pop3imap.conf' }
-  - { src: 'etc_fail2ban_filter.d_fail2ban-ssh.conf', dest: '/etc/fail2ban/filter.d/fail2ban-ssh.conf' }
-  - { src: 'etc_fail2ban_jail.d_fail2ban-ssh.conf', dest: '/etc/fail2ban/jail.d/fail2ban-ssh.conf' }
+  - { src: 'etc_fail2ban_filter.d_fail2ban-sshd.conf', dest: '/etc/fail2ban/filter.d/fail2ban-sshd.conf' }
+  - { src: 'etc_fail2ban_jail.d_fail2ban-sshd.conf', dest: '/etc/fail2ban/jail.d/fail2ban-sshd.conf' }
   notify: restart fail2ban
 
 - name: Create fail2ban daily cron report

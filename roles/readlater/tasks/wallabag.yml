@@ -15,11 +15,11 @@
 - name: Install wallabag dependencies
   apt: pkg={{ item }} state=present
   with_items:
-    - php5
-    - php5-curl
-    - php5-mcrypt
-    - php5-pgsql
-    - php5-tidy
+    - php7.0
+    - php7.0-curl
+    - php7.0-mcrypt
+    - php7.0-pgsql
+    - php7.0-tidy
   tags:
     - dependencies
 

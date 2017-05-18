@@ -15,9 +15,9 @@
   apt: pkg={{ item }} state=installed update_cache=yes
   with_items:
     - php-soap
-    - php5
-    - php5-cli
-    - php5-imap
+    - php7.0
+    - php7.0-cli
+    - php7.0-imap
     - z-push-common
     - z-push-config-apache
     - z-push-backend-caldav

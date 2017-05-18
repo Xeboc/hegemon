@@ -15,7 +15,7 @@
 
 - name: restart solr
   service:
-    name: tomcat7
+    name: tomcat8
     state: restarted
 
 - name: import sql postfix

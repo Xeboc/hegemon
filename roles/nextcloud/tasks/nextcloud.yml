@@ -5,15 +5,20 @@
   apt: pkg={{ item }} state=present
   with_items:
     - postgresql
-    - libapache2-mod-php5
-    - php5-apcu
-    - php5-curl
-    - php5-gd
-    - php5-intl
-    - php5-imagick
-    - php5-json
-    - php5-mcrypt
-    - php5-pgsql
+    - libapache2-mod-php7.0
+    - php7.0
+    - php7.0-apcu
+    - php7.0-bz2
+    - php7.0-curl
+    - php7.0-gd
+    - php7.0-intl
+    - php-imagick
+    - php7.0-json
+    - php7.0-mbstring
+    - php7.0-mcrypt
+    - php7.0-pgsql
+    - php7.0-xml
+    - php7.0-zip
     - ffmpeg
     - python-psycopg2
   tags:
@@ -42,9 +47,13 @@
 - name: Ensure correct Nextcloud directory ownership
   file: state=directory path=/var/www/nextcloud owner=www-data group=www-data recurse=yes
 
+- name: Create Nextcloud data directory
+  file: state=directory path=/decrypted/nextcloud-data owner=www-data group=www-data
+
 - name: Make sure required apache modules are loaded
   apache2_module: name="{{ item }}" state=present
   with_items:
+    - php7.0
     - rewrite
     - headers
     - env
@@ -76,7 +85,7 @@
   become_user: www-data
   args:
     chdir: /var/www/nextcloud
-    creates: /var/www/nextcloud/config/config.php
+    creates: /decrypted/nextcloud-data/{{ main_user_name }}
   notify: restart apache
 
 - name: Set admin email
@@ -129,11 +138,11 @@
   - { state: 'enable', name: 'files_accesscontrol' }
   - { state: 'enable', name: 'files_automatedtagging' }
   - { state: 'enable', name: 'files_external' }
-  - { state: 'enable', name: 'twofactor_totp' }
-  - { state: 'enable', name: 'calendar' }
-  - { state: 'enable', name: 'contacts' }
-  - { state: 'enable', name: 'bookmarks' }
-  - { state: 'enable', name: 'tasks' }
+#  - { state: 'enable', name: 'twofactor_totp' } # Disabled until update to 12.0
+#  - { state: 'enable', name: 'calendar' }
+#  - { state: 'enable', name: 'contacts' }
+#  - { state: 'enable', name: 'bookmarks' }
+#  - { state: 'enable', name: 'tasks' }
   - { state: 'disable', name: 'survey_client' }
   become: yes
   become_user: www-data

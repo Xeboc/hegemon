@@ -33,7 +33,7 @@
   service: name="{{ item }}" state=restarted
   with_items:
         - dovecot
-        - tomcat7
+        - tomcat8
         - apache2
         - prosody
   ignore_errors: True

@@ -22,5 +22,12 @@
     sysctl_set: yes
     reload: yes
 
+- name: Increase max watched files for maldet
+  sysctl:
+    name: fs.inotify.max_user_watches
+    value: 262144
+    sysctl_set: yes
+    reload: yes
+
 - name: Initilaize random number generator with seeds
   command: dd if=/dev/random of=/dev/urandom bs=1 count=32
