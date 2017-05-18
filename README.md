@@ -22,16 +22,16 @@ Services Provided
 -   Read-it-later via [Wallabag](https://www.wallabag.org/)
 -   Web hosting via [Apache](https://www.apache.org/).
 -   SSL certificates obtained from [Let's Encrypt](https://letsencrypt.org/) automatically and refreshed daily.
--   [RFC6238](http://tools.ietf.org/html/rfc6238) two-factor authentication compatible with [Google Authenticator](http://en.wikipedia.org/wiki/Google_Authenticator) and various hardware tokens
+-   [RFC6238](http://tools.ietf.org/html/rfc6238) two-factor authentication compatible with [Google Authenticator](http://en.wikipedia.org/wiki/Google_Authenticator) and various hardware tokens.
 -   Secure on-disk storage for email and more via [EncFS](http://www.arg0.net/encfs).
 -   VPN server via [OpenVPN](http://openvpn.net/index.php/open-source.html).
 -   [Monit](http://mmonit.com/monit/) to keep everything running smoothly (and alert you when it’s not).
 -   [collectd](http://collectd.org/) to collect system statistics.
 -   Validating, recursive, and caching DNS resolver provided by [unbound](https://www.unbound.net/).
 -   Firewall management via [Uncomplicated Firewall (ufw)](https://wiki.ubuntu.com/UncomplicatedFirewall).
--   Intrusion prevention via [fail2ban](http://www.fail2ban.org/)
--   GeoIP blocking using [Xtables-addons](http://xtables-addons.sourceforge.net/)
--   Malware detection via [rkhunter](http://rkhunter.sourceforge.net), [ClamAV](https://www.clamav.net/), and [LMD](https://www.rfxn.com/projects/linux-malware-detect/)
+-   Intrusion prevention via [fail2ban](http://www.fail2ban.org/).
+-   GeoIP blocking using [Xtables-addons](http://xtables-addons.sourceforge.net/).
+-   Malware detection via [rkhunter](http://rkhunter.sourceforge.net), [ClamAV](https://www.clamav.net/), and [LMD](https://www.rfxn.com/projects/linux-malware-detect/).
 -   SSH configuration preventing root login and insecure password authentication with improved defaults.
 -   File integrity monitoring with [Samhain](http://www.la-samhna.de/samhain/index.html).
 -   Improved security with weekly [lynis](https://cisofy.com/lynis/) checks, and [apparmor](http://wiki.apparmor.net) security.
@@ -80,14 +80,14 @@ Authorize an ssh key for the deploy account:
 
     mkdir /home/deploy/.ssh
     chmod 700 /home/deploy/.ssh
-    nano /home/deploy/.ssh/authorized_keys
+    cp /root/.ssh/authorized_keys /home/deploy/.ssh/authorized_keys
     chmod 400 /home/deploy/.ssh/authorized_keys
     chown deploy:deploy /home/deploy -R
     adduser deploy sudo
 
-If you want passwordless sudo actions:
+If the host provide doesn't copy ssh keys into the root user's account (Scaleway), keys can be added to the deploy user's authorized_keys file with this command:
 
-    echo 'deploy ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/deploy
+    nano /home/deploy/.ssh/authorized_keys
 
 ### 4. Configure your installation
 
@@ -144,7 +144,7 @@ If your SSH daemon listens on a non-standard port, add a colon and the port numb
 Create `A` or `CNAME` records which point to your server's IP address:
 
 * `example.com`
-* `mail.example.com`
+* `mail.example.com` (for IMAP/POP/SMTP)
 * `www.example.com` (for Web hosting)
 * `autoconfig.example.com` (for email client automatic configuration)
 * `autodiscover.example.com` (for active-sync autodiscovery)
@@ -153,6 +153,8 @@ Create `A` or `CNAME` records which point to your server's IP address:
 * `news.example.com` (for Selfoss)
 * `cloud.example.com` (for ownCloud/nextCloud)
 * `git.example.com` (for cgit)
+
+Create an `MX` record for `example.com` which assigns `mail.example.com` as the domain’s mail server.
 
 ### 6. Run the Ansible Playbooks
 
@@ -171,8 +173,6 @@ To run one or more piece, use tags. I try to tag all my includes for easy isolat
 The `dependencies` tag just installs dependencies, performing no other operations. The tasks associated with the `dependencies` tag do not rely on the user-provided settings that live in `group_vars`. Running the playbook with the `dependencies` tag is particularly convenient for working with Docker images.
 
 ### 7. Finish DNS set-up
-
-Create an `MX` record for `example.com` which assigns `mail.example.com` as the domain’s mail server.
 
 To ensure your emails pass DKIM checks you need to add a `txt` record. The name field will be `default._domainkey.EXAMPLE.COM.` The value field contains the public key used by OpenDKIM. The exact value needed can be found in the file `/etc/opendkim/keys/EXAMPLE.COM/default.txt`, which is also copied locally.
 

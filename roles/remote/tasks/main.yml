@@ -14,6 +14,8 @@
   tags: ssl
 - include: letsencrypt.yml
   tags: letsencrypt
+- include: scaleway.yml
+  tags: scaleway
 - include: fail2ban.yml
   tags: fail2ban
 - include: apache.yml

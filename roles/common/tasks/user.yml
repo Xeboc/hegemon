@@ -12,10 +12,18 @@
   tags:
     - dependencies
 
-- name: Create dotfiles directory
-  file: path=/home/{{ main_user_name }}/dotfiles state=directory
+- name: Create user directories
+  file: path=/home/{{ main_user_name }}/{{ item }} state=directory
   become: true
   become_user: "{{ main_user_name }}"
+  with_items:
+    - dotfiles
+    - ".ssh"
+
+- name: Copy existing root authorized keys
+  file: src=/root/.ssh/authorized_keys dest=/home/{{ main_user_name }}/.ssh/authorized_keys
+    owner={{ main_user_name }} group={{ main_user_name }} mode=0644 remote_src=True
+  ignore_errors: yes
 
 - name: Download user configuration files
   git:

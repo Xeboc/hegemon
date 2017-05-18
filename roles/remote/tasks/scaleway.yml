@@ -1,0 +1,81 @@
+---
+# This task will compile kernel headers when a custom kernel is used.  Scaleway,
+# and perhaps others, use a non-standard kernel which prevents installation of
+# linux-headers from the usual places.  This installs those headers to allow
+# for DKMS modules, such as xtables or zfsutils, to be built.
+# https://github.com/scaleway/kernel-tools#how-to-build-a-custom-kernel-module
+
+- name: Check for Scaleway image
+  stat:
+    path: /etc/scw-release
+  register: scaleway
+
+- name: "Set kernel facts"
+  set_fact:
+     upstream_kernel_version: "{{ ansible_kernel | regex_replace('-.*$', '') }}"
+     local_kernel_suffix: "{{ ansible_kernel | regex_replace('^[^-]+', '') }}"
+  when: scaleway.stat.exists
+
+- name: "Create a directory for the kernel sources"
+  file:
+    path: "/usr/src"
+    state: directory
+  when: scaleway.stat.exists
+
+- name: "Download the upstream kernel source"
+  unarchive:
+    src: "https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-{{ upstream_kernel_version }}.tar.xz"
+    dest: "/usr/src/"
+    creates: "/usr/src/linux-{{ upstream_kernel_version }}"
+    remote_src: yes
+  when: scaleway.stat.exists
+
+- name: "Symlink kernel sources"
+  file:
+    src: "/usr/src/linux-{{ upstream_kernel_version }}"
+    dest: "{{ item }}"
+    state: "link"
+  with_items:
+    - "/usr/src/linux"
+    - "/lib/modules/{{ ansible_kernel }}/build"
+  when: scaleway.stat.exists
+
+- name: "Unpack the local config"
+  shell: "zcat /proc/config.gz > /usr/src/linux/.config"
+  args:
+    creates: "/usr/src/linux/.config"
+  when: scaleway.stat.exists
+
+- name: "Set build config"
+  lineinfile:
+    dest: "/usr/src/linux/.config"
+    line: "{{ item }}"
+  with_items:
+    - "CONFIG_LOCALVERSION=\"{{ local_kernel_suffix }}\""
+    - "CONFIG_CROSS_COMPILE=\"\""
+  when: scaleway.stat.exists
+
+- name: "Download module symvers"
+  fetch:
+    src: "http://mirror.scaleway.com/kernel/{{ ansible_architecture }}/{{ ansible_kernel }}/Module.symvers"
+    dest: "/usr/src/linux/Module.symvers"
+    flat: yes
+  when: scaleway.stat.exists
+
+- name: "Install packages necessary for kernel compilation"
+  apt:
+    name: "{{ item }}"
+    update_cache: True
+  with_items:
+    - "build-essential"
+    - "libssl-dev"
+  when: scaleway.stat.exists
+
+- name: "Prepare sources"
+  make:
+    chdir: "/usr/src/linux"
+    target: "{{ item }}"
+  with_items:
+    - "prepare"
+    - "modules_prepare"
+  when: scaleway.stat.exists

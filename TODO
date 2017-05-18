@@ -7,7 +7,7 @@ one database? (roundcube from sqlite to postgres) (opendmarc from mysql to postg
 roundcube carddav config, password plugin, maybe others?
 apache mod_security & mod_evasive
 rewrite readme
-Consistent play structure
+Consistent play structure, everything to yml in the same order
 add sha256sum to all downloads
 fail2ban nextcloud, roundmail
 fail2ban re-ban other jails
@@ -15,3 +15,7 @@ nextcloud collabora
 monit nextcloud, z-push
 get geoip blocking functioning
 postgreSQL to /decrypted?
+Titlecase all actions
+Document all tasks
+script to generate initial database passwords
+script to encrypt vault files
