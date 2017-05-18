@@ -10,6 +10,8 @@
   tags: ufw
 - include: apt.yml
   tags: apt
+- include: apache.yml
+  tags: apache
 - include: ssl.yml
   tags: ssl
 - include: letsencrypt.yml
@@ -18,8 +20,6 @@
   tags: scaleway
 - include: fail2ban.yml
   tags: fail2ban
-- include: apache.yml
-  tags: apache
 - include: unbound.yml
   tags: unbound
 - include: security.yml

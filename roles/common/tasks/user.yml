@@ -21,7 +21,7 @@
     - ".ssh"
 
 - name: Copy existing root authorized keys
-  file: src=/root/.ssh/authorized_keys dest=/home/{{ main_user_name }}/.ssh/authorized_keys
+  copy: src=/root/.ssh/authorized_keys dest=/home/{{ main_user_name }}/.ssh/authorized_keys
     owner={{ main_user_name }} group={{ main_user_name }} mode=0644 remote_src=True
   ignore_errors: yes
 

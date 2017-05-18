@@ -16,9 +16,6 @@
     owner: root
     group: root
 
-- name: Re-gather facts
-  action: setup
-
 - name: Change hosts file with a backup
   lineinfile:
     dest: /etc/hosts
@@ -30,3 +27,6 @@
   notify:
     - restart systemd-hostnamed
     - restart systemd-logind
+
+- name: Re-gather facts
+  action: setup
