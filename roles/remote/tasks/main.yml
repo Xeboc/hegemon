@@ -8,6 +8,8 @@
   tags: encfs
 - include: ufw.yml
   tags: ufw
+- include: fail2ban.yml
+  tags: fail2ban
 - include: apt.yml
   tags: apt
 - include: apache.yml
@@ -18,8 +20,6 @@
   tags: letsencrypt
 - include: scaleway.yml
   tags: scaleway
-- include: fail2ban.yml
-  tags: fail2ban
 - include: unbound.yml
   tags: unbound
 - include: security.yml

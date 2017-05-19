@@ -2,7 +2,9 @@
   apt: pkg={{ item }} state=installed update_cache=yes
   with_items:
     - fail2ban
+    - python-inotifyx
     - xtables-addons-common
+    - xtables-addons-dkms
     - libtext-csv-xs-perl
   tags:
     - dependencies
@@ -14,11 +16,9 @@
   template: src=etc_fail2ban_jail.local.j2 dest=/etc/fail2ban/jail.local
   notify: restart fail2ban
 
-- name: Copy fail2ban dovecot & ssh re-ban configurations into place
+- name: Copy fail2ban ssh re-ban configurations into place
   copy: src={{ item.src }} dest={{ item.dest }} group=root owner=root
   with_items:
-  - { src: 'etc_fail2ban_filter.d_dovecot-pop3imap.conf', dest: '/etc/fail2ban/filter.d/dovecot-pop3imap.conf' }
-  - { src: 'etc_fail2ban_jail.d_dovecot-pop3imap.conf', dest: '/etc/fail2ban/jail.d/dovecot-pop3imap.conf' }
   - { src: 'etc_fail2ban_filter.d_fail2ban-sshd.conf', dest: '/etc/fail2ban/filter.d/fail2ban-sshd.conf' }
   - { src: 'etc_fail2ban_jail.d_fail2ban-sshd.conf', dest: '/etc/fail2ban/jail.d/fail2ban-sshd.conf' }
   notify: restart fail2ban

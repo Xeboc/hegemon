@@ -77,6 +77,10 @@
   tags: ufw
   notify: restart ufw
 
+- name: Copy fail2ban configuration into place
+  copy: src=etc_fail2ban_jail.d_dovecot.conf dest=/etc/fail2ban/jail.d/dovecot.conf
+  notify: restart fail2ban
+
 - name: Update post-certificate-renewal task
   copy:
     content: "#!/bin/bash\n\nservice dovecot restart\n"

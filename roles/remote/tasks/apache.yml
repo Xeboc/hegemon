@@ -37,3 +37,7 @@
     - http
     - https
   notify: restart ufw
+
+- name: Copy fail2ban configuration into place
+  copy: src=etc_fail2ban_jail.d_apache.conf dest=/etc/fail2ban/jail.d/apache.conf
+  notify: restart fail2ban

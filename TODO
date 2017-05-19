@@ -20,3 +20,4 @@ Document all tasks
 script to generate initial database passwords
 script to encrypt vault files
 check php7 and other modules enabled for all roles
+a2enmod to apache2_module

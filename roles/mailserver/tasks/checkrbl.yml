@@ -1,7 +1,7 @@
 - name: get public IP
   ipify_facts:
 
-- name: Copy blacklist checker over
+- name: Install blacklist check program
   copy: src=opt_check-rbl.pl dest=/opt/check-rbl.pl
 
 - name: Install nightly check-rbl cronjob

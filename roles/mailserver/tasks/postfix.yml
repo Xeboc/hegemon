@@ -58,3 +58,7 @@
     - submission
   tags: ufw
   notify: restart ufw
+
+- name: Copy fail2ban configuration into place
+  copy: src=etc_fail2ban_jail.d_postfix.conf dest=/etc/fail2ban/jail.d/postfix.conf
+  notify: restart fail2ban

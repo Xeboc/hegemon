@@ -9,7 +9,7 @@
   get_url: url=http://www.internic.net/domain/named.root dest=/etc/unbound/root.hints
   notify: restart unbound
 
-- name: Fetch current yoyo.org anti-advertising
+- name: Fetch current yoyo.org anti-advertising list
   get_url: url=http://pgl.yoyo.org/adservers/serverlist.php?hostformat=unbound&showintro=0&mimetype=plaintext dest=/etc/unbound/unbound_ad_servers
   notify: restart unbound
 
