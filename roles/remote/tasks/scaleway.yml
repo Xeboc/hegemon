@@ -79,3 +79,6 @@
     - "prepare"
     - "modules_prepare"
   when: scaleway.stat.exists
+
+- name: Update module dependencies
+  command: depmod

@@ -2,7 +2,7 @@
   apt: pkg={{ item }} state=present
   with_items:
     - php7.0
-    - php7.0-sqlite
+    - php7.0-sqlite3
     - php7.0-mcrypt
     - php7.0-gd
     - php7.0-pspell

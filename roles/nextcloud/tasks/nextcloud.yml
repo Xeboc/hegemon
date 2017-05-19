@@ -100,14 +100,12 @@
     dest: /var/www/nextcloud/config/config.php
     line: "    1 => '{{ nextcloud_domain }}',"
     insertafter: "0 => '"
-    state: present
 
 - name: Add local cache, urandom, and email to config.php
   lineinfile:
     dest: /var/www/nextcloud/config/config.php
     line: "{{ item }}"
     insertbefore: "\\);"
-    state: present
   with_items:
     - "  'memcache.local' => '\\OC\\Memcache\\APCu',"
     - "  'open_basedir' => '/dev/urandom',"

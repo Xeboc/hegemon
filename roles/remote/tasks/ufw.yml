@@ -17,10 +17,22 @@
   ufw: rule=allow port=domain
 
 - name: Set firewall rule for mosh
-  ufw: rule=allow port=60000:61000 proto=udp
+  ufw: rule=allow port=60000:61000 proto=udp log=yes
 
 - name: Set firewall rules for SSH
-  ufw: rule=allow port=ssh proto=tcp
+  ufw: rule=allow port=ssh proto=tcp log=yes
+
+- name: Disable UFW also displaying in the syslog
+  lineinfile: dest=/etc/rsyslog.d/20-ufw.conf regexp=^#& line="&stop" backrefs=yes
+
+- name: Block and log SSH from anywhere except US
+  lineinfile:
+    dest: /etc/ufw/before.rules
+    line: "{{ item }}"
+    insertbefore: "COMMIT"
+  with_items:
+    - "-A ufw-before-input -m state --state NEW -m geoip ! --src-cc US -m tcp -p tcp --dport 22 -j LOG --log-prefix \"[UFW GEOIP]\" -m limit --limit 3/min --limit-burst 10"
+    - "-A ufw-before-input -m state --state NEW -m geoip ! --src-cc US -m tcp -p tcp --dport 22 -j DROP"
 
 - name: Enable UFW
   ufw: state=enabled
