@@ -50,8 +50,11 @@
 - name: Create Nextcloud data directory
   file: state=directory path=/decrypted/nextcloud-data owner=www-data group=www-data
 
+- name: Disable PHP5 as it conflicts with PHP7.0
+  command: a2dismod php5 removes=/etc/apache2/mods-enabled/php5.conf
+
 - name: Make sure required apache modules are loaded
-  apache2_module: name="{{ item }}" state=present
+  command: a2enmod {{ item }} creates=/etc/apache2/mods-enabled/{{ item }}.conf
   with_items:
     - php7.0
     - rewrite
@@ -113,20 +116,20 @@
     - "  'mail_from_address' => 'admin',"
     - "  'mail_domain' => '{{ nextcloud_domain }}',"
 
-- name: Download additional Apps
-  git:
-    repo: "https://github.com/nextcloud/{{ item }}.git"
-    dest: "/var/www/nextcloud/apps/{{ item }}"
-    accept_hostkey: yes
-  with_items:
-    - twofactor_totp
-    - calendar
-    - contacts
-    - bookmarks
-    - tasks
-  become: true
-  become_user: www-data
-  notify: restart apache
+# - name: Download additional Apps
+#   git:
+#     repo: "https://github.com/nextcloud/{{ item }}.git"
+#     dest: "/var/www/nextcloud/apps/{{ item }}"
+#     accept_hostkey: yes
+#   with_items:
+#     - twofactor_totp
+#     - calendar
+#     - contacts
+#     - bookmarks
+#     - tasks
+#   become: true
+#   become_user: www-data
+#   notify: restart apache
 
 - name: Enable extra Apps, disable usage survey
   command: php occ app:{{ item.state }} "{{ item.name }}"
