@@ -1,0 +1,4 @@
+---
+
+- include: finalize.yml
+  tags: finalize

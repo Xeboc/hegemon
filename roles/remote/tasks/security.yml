@@ -29,9 +29,3 @@
 
 - name: Adjust init.d/rc umask
   lineinfile: dest=/etc/init.d/rc regexp=^umask line="umask 027" backup=yes state=present backrefs=yes
-
-- name: Remove compilers
-  apt: pkg={{ item }} state=absent autoremove=yes purge=yes
-  with_items:
-    - gcc
-    - g++

@@ -56,15 +56,12 @@
   git: "repo=https://github.com/gmarik/Vundle.vim.git dest=/home/{{ main_user_name }}/.vim/bundle/Vundle.vim update=no"
   become: true
   become_user: "{{ main_user_name }}"
-  register: vundle_installed
 
 - name: Install Vim plugins
   shell: "vim -E -s -c 'source /home/{{ main_user_name }}/.vimrc' -c PluginInstall -c qall -c PluginClean!"
   become: true
   become_user: "{{ main_user_name }}"
   register: vim_plugins_installed
-  changed_when: vim_plugins_installed.rc != 0
-  when: vundle_installed|changed
   ignore_errors: yes
 
 - name: Run You Complete Me installer
@@ -73,7 +70,6 @@
   become_user: "{{ main_user_name }}"
   args:
     creates: "/home/{{ main_user_name }}/.vim/bundle/YouCompleteMe/third_party/ycmd/PYTHON_USED_DURING_BUILDING"
-  when: vundle_installed|changed
   ignore_errors: True
 
 - name: Link .vimrc files to root user

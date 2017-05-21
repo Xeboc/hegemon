@@ -1,0 +1,6 @@
+---
+
+# This task will finalize the system after installing all packages
+
+- name: Update Samhain's database
+  command: samhain -t update -l none

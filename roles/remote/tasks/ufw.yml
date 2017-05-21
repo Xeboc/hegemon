@@ -7,12 +7,6 @@
   tags:
     - dependencies
 
-- name: Deny everything incoming
-  ufw: policy=deny direction=incoming
-
-- name: Allow outgoing traffic
-  ufw: policy=allow direction=outgoing
-
 - name: Set firewall rule for DNS
   ufw: rule=allow port=domain
 
@@ -24,6 +18,9 @@
 
 - name: Disable UFW also displaying in the syslog
   lineinfile: dest=/etc/rsyslog.d/20-ufw.conf regexp=^#& line="&stop" backrefs=yes
+
+- name: Disable UFW IPv6
+  lineinfile: dest=/etc/default/ufw regexp=^IPV6 line="IPV6=no" backrefs=yes
 
 - name: Block and log SSH from anywhere except US
   lineinfile:
