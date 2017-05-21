@@ -11,7 +11,7 @@ for D in ${DIRTOSCAN}; do
   printf "Starting a daily scan of "$D" directory.
   Amount of data to be scanned is "$DIRSIZE"."
 
-  clamscan -ri "$D" 2>/dev/null > ${LOGFILE}
+  clamscan -ri --exclude-dir=^/sys --exclude-dir=^/dev --exclude-dir=^/proc --exclude-dir=/usr/local/maldetect/ "$D" 2>/dev/null > ${LOGFILE}
 
   MALWARE=$(tail "$LOGFILE" | grep Infected | cut -d" " -f3)
 
