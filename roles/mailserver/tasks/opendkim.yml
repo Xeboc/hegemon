@@ -29,6 +29,25 @@
     - restart opendkim
     - restart postfix
 
+- name: Copy Opendkim defaults file into place
+  copy: src=etc_default_opendkim dest=/etc/default/opendkim owner=root group=root
+  notify:
+    - restart opendkim
+    - restart postfix
+
+# https://bugs.debian.org/cgi-bin/bugreport.cgi?archive=no&bug=861169
+- name: Update systemd init scripts with Opendkim defaults
+  command: /lib/opendkim/opendkim.service.generate
+  notify:
+    - restart opendkim
+    - restart postfix
+
+- name: Reload systemd daemon with new defaults
+  systemd: daemon_reload=yes name=opendkim.service
+  notify:
+    - restart opendkim
+    - restart postfix
+
 - name: Put additional OpenDKIM configuration files into place
   template: src=etc_opendkim_{{ item }}.j2 dest=/etc/opendkim/{{ item }} owner=opendkim group=opendkim
   with_items:

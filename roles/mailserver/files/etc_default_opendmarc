@@ -4,7 +4,7 @@
 #
 # Uncomment to specify an alternate socket
 # Note that setting this will override any Socket value in opendkim.conf
-SOCKET="inet:54321" # listen on all interfaces on port 54321
+#SOCKET="inet:54321" # listen on all interfaces on port 54321
 #SOCKET="local:/var/run/opendmarc/opendmarc.sock" # default
-#SOCKET="inet:12345@127.0.0.1" # listen on loopback on port 12345
+SOCKET="inet:54321@127.0.0.1" # listen on loopback on port 54321
 #SOCKET="inet:12345@192.0.2.1" # listen on 192.0.2.1 on port 12345

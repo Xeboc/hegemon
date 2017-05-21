@@ -20,4 +20,4 @@
     - { src: 'etc_apt_apt.conf.d_50unattended-upgrades', dest: '/etc/apt/apt.conf.d/50unattended-upgrades' }
 
 - name: Copy needrestart configuration file
-  copy: src=etc_needrestart_conf.d_local.conf dest=etc/needrestart/conf.d/local.conf
+  copy: src=etc_needrestart_conf.d_local.conf dest=/etc/needrestart/conf.d/local.conf

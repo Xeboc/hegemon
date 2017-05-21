@@ -37,6 +37,18 @@
     - restart opendmarc
     - restart postfix
 
+- name: Update systemd init scripts with OpenDMARC defaults
+  command: /lib/opendmarc/opendmarc.service.generate
+  notify:
+    - restart opendmarc
+    - restart postfix
+
+- name: Reload systemd daemon with new defaults
+  systemd: daemon_reload=yes name=opendmarc.service
+  notify:
+    - restart opendmarc
+    - restart postfix
+
 - name: Update mysql root password for all root accounts
   mysql_user: name=root host={{ item }} password={{ mysql_admin_password }} check_implicit_admin=yes
   with_items:
