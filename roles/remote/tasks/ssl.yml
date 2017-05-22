@@ -5,6 +5,9 @@
   command: openssl dhparam -out /etc/ssl/private/dhparam2048.pem 2048
     creates=/etc/ssl/private/dhparam2048.pem
 
+- name: Make SSL folder readable by Postfix
+  file: state=directory path=/etc/ssl/private owner=root group=ssl-cert mode=0711
+
 - name: Enable Apache SSL module
   command: a2enmod ssl
     creates=/etc/apache2/mods-enabled/ssl.load

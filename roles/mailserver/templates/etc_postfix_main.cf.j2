@@ -133,3 +133,6 @@ smtp_header_checks = pcre:/etc/postfix/maps/smtp_header_checks.pcre
 
 # Disable backwards compatibility
 compatibility_level=2
+
+# Scan email with ClamAV
+content_filter = scan:127.0.0.1:10026
