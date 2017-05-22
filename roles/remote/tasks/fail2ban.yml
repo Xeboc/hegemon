@@ -30,7 +30,7 @@
   copy: src=etc_cron.weekly_xtables dest=/etc/cron.weekly/xtables mode=0755
 
 - name: Run initial download of geoip database
-  command: /etc/cron.weekly/xtables creates=/usr/share/xt_geoip/
+  command: /etc/cron.weekly/xtables creates=/usr/share/xt_geoip/ chdir=/usr/lib/xtables-addons/
 
 - name: Ensure services are started
   service: name=fail2ban state=started enabled=yes

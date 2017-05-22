@@ -32,6 +32,7 @@
 - name: restart services dependent upon /decrypted
   service: name="{{ item }}" state=restarted
   with_items:
+        - postgresql
         - dovecot
         - tomcat8
         - apache2

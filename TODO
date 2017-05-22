@@ -13,11 +13,9 @@ fail2ban nextcloud, roundmail
 fail2ban re-ban other jails
 nextcloud collabora
 monit nextcloud, z-push
-postgreSQL to /decrypted?
 Titlecase all actions
 Document all tasks
 script to generate initial database passwords
 script to encrypt vault files
 check php7 and other modules enabled for all roles
 add no_log=True to all password uses
-make /etc/ssl/private/dhparam2048.pem readable by postfix
