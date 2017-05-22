@@ -39,6 +39,7 @@
 
 - name: Update systemd init scripts with OpenDMARC defaults
   command: /lib/opendmarc/opendmarc.service.generate
+  creates: /etc/systemd/system/opendmarc.service.d/override.conf
   notify:
     - restart opendmarc
     - restart postfix

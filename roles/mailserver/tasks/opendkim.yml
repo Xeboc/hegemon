@@ -38,6 +38,7 @@
 # https://bugs.debian.org/cgi-bin/bugreport.cgi?archive=no&bug=861169
 - name: Update systemd init scripts with Opendkim defaults
   command: /lib/opendkim/opendkim.service.generate
+  creates: /etc/systemd/system/opendkim.service.d/override.conf
   notify:
     - restart opendkim
     - restart postfix
