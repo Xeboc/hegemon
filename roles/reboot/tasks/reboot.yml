@@ -13,12 +13,12 @@
   become: False
   when: confirmation == "yes"
 
-- name: Check if /decrypted/lock exisits
+- name: Check if /decrypted/lock exists
   stat:
     path: /decrypted/lock
   register: lock_file_check
 
-- name: Check if /encrypted exisits
+- name: Check if /encrypted exists
   stat:
     path: /encrypted
   register: encrypted_file_check

@@ -3,6 +3,7 @@
 LOGFILE="/var/log/clamav/clamav-$(date +'%Y-%m-%d').log";
 RECEIVER="root@{{ domain }}"
 DIRTOSCAN="/"
+EXCLUDE="^/sys|^/dev|^/proc|/usr/local/maldetect/|/var/log/clamav/|/var/lib/clamav/"
 
 for D in ${DIRTOSCAN}; do
 
@@ -11,7 +12,7 @@ for D in ${DIRTOSCAN}; do
   printf "Starting a daily scan of "$D" directory.
   Amount of data to be scanned is "$DIRSIZE"."
 
-  clamscan -ri --exclude-dir=^/sys --exclude-dir=^/dev --exclude-dir=^/proc --exclude-dir=/usr/local/maldetect/ "$D" 2>/dev/null > ${LOGFILE}
+  clamscan -ri --exclude-dir="$EXCLUDE" "$D" 2>/dev/null > ${LOGFILE}
 
   MALWARE=$(tail "$LOGFILE" | grep Infected | cut -d" " -f3)
 

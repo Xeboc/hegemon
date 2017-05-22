@@ -15,18 +15,20 @@
   postgresql_user: name={{ db_admin_username }} password={{ db_admin_password }} encrypted=yes
 
 - name: Gather current PostgeSQL data directory
-  shell: ps aux | grep postgres | grep -- -D | awk '{print $13}'
+  shell: psql -tAc 'show data_directory'
+  become: True
+  become_user: postgres
   register: postgres_data
 
 - name: Stop PostgreSQL to change data directory location
   service: name=postgresql state=stopped
 
 - name: Move PostgreSQL database
-  command: mv "{{ postgres_data.stdout_lines | first }}" /decrypted/postgres
+  command: mv "{{ postgres_data.stdout }}" /decrypted/postgres
     creates=/decrypted/postgres
 
 - name: Link new folder to original location
-  file: src=/decrypted/postgres dest="{{ postgres_data.stdout_lines | first }}" state=link
+  file: src=/decrypted/postgres dest="{{ postgres_data.stdout }}" state=link
 
 - name: Restart PostgreSQL
   service: name=postgresql state=started
