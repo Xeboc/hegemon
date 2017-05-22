@@ -5,6 +5,7 @@ SSLUseStapling On
 SSLStaplingCache shmcb:${APACHE_RUN_DIR}/stapling_cache(128000)
 SSLStaplingResponderTimeout 5
 SSLStaplingReturnResponderErrors off
+SSLStaplingFakeTryLater off
 
 SSLCertificateKeyFile	/etc/letsencrypt/live/{{ domain }}/privkey.pem
 SSLCertificateFile	/etc/letsencrypt/live/{{ domain }}/fullchain.pem
