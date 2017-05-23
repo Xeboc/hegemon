@@ -24,6 +24,9 @@
   template: src=etc_resolv.conf.j2 dest=/etc/resolv.conf backup=yes
     owner=root group=root mode=0644 attributes=i
 
+- name: Flush handles to restart unbound immediately
+  meta: flush_handlers
+
 - name: Install monthly root.hints update
   cron: name="Unbound root.hints" special_time=monthly
     job="wget -c http://www.internic.net/domain/named.root -O /etc/unbound/root.hints"
@@ -31,6 +34,3 @@
 - name: Install monthly yoyo.org update
   cron: name="Unbound yoyo.org" special_time=monthly
     job="wget -c http://pgl.yoyo.org/adservers/serverlist.php?hostformat=unbound&showintro=0&mimetype=plaintext -O /etc/unbound/unbound_ad_servers"
-
-- name: Flush handles to restart unbound immediately
-  meta: flush_handlers

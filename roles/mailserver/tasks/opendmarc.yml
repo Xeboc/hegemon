@@ -43,6 +43,9 @@
     - restart opendmarc
     - restart postfix
 
+- name: Change permissions on override.conf to reduce log spam
+  file: path=/etc/systemd/system/opendmarc.service.d/override.conf mode=0644
+
 - name: Reload systemd daemon with new defaults
   systemd: daemon_reload=yes name=opendmarc.service
   notify:
@@ -56,6 +59,7 @@
     - 127.0.0.1
     - ::1
     - localhost
+  no_log: True
 
 - name: copy .my.cnf file with root password credentials
   template: src=root_.my.cnf dest=/root/.my.cnf owner=root mode=0600
@@ -70,6 +74,7 @@
 
 - name: Create database user for OpenDMARC reports
   mysql_user: user={{ mail_db_opendmarc_username }} password={{ mail_db_opendmarc_password }} state=present priv="opendmarc.*:ALL"
+  no_log: True
 
 - name: Create database for OpenDMARC reports
   mysql_db: name={{ mail_db_opendmarc_database }} state=present

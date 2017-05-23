@@ -28,9 +28,11 @@
   become: true
   become_user: postgres
   postgresql_user: name={{ db_admin_username }} password={{ db_admin_password }} encrypted=yes
+  no_log: True
 
 - name: Create database user for nextcloud
   postgresql_user: login_host=127.0.0.1 login_user={{ db_admin_username }} login_password="{{ db_admin_password }}" name={{ nextcloud_db_username }} password="{{ nextcloud_db_password }}" role_attr_flags=CREATEDB state=present
+  no_log: True
 
 - name: Download Nextcloud source
   get_url:
@@ -90,6 +92,7 @@
     chdir: /var/www/nextcloud
     creates: /decrypted/nextcloud-data/{{ main_user_name }}
   notify: restart apache
+  no_log: True
 
 - name: Set admin email
   command: php occ user:setting {{ main_user_name }} settings email "{{ main_user_name }}@{{ domain }}"

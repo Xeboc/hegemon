@@ -28,6 +28,7 @@
   when:
     - not lock_file_check.stat.exists
     - encrypted_file_check.stat.exists
+  no_log: True
 
 - name: restart services dependent upon /decrypted
   service: name="{{ item }}" state=restarted

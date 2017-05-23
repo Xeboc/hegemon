@@ -30,6 +30,7 @@
                    name={{ wallabag_db_username }}
                    password="{{ wallabag_db_password }}"
                    state=present
+  no_log: True
 
 - name: Create database for wallabag
   postgresql_db: login_host=127.0.0.1
@@ -39,6 +40,7 @@
                  state=present
                  owner={{ wallabag_db_username }}
   notify: import wallabag sql
+  no_log: True
 
 - name: Get Composer installer
   get_url: url=https://getcomposer.org/installer

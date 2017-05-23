@@ -42,6 +42,9 @@
     - restart opendkim
     - restart postfix
 
+- name: Change permissions on override.conf to reduce log spam
+  file: path=/etc/systemd/system/opendkim.service.d/override.conf mode=0644
+
 - name: Reload systemd daemon with new defaults
   systemd: daemon_reload=yes name=opendkim.service
   notify:
