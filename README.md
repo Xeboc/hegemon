@@ -133,9 +133,10 @@ On OS X and other platforms the passlib:https://pythonhosted.org/passlib/ packag
 
     python -c 'import passlib.hash; print("irc_password_salt: {}\nirc_password_hash: {}".format(*passlib.hash.sha256_crypt.encrypt("password", rounds=5000).split("$")[2:]))'
 
-For Git hosting, copy your public key into place:
+For Git hosting, create a key and copy the public key into place:
 
-	cp ~/.ssh/id_rsa.pub roles/git/files/gitolite.pub
+    ssh-keygen -t rsa -b 4096 -C "$(whoami)@$(hostname)-$(date -I)" -f gitolite
+    cp ~/.ssh/gitolite.pub ~/hegemon/roles/git/files/
 
 If your SSH daemon listens on a non-standard port, add a colon and the port number after the IP address. In that case you also need to add your custom port to the task `Set firewall rules for web traffic and SSH` in the file `roles/common/tasks/ufw.yml`.
 
