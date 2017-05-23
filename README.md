@@ -21,7 +21,7 @@ Services Provided
 -   Git hosting via [cgit](http://git.zx2c4.com/cgit/about/) and [gitolite](https://github.com/sitaramc/gitolite).
 -   Read-it-later via [Wallabag](https://www.wallabag.org/)
 -   Web hosting via [Apache](https://www.apache.org/).
--   SSL certificates obtained from [Let's Encrypt](https://letsencrypt.org/) automatically and refreshed daily.
+-   SSL certificates obtained from [Let's Encrypt](https://letsencrypt.org/) automatically and refreshed monthly.  Used by Apache2, Dovecot, Postfix, and Prosody.
 -   [RFC6238](http://tools.ietf.org/html/rfc6238) two-factor authentication compatible with [Google Authenticator](http://en.wikipedia.org/wiki/Google_Authenticator) and various hardware tokens.
 -   Secure on-disk storage for email and more via [EncFS](http://www.arg0.net/encfs).
 -   VPN server via [OpenVPN](http://openvpn.net/index.php/open-source.html).
@@ -187,9 +187,17 @@ Add an SPF `txt` record.  The name should be `v=spf1 mx -all`.
 
 Set the reverse DNS with the server provider to `mail.example.com`.
 
-For reference, see [this post](http://sealedabstract.com/code/nsa-proof-your-e-mail-in-2-hours/). Make sure to validate functionality by sending an email to <a href="mailto:check-auth@verifier.port25.com">check-auth@verifier.port25.com</a> and reviewing the report that will be emailed back to you.  Also, visit [DKIMValidator.com](http://dkimvalidator.com/) for another test.
+For reference, see [this post](http://sealedabstract.com/code/nsa-proof-your-e-mail-in-2-hours/).
 
-### 8. Miscellaneous Configuration
+### 8. Verification and Checking
+
+Make sure to validate functionality by sending an email to <a href="mailto:check-auth@verifier.port25.com">check-auth@verifier.port25.com</a> and reviewing the report that will be emailed back to you.
+
+Also, visit [DKIMValidator.com](http://dkimvalidator.com/) for another test.
+
+Check certificate issuance at [crt.sh](https://crt.sh).  Be careful with testing as there is a rate limit of 5 duplicate certificates / week.  Please see [letsencrypt.org](https://letsencrypt.org/docs/rate-limits/).
+
+### 9. Miscellaneous Configuration
 
 Make sure to allow SMTP outbound mail with the server provider.  Most providers have this turned off by default.  Scaleway requires a hard boot of the server to change firewall rules and allow SMTP traffic.
 

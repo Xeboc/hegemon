@@ -1,6 +1,6 @@
 #!/bin/bash
 d="$1"
-for i in www mail autoconfig autodiscover read news cloud git sync; do
+for i in www mail read news cloud git sync autoconfig autodiscover; do
   if (getent hosts $i.$1 > /dev/null); then
     d="$d,$i.$1";
   fi
