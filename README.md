@@ -194,7 +194,7 @@ Make sure to allow SMTP outbound mail with the server provider.  Most providers 
 
 Sign in to the ZNC web interface and set things up to your liking. It isn’t exposed through the firewall, so you must first set up an SSH tunnel:
 
-	ssh deploy@example.com -L 6643:localhost:6643
+    ssh deploy@example.com -L 6643:localhost:6643
 
 Then proceed to http://localhost:6643 in your web browser.
 
@@ -216,13 +216,12 @@ If you run into an errors, please check the [wiki page](https://github.com/sover
 
 ### Reboots
 
-You will need to manually enter the password for any encrypted volumes on reboot. This is not Sovereign-specific, but rather a function of how EncFS works. This will necessitate SSHing into your machine after reboot, or accessing it via a console interface if one is available to you. Once you're in, run this:
+To reboot the machine, the reboot.yml playbook needs run.  This will restart the machine, decrypt the encfs, and restart all services that use the encrypted system.
+
+The other options is to enter the encfs password manually. This will necessitate SSHing into your machine after reboot for manual entry, or accessing it via a console interface if one is available to you.  Once you're in, run this:
 
     encfs /encrypted /decrypted --public
 
-It is possible that some daemons may need to be restarted after you enter your password for the encrypted volume(s). Some services may stall out while looking for resources that will only be available once the `/decrypted` volume is available and visible to daemon user accounts.
+After this, services dependent on the decrypted folder will need restarted:
 
-IRC
-===
-
-Ask questions and provide feedback in `#sovereign` on [Freenode](http://freenode.net).
+    sudo systemctl restart postgresql dovecot tomcat8 apache2 prosody
