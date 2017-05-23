@@ -64,6 +64,12 @@
 - name: Make roundcube directory accessible to web server
   file: path=/var/www/roundcube group=www-data recurse=yes state=directory
 
+- name: Disable PHP5 as it conflicts with PHP7.0
+  command: a2dismod php5 removes=/etc/apache2/mods-enabled/php5.conf
+
+- name: Make sure required apache modules are loaded
+  command: a2enmod php7.0 creates=/etc/apache2/mods-enabled/php7.0.conf
+
 - name: Install sieve plugin configuration
   copy: src=var_www_roundcube_plugins_managesieve_config.inc.php
     dest=/var/www/roundcube/plugins/managesieve/config.inc.php

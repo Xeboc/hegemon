@@ -38,16 +38,16 @@
 - name: Install selfoss config.ini
   template: src=var_www_selfoss_config.ini.j2 dest=/var/www/selfoss/config.ini group=www-data owner=root mode=0640
 
-- name: Enable Apache rewrite module
-  command: a2enmod rewrite creates=/etc/apache2/mods-enabled/rewrite.load
-  notify: restart apache
+- name: Disable PHP5 as it conflicts with PHP7.0
+  command: a2dismod php5 removes=/etc/apache2/mods-enabled/php5.conf
 
-- name: Enable Apache headers module
-  command: a2enmod headers creates=/etc/apache2/mods-enabled/headers.load
-  notify: restart apache
-
-- name: Enable Apache expires module
-  command: a2enmod expires creates=/etc/apache2/mods-enabled/expires.load
+- name: Make sure required apache modules are loaded
+  command: a2enmod {{ item }} creates=/etc/apache2/mods-enabled/{{ item }}.conf
+  with_items:
+    - php7.0
+    - rewrite
+    - headers
+    - expires
   notify: restart apache
 
 - name: Rename existing Apache blog virtualhost
