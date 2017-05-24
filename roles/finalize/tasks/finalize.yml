@@ -4,3 +4,6 @@
 
 - name: Update Samhain's database
   command: samhain -t update -l none
+
+- name: Update locate database
+  command: updatedb

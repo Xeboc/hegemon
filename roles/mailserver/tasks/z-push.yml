@@ -61,4 +61,4 @@
   command: a2dismod php5 removes=/etc/apache2/mods-enabled/php5.conf
 
 - name: Make sure required apache modules are loaded
-  command: a2enmod php7.1 creates=/etc/apache2/mods-enabled/php7.1.conf
+  command: a2enmod php7.1 creates=/etc/apache2/mods-enabled/php7.1.load

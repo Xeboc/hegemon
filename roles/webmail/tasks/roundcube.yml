@@ -65,14 +65,14 @@
   file: path=/var/www/roundcube group=www-data recurse=yes state=directory
 
 - name: Copy fail2ban jail into place
-  template: src=etc_fail2ban_jail.d_roundcube-auth.conf dest=/etc/fail2ban/jail.d/roundcube-auth.conf group=root owner=root
+  copy: src=etc_fail2ban_jail.d_roundcube-auth.conf dest=/etc/fail2ban/jail.d/roundcube-auth.conf group=root owner=root
   notify: restart fail2ban
 
 - name: Disable PHP5 as it conflicts with php7.1
   command: a2dismod php5 removes=/etc/apache2/mods-enabled/php5.conf
 
 - name: Make sure required apache modules are loaded
-  command: a2enmod php7.1 creates=/etc/apache2/mods-enabled/php7.1.conf
+  command: a2enmod php7.1 creates=/etc/apache2/mods-enabled/php7.1.load
 
 - name: Install sieve plugin configuration
   copy: src=var_www_roundcube_plugins_managesieve_config.inc.php

@@ -15,3 +15,4 @@ Titlecase all actions
 Document all tasks
 script to generate initial database passwords
 script to encrypt vault files
+nextcloud redis caching

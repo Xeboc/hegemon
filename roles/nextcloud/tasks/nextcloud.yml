@@ -7,7 +7,6 @@
     - postgresql
     - libapache2-mod-php7.1
     - php7.1
-    - php7.1-apcu
     - php7.1-bz2
     - php7.1-curl
     - php7.1-gd
@@ -56,7 +55,7 @@
   command: a2dismod php5 removes=/etc/apache2/mods-enabled/php5.conf
 
 - name: Make sure required apache modules are loaded
-  command: a2enmod {{ item }} creates=/etc/apache2/mods-enabled/{{ item }}.conf
+  command: a2enmod {{ item }} creates=/etc/apache2/mods-enabled/{{ item }}.load
   with_items:
     - php7.1
     - rewrite
@@ -76,6 +75,9 @@
 
 - name: Install nextcloud cronjob
   cron: name="nextcloud" user="www-data" minute="*/15" job="php -f /var/www/nextcloud/cron.php > /dev/null"
+
+- name: Create Nextcloud log file
+  file: path=/var/log/nextcloud.log state=touch owner=www-data group=www-data
 
 - name: Copy fail2ban configurations into place
   copy: src={{ item.src }} dest={{ item.dest }} group=root owner=root
@@ -120,7 +122,6 @@
     line: "{{ item }}"
     insertbefore: "\\);"
   with_items:
-    - "  'memcache.local' => '\\OC\\Memcache\\APCu',"
     - "  'open_basedir' => '/dev/urandom',"
     - "  'mail_smtpmode' => 'sendmail',"
     - "  'mail_from_address' => 'admin',"
