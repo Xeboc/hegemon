@@ -21,9 +21,9 @@
 - name: Install selfoss dependencies
   apt: pkg={{ item }} state=present
   with_items:
-    - php7.0
-    - php7.0-pgsql
-    - php7.0-gd
+    - php7.1
+    - php7.1-pgsql
+    - php7.1-gd
   tags:
     - dependencies
 
@@ -38,13 +38,13 @@
 - name: Install selfoss config.ini
   template: src=var_www_selfoss_config.ini.j2 dest=/var/www/selfoss/config.ini group=www-data owner=root mode=0640
 
-- name: Disable PHP5 as it conflicts with PHP7.0
+- name: Disable PHP5 as it conflicts with php7.1
   command: a2dismod php5 removes=/etc/apache2/mods-enabled/php5.conf
 
 - name: Make sure required apache modules are loaded
   command: a2enmod {{ item }} creates=/etc/apache2/mods-enabled/{{ item }}.conf
   with_items:
-    - php7.0
+    - php7.1
     - rewrite
     - headers
     - expires

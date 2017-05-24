@@ -15,9 +15,9 @@
   apt: pkg={{ item }} state=installed update_cache=yes
   with_items:
     - php-soap
-    - php7.0
-    - php7.0-cli
-    - php7.0-imap
+    - php7.1
+    - php7.1-cli
+    - php7.1-imap
     - z-push-common
     - z-push-config-apache
     - z-push-backend-caldav
@@ -57,8 +57,8 @@
   copy: src=etc_z-push_imap.conf.php dest=/etc/z-push/imap.conf.php group=root owner=root
   notify: restart apache
 
-- name: Disable PHP5 as it conflicts with PHP7.0
+- name: Disable PHP5 as it conflicts with php7.1
   command: a2dismod php5 removes=/etc/apache2/mods-enabled/php5.conf
 
 - name: Make sure required apache modules are loaded
-  command: a2enmod php7.0 creates=/etc/apache2/mods-enabled/php7.0.conf
+  command: a2enmod php7.1 creates=/etc/apache2/mods-enabled/php7.1.conf
