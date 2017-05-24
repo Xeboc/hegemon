@@ -64,6 +64,10 @@
 - name: Make roundcube directory accessible to web server
   file: path=/var/www/roundcube group=www-data recurse=yes state=directory
 
+- name: Copy fail2ban jail into place
+  template: src=etc_fail2ban_jail.d_roundcube-auth.conf dest=/etc/fail2ban/jail.d/roundcube-auth.conf group=root owner=root
+  notify: restart fail2ban
+
 - name: Disable PHP5 as it conflicts with PHP7.0
   command: a2dismod php5 removes=/etc/apache2/mods-enabled/php5.conf
 

@@ -144,16 +144,16 @@ If your SSH daemon listens on a non-standard port, add a colon and the port numb
 
 Create `A` or `CNAME` records which point to your server's IP address:
 
-* `example.com`
-* `mail.example.com` (for IMAP/POP/SMTP)
-* `www.example.com` (for Web hosting)
-* `autoconfig.example.com` (for email client automatic configuration)
-* `autodiscover.example.com` (for active-sync autodiscovery)
-* `sync.example.com` (for z-push syncronization)
-* `read.example.com` (for Wallabag)
-* `news.example.com` (for Selfoss)
-* `cloud.example.com` (for ownCloud/nextCloud)
-* `git.example.com` (for cgit)
+*   `example.com`
+*   `mail.example.com` (for IMAP/POP/SMTP)
+*   `www.example.com` (for Web hosting)
+*   `autoconfig.example.com` (for email client automatic configuration)
+*   `autodiscover.example.com` (for active-sync autodiscovery)
+*   `sync.example.com` (for z-push syncronization)
+*   `read.example.com` (for Wallabag)
+*   `news.example.com` (for Selfoss)
+*   `cloud.example.com` (for nextCloud)
+*   `git.example.com` (for cgit)
 
 Create an `MX` record for `example.com` which assigns `mail.example.com` as the domain’s mail server.
 
@@ -163,13 +163,11 @@ First, make sure [Ansible] (http://docs.ansible.com/intro_installation.html#gett
 
 To run the remote playbook:
 
-    ansible-playbook remote.yml --ask-vault-pass -K
-
-If you chose to make a passwordless sudo deploy user, you can omit the `-K` argument.
+    ansible-playbook remote.yml --ask-vault-pass
 
 To run one or more piece, use tags. I try to tag all my includes for easy isolated development. For example, to focus in on your firewall setup:
 
-    ansible-playbook remote.yml --ask-vault-pass -K -t uwf
+    ansible-playbook remote.yml --ask-vault-pass -t ufw
 
 The `dependencies` tag just installs dependencies, performing no other operations. The tasks associated with the `dependencies` tag do not rely on the user-provided settings that live in `group_vars`. Running the playbook with the `dependencies` tag is particularly convenient for working with Docker images.
 
@@ -183,7 +181,7 @@ Example:
 
 For DMARC you'll also need to add a `txt` record. The name field should be `_dmarc.EXAMPLE.COM` and the value should be `v=DMARC1; p=none`. More info on DMARC can be found [here](https://dmarc.org)
 
-Add an SPF `txt` record.  The name should be `v=spf1 mx -all`.  
+Add an SPF `txt` record.  The name should be `v=spf1 mx -all`.
 
 Set the reverse DNS with the server provider to `mail.example.com`.
 
@@ -201,17 +199,19 @@ Check certificate issuance at [crt.sh](https://crt.sh).  Be careful with testing
 
 Make sure to allow SMTP outbound mail with the server provider.  Most providers have this turned off by default.  Scaleway requires a hard boot of the server to change firewall rules and allow SMTP traffic.
 
+If using Scaleway, create the instance and allow it to boot fully.  Once booted, change the kernel to the Apparmor kernel and reboot using SSH or the console.  This will allow the kernel modules to be fetched.  Do not switch over to Apparmor during the first boot cycle as it will break the process.
+
 Sign in to the ZNC web interface and set things up to your liking. It isn’t exposed through the firewall, so you must first set up an SSH tunnel:
 
     ssh deploy@example.com -L 6643:localhost:6643
 
-Then proceed to http://localhost:6643 in your web browser.
+Then proceed to [localhost:6643](http://localhost:6643) in your web browser.
 
 Similarly, to access the monit server monitoring page, use another SSH tunnel:
 
     ssh deploy@example.com -L 2812:localhost:2812
 
-Again proceeding to http://localhost:2812 in your web browser.
+Again proceeding to [localhost:2812](http://localhost:2812) in your web browser.
 
 How To Use Your New Personal Cloud
 ----------------------------------

@@ -1,6 +1,5 @@
 check for decrypted/lock directory before plays
 freenet, tor, i2p
-name it.  hegemon?
 munin
 update z-push with caldav, carddav, and combined backend from mail in a box
 one database? (roundcube from sqlite to postgres) (opendmarc from mysql to postgres)
@@ -9,7 +8,6 @@ apache mod_security & mod_evasive
 rewrite readme
 Consistent play structure, everything to yml in the same order
 add sha256sum to all downloads
-fail2ban nextcloud, roundmail
 fail2ban re-ban other jails
 nextcloud collabora
 monit nextcloud, z-push

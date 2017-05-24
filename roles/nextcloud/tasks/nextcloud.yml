@@ -77,6 +77,13 @@
 - name: Install nextcloud cronjob
   cron: name="nextcloud" user="www-data" minute="*/15" job="php -f /var/www/nextcloud/cron.php > /dev/null"
 
+- name: Copy fail2ban configurations into place
+  copy: src={{ item.src }} dest={{ item.dest }} group=root owner=root
+  with_items:
+  - { src: 'etc_fail2ban_filter.d_nextcloud.conf', dest: '/etc/fail2ban/filter.d/nextcloud.conf' }
+  - { src: 'etc_fail2ban_jail.d_nextcloud.conf', dest: '/etc/fail2ban/jail.d/nextcloud.conf' }
+  notify: restart fail2ban
+
 - name: Configure nextcloud
   command: php occ maintenance:install
     --database "pgsql"
@@ -118,6 +125,7 @@
     - "  'mail_smtpmode' => 'sendmail',"
     - "  'mail_from_address' => 'admin',"
     - "  'mail_domain' => '{{ nextcloud_domain }}',"
+    - "  'logfile' => '/var/log/nextcloud.log',"
 
 # - name: Download additional Apps
 #   git:

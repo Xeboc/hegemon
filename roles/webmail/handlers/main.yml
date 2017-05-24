@@ -1,0 +1,7 @@
+---
+# Defines handlers applicable across all machines in the infrastructure.
+
+- name: restart fail2ban
+  service:
+    name: fail2ban
+    state: restarted
