@@ -16,14 +16,10 @@
     owner: root
     group: root
 
-- name: Change hosts file with a backup
-  lineinfile:
+- name: Change hosts file
+  template:
+    src: etc_hosts
     dest: /etc/hosts
-    regexp: "^127.0.1.1"
-    line: "127.0.1.1       {{ domain }} {{ domain | replace('.com', '') }}"
-    state: present
-    backup: yes
-    backrefs: yes
   notify:
     - restart systemd-hostnamed
     - restart systemd-logind
