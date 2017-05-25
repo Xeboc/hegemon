@@ -33,3 +33,6 @@
 
 - name: Initilaize random number generator with seeds
   command: dd if=/dev/random of=/dev/urandom bs=1 count=32
+
+- name: Enable primary drive fstab filesystem check on every boot
+  shell: tune2fs -c 1 $(blkid | cut -d":" -f1)
