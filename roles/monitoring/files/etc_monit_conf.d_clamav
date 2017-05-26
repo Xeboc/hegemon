@@ -1,0 +1,6 @@
+check process clamav with pidfile /var/run/clamav/clamav.pid
+  group services
+  start program = "/bin/systemctl start clamav-daemon"
+  stop  program = "/bin/systemctl stop clamav-daemon"
+  if failed unixsocket /var/run/clamav/clamav.sock then restart
+  if 5 restarts within 5 cycles then timeout

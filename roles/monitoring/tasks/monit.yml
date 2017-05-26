@@ -11,14 +11,17 @@
     - dependencies
 
 - name: Copy monit master config file into place
-  copy: src=etc_monit_monitrc dest=/etc/monit/monitrc
+  template: src=etc_monit_monitrc dest=/etc/monit/monitrc
   notify: restart monit
 
 - name: Copy monit service config files into place
   copy: src=etc_monit_conf.d_{{ item }} dest=/etc/monit/conf.d/{{ item }}
   with_items:
     - apache2
+    - clamav
+    - cron
     - dovecot
+    - fail2ban
     - pgsql
     - postfix
     - sshd

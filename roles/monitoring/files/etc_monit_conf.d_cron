@@ -1,0 +1,5 @@
+check process cron with pidfile /var/run/cron.pid
+  group system
+  start program = "/bin/systemctl start cron"
+  stop  program = "/bin/systemctl stop cron"
+  if 5 restarts with 5 cycles then timeout

@@ -17,7 +17,7 @@
 ## Start Monit in the background (run as a daemon):
 #
   set daemon 120            # check services at 2-minute intervals
-#   with start delay 240    # optional: delay the first check by 4-minutes (by
+  with start delay 120      # optional: delay the first check by 2-minutes (by
 #                           # default Monit check immediately after Monit start)
 #
 #
@@ -53,9 +53,8 @@
 #                backup.bar.baz port 10025,  # backup mailserver on port 10025
 #                localhost                   # fallback relay
 #
-
-set mailserver 127.0.0.1
-
+  set mailserver 127.0.0.1
+#
 ## By default Monit will drop alert events if no mail servers are available.
 ## If you want to keep the alerts for later delivery retry, you can use the
 ## EVENTQUEUE statement. The base directory where undelivered alerts will be
@@ -112,6 +111,7 @@ set mailserver 127.0.0.1
 # set alert manager@foo.bar only on { timeout }  # receive just service-
 #                                                # timeout alert
 #
+  set alert root@{{ domain }}
 #
 ## Monit has an embedded web server which can be used to view status of
 ## services monitored and manage services from a web interface. See the
@@ -132,7 +132,7 @@ set httpd port 2812 and
 ## usage. Each test specifies a resource, conditions and the action to be
 ## performed should a test fail.
 #
-#  check system myhost.mydomain.tld
+   check system {{ domain }}
 #    if loadavg (1min) > 4 then alert
 #    if loadavg (5min) > 2 then alert
 #    if memory usage > 75% then alert

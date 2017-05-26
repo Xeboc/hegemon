@@ -10,9 +10,10 @@ Consistent play structure, everything to yml in the same order
 add sha256sum to all downloads
 fail2ban re-ban other jails
 nextcloud collabora
-monit nextcloud, z-push
+monit nextcloud, z-push, opendkim, opendmarc, clamav-freshclam, clamsmtp, maldet, samhain, ntp, uwf, unbound, rmilter, redis, rspamd, mysql
 Titlecase all actions
 Document all tasks
 script to generate initial database passwords
 script to encrypt vault files
 nextcloud redis caching
+add Grafana, and possibly influxDB

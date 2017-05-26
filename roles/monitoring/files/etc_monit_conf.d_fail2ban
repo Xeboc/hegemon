@@ -1,0 +1,6 @@
+check process fail2ban with pidfile /var/run/fail2ban/fail2ban.pid
+  group services
+  start program = "/usr/bin/fail2ban-client start"
+  stop  program = "/usr/bin/fail2ban-client stop"
+  if failed unixsocket /var/run/fail2ban/fail2ban.sock then restart
+  if 5 restarts within 5 cycles then timeout
