@@ -4,7 +4,7 @@
 - name: Install Postgres
   apt: pkg={{ item }} state=installed
   with_items:
-    - postgresql
+    - postgresql-9.6
     - python-psycopg2
   tags:
     - dependencies
