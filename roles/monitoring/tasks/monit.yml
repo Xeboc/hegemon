@@ -10,6 +10,12 @@
   tags:
     - dependencies
 
+- name: Gather current PostgeSQL pid file
+  shell: psql -tAc 'show external_pid_file'
+  become: True
+  become_user: postgres
+  register: postgres_pid
+
 - name: Copy monit master config file into place
   template: src=etc_monit_monitrc dest=/etc/monit/monitrc
   notify: restart monit
@@ -27,4 +33,8 @@
     - sshd
     - tomcat
     - znc
+  notify: restart monit
+
+- name: Copy monit service config files into place
+  template: src=etc_monit_conf.d_pgsql dest=/etc/monit/conf.d/pgsql
   notify: restart monit
