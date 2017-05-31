@@ -10,15 +10,18 @@ for D in ${DIRTOSCAN}; do
   DIRSIZE=$(du -sh "$D" 2>/dev/null | cut -f1)
 
   printf "Starting a daily scan of "$D" directory.
-  Amount of data to be scanned is "$DIRSIZE"."
+  Amount of data to be scanned is "$DIRSIZE". \n\n"
 
   clamscan -ri --exclude-dir="$EXCLUDE" "$D" 2>/dev/null > ${LOGFILE}
+
+  cat $LOGFILE
+  printf "\n\n"
 
   MALWARE=$(tail "$LOGFILE" | grep Infected | cut -d" " -f3)
 
   # if the value is not equal to zero, send an email with the log file attached
   if [ "$MALWARE" -ne "0" ]; then
     cat $LOGFILE | mailx -s "Malware Found" $RECEIVER
-  fi 
+  fi
 
 done

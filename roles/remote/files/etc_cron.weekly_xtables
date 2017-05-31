@@ -3,5 +3,6 @@
 # This script will download and make the current geoip tables
 
 mkdir -p /usr/share/xt_geoip
+cd /usr/lib/xtables-addons/
 /usr/lib/xtables-addons/xt_geoip_dl
 /usr/lib/xtables-addons/xt_geoip_build -D /usr/share/xt_geoip *.csv

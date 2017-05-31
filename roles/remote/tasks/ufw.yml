@@ -30,6 +30,10 @@
   with_items:
     - "-A ufw-before-input -m state --state NEW -m geoip ! --src-cc US -m tcp -p tcp --dport 22 -j LOG --log-prefix \"[UFW GEOIP]\" -m limit --limit 3/min --limit-burst 10"
     - "-A ufw-before-input -m state --state NEW -m geoip ! --src-cc US -m tcp -p tcp --dport 22 -j DROP"
+    - "-A ufw-before-input -m state --state NEW -m geoip ! --src-cc US -m tcp -p tcp --dport 80 -j LOG --log-prefix \"[UFW GEOIP]\" -m limit --limit 3/min --limit-burst 10"
+    - "-A ufw-before-input -m state --state NEW -m geoip ! --src-cc US -m tcp -p tcp --dport 80 -j DROP"
+    - "-A ufw-before-input -m state --state NEW -m geoip ! --src-cc US -m tcp -p tcp --dport 443 -j LOG --log-prefix \"[UFW GEOIP]\" -m limit --limit 3/min --limit-burst 10"
+    - "-A ufw-before-input -m state --state NEW -m geoip ! --src-cc US -m tcp -p tcp --dport 443 -j DROP"
 
 - name: Enable UFW
   ufw: state=enabled

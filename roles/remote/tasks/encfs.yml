@@ -20,8 +20,10 @@
   find: paths=/encrypted hidden=True
   register: encfs_check
 
+# Using standard mode.  Paranoia mode prevents hard links, which are needed
+# for PostgreSQL to function.
 - name: If /encrypted is empty, create the encfs there
-  shell: printf "p\n{{ encfs_password }}" | encfs /encrypted /decrypted --public --stdinpass && touch /decrypted/lock
+  shell: printf "s\n{{ encfs_password }}" | encfs /encrypted /decrypted --public --stdinpass && touch /decrypted/lock
   when: encfs_check.matched == 0
   no_log: True
 
