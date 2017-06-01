@@ -92,3 +92,6 @@
 
 - name: Activate OpenDMARC report cronjob
   cron: name="OpenDMARC report" hour="2" minute="0" job="/bin/bash /etc/opendmarc/report.sh >> /var/log/opendmarc_report.log 2>&1 || tail -n 32 /var/log/opendmarc_report.log"
+
+- name: Start and enable openDMARC
+  service: name=opendmarc state=started enabled=yes

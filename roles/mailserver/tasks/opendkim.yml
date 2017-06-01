@@ -63,10 +63,13 @@
 
 - name: Set OpenDKIM config directory permissions
   file: state=directory path=/etc/opendkim
-          group=opendkim owner=opendkim mode=0700 recurse=yes
+        group=opendkim owner=opendkim mode=0700 recurse=yes
   notify:
     - restart opendkim
     - restart postfix
+
+- name: Start and enable openDKIM
+  service: name=opendkim state=started enabled=yes
 
 - name: Retrieve OpenDKIM txt record from server
   fetch: src=/etc/opendkim/keys/{{ domain }}/default.txt

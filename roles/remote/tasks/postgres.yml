@@ -31,4 +31,4 @@
   file: src=/decrypted/postgres dest="{{ postgres_data.stdout }}" state=link owner=postgres group=postgres
 
 - name: Start PostgreSQL
-  service: name=postgresql state=started
+  service: name=postgresql state=started enabled=yes
