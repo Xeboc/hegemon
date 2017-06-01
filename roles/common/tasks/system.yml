@@ -13,7 +13,7 @@
 - name: Reduce console noise
   sysctl:
     name: kernel.printk
-    value: 3 4 1 3
+    value: 4 4 1 3
     sysctl_set: yes
     reload: yes
 
@@ -36,3 +36,27 @@
 
 - name: Enable primary drive fstab filesystem check on every boot
   shell: tune2fs -c 1 $(blkid | cut -d":" -f1)
+
+- name: Remove exisiting systemd machine-id
+  file: path=/etc/machine-id state=absent
+  notify:
+    - restart journald
+    - restart tmpfiles
+
+- name: Recreate machine-id
+  command: systemd-machine-id-setup
+  notify:
+    - restart journald
+    - restart tmpfiles
+
+- name: Make sure journald has logging directory
+  file: path=/var/log/journal state=directory
+  notify:
+    - restart journald
+    - restart tmpfiles
+
+- name: Set correct permissions on journal directory
+  command: systemd-tmpfiles --create --prefix /var/log/journal
+  notify:
+    - restart journald
+    - restart tmpfiles
