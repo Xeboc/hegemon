@@ -29,8 +29,8 @@
 
 - name: Install monthly root.hints update
   cron: name="Unbound root.hints" special_time=monthly
-    job="wget -c http://www.internic.net/domain/named.root -O /etc/unbound/root.hints"
+    job="wget \"http://www.internic.net/domain/named.root\" -O /etc/unbound/root.hints"
 
 - name: Install monthly yoyo.org update
   cron: name="Unbound yoyo.org" special_time=monthly
-    job="wget -c http://pgl.yoyo.org/adservers/serverlist.php?hostformat=unbound&showintro=0&mimetype=plaintext -O /etc/unbound/unbound_ad_servers"
+    job="wget \"http://pgl.yoyo.org/adservers/serverlist.php?hostformat=unbound&showintro=0&mimetype=plaintext\" -O /etc/unbound/unbound_ad_servers"
