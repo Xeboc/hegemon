@@ -1,0 +1,5 @@
+# This will copy over custom configurations for rsyslog
+
+- name: Copy custom rsyslog file
+  copy: src=etc_rsyslog.d_45-custom.conf dest=/etc/rsyslog.d/45-custom.conf
+  notify: restart rsyslog

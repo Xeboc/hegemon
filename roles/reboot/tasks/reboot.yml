@@ -34,6 +34,7 @@
   service: name="{{ item }}" state=restarted
   with_items:
         - postgresql
+        - postfix
         - dovecot
         - tomcat8
         - apache2

@@ -2,7 +2,7 @@
 # because OpenDKIM requires that a header be present when signing outbound mail. The first line is
 # where the user's home IP address would be.
 # /^\s*(Received: from)[^\n]*(.*)/ REPLACE $1 [127.0.0.1] (localhost [127.0.0.1])$2
-/^\s*Received:[^\n]*(.*)/         REPLACE Received: from authenticated-user ({{ domain }} [{{ ipify_public_ip }}])$1
+/^\s*Received:[^\n]*(.*)/         REPLACE Received: from authenticated-user ({{ webmail_domain }} [{{ ipify_public_ip }}])$1
 
 # Remove other typically private information.
 

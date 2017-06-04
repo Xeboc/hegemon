@@ -357,7 +357,7 @@ AUTO_X_DETECT=1
 # the Debian Security Team).
 #
 ENABLE_TESTS=ALL
-DISABLE_TESTS=suspscan deleted_files packet_cap_apps apps
+DISABLE_TESTS=suspscan deleted_files
 
 #
 # The HASH_CMD option can be used to specify the command to use for the file

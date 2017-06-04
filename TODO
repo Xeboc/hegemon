@@ -17,3 +17,4 @@ script to generate initial database passwords
 script to encrypt vault files
 nextcloud redis caching
 add Grafana, and possibly influxDB
+https://github.com/extremeshok/clamav-unofficial-sigs

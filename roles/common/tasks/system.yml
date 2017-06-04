@@ -31,6 +31,16 @@
     sysctl_set: yes
     reload: yes
 
+- name: Increase max open files
+  sysctl:
+    name: fs.file-max
+    value: 203928
+    sysctl_set: yes
+    reload: yes
+
+- name: Copy over local security limits file
+  copy: src=etc_security_limits.d_local.conf dest=/etc/security/limits.d/local.conf
+
 - name: Initilaize random number generator with seeds
   command: dd if=/dev/random of=/dev/urandom bs=1 count=32
 

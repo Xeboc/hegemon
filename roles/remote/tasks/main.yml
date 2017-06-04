@@ -36,3 +36,5 @@
   tags: swap
 - include: unbound.yml
   tags: unbound
+- include: rsyslog.yml
+  tags: rsyslog

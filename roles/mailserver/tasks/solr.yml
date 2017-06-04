@@ -7,7 +7,15 @@
     - dependencies
 
 - name: Work around Debian bug and copy Solr schema file into place
-  copy: src=solr-schema.xml dest=/etc/solr/conf/schema.xml group=root owner=root
+  copy: src=etc_solr_conf_schema.xml dest=/etc/solr/conf/schema.xml group=root owner=root
+
+- name: Create missing directories to reduce log warnings
+  file: path={{ item }} state=directory
+  with_items:
+    - /usr/share/tomcat8/temp
+    - /usr/share/tomcat8/server/classes
+    - /usr/share/tomcat8/common/classes
+    - /usr/share/tomcat8/shared/classes
 
 - name: Copy tweaked Tomcat config file into place
   copy: src=etc_tomcat8_server.xml dest=/etc/tomcat8/server.xml group=tomcat8 owner=root

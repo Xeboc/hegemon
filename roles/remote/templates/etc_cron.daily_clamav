@@ -9,8 +9,8 @@ for D in ${DIRTOSCAN}; do
 
   DIRSIZE=$(du -sh "$D" 2>/dev/null | cut -f1)
 
-  printf "Starting a daily scan of "$D" directory.
-  Amount of data to be scanned is "$DIRSIZE". \n\n"
+  printf "Starting a daily scan of "$D" directory.\n"
+  printf "Amount of data to be scanned is "$DIRSIZE". \n\n"
 
   clamscan -ri --exclude-dir="$EXCLUDE" "$D" 2>/dev/null > ${LOGFILE}
 
