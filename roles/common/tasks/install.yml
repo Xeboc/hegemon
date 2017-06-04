@@ -20,7 +20,6 @@
     - inxi
     - intel-microcode
     - inxi
-    - irqbalance
     - iotop
     - libpq-dev
     - lm-sensors

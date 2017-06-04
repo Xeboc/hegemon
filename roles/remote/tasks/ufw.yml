@@ -1,9 +1,15 @@
 ---
 # Installs and configures ufw, which in turn uses iptables for firewall management.
-# ufw includes sensible ICMP defaults.
+# Standard ports are configured.  xtables is also installed, which allows for
+# ''-m geoip' use in UFW or iptables to block IP based on geography.
 
-- name: Install ufw
-  apt: pkg=ufw state=present
+- name: Install ufw and xtables packages
+  apt: pkg={{ item }} state=installed update_cache=yes
+  with_items:
+    - ufw
+    - xtables-addons-common
+    - xtables-addons-dkms
+    - libtext-csv-xs-perl
   tags:
     - dependencies
 
@@ -22,17 +28,23 @@
 - name: Disable UFW IPv6
   lineinfile: dest=/etc/default/ufw regexp=^IPV6 line="IPV6=no" backrefs=yes
 
+- name: Copy xtables geoip weekly cron task
+  copy: src=etc_cron.weekly_xtables dest=/etc/cron.weekly/xtables mode=0755
+
+- name: Run initial download of geoip database
+  command: /etc/cron.weekly/xtables creates=/usr/share/xt_geoip/ chdir=/usr/lib/xtables-addons/
+
 - name: Block and log SSH from anywhere except US
   lineinfile:
     dest: /etc/ufw/before.rules
     line: "{{ item }}"
     insertbefore: "COMMIT"
   with_items:
-    - "-A ufw-before-input -m state --state NEW -m geoip ! --src-cc US -m tcp -p tcp --dport 22 -j LOG --log-prefix \"[UFW GEOIP]\" -m limit --limit 3/min --limit-burst 10"
+    - "-A ufw-before-input -m state --state NEW -m geoip ! --src-cc US -m tcp -p tcp --dport 22 -j LOG --log-prefix \"[UFW GEOIP] \" -m limit --limit 3/min --limit-burst 10"
     - "-A ufw-before-input -m state --state NEW -m geoip ! --src-cc US -m tcp -p tcp --dport 22 -j DROP"
-    - "-A ufw-before-input -m state --state NEW -m geoip ! --src-cc US -m tcp -p tcp --dport 80 -j LOG --log-prefix \"[UFW GEOIP]\" -m limit --limit 3/min --limit-burst 10"
+    - "-A ufw-before-input -m state --state NEW -m geoip ! --src-cc US -m tcp -p tcp --dport 80 -j LOG --log-prefix \"[UFW GEOIP] \" -m limit --limit 3/min --limit-burst 10"
     - "-A ufw-before-input -m state --state NEW -m geoip ! --src-cc US -m tcp -p tcp --dport 80 -j DROP"
-    - "-A ufw-before-input -m state --state NEW -m geoip ! --src-cc US -m tcp -p tcp --dport 443 -j LOG --log-prefix \"[UFW GEOIP]\" -m limit --limit 3/min --limit-burst 10"
+    - "-A ufw-before-input -m state --state NEW -m geoip ! --src-cc US -m tcp -p tcp --dport 443 -j LOG --log-prefix \"[UFW GEOIP] \" -m limit --limit 3/min --limit-burst 10"
     - "-A ufw-before-input -m state --state NEW -m geoip ! --src-cc US -m tcp -p tcp --dport 443 -j DROP"
 
 - name: Enable UFW
