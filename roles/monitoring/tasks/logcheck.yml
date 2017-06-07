@@ -11,3 +11,6 @@
   with_items:
     - { src: 'etc_logcheck_logcheck.logfiles', dest: '/etc/logcheck/logcheck.logfiles' }
     - { src: 'etc_logcheck_logcheck.conf', dest: '/etc/logcheck/logcheck.conf' }
+
+- name: Adjust Logcheck's cron
+  copy: src=etc_cron.d_logcheck dest=/etc/cron.d/logcheck mode=0644
