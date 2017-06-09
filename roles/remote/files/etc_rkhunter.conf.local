@@ -356,7 +356,13 @@ AUTO_X_DETECT=1
 # applications (and warns about possible security risk: we better trust
 # the Debian Security Team).
 #
+
+# A blank variable is needed to delete the /etc/rkhunter.conf initially disabled
+# tests.  Otherwise the list it concatenated, and we are running more tests than
+# default.
+
 ENABLE_TESTS=ALL
+DISABLE_TESTS=
 DISABLE_TESTS=suspscan deleted_files
 
 #
@@ -704,6 +710,7 @@ ALLOWHIDDENDIR=/etc/.java
 #
 #ALLOWDEVFILE=/dev/shm/pulse-shm-*
 #ALLOWDEVFILE=/dev/shm/sem.ADBE_*
+ALLOWDEVFILE=/dev/shm/PostgreSQL.*
 
 #
 # This option is used to indicate if the Phalanx2 test is to perform a basic
