@@ -5,10 +5,6 @@
   apt: pkg=unbound state=installed
   tags: dependencies
 
-- name: Fetch current root.hints file
-  get_url: url=http://www.internic.net/domain/named.root dest=/etc/unbound/root.hints
-  notify: restart unbound
-
 - name: Fetch current yoyo.org anti-advertising list
   get_url: url=http://pgl.yoyo.org/adservers/serverlist.php?hostformat=unbound&showintro=0&mimetype=plaintext dest=/etc/unbound/unbound_ad_servers
   notify: restart unbound
@@ -26,10 +22,6 @@
 
 - name: Flush handles to restart unbound immediately
   meta: flush_handlers
-
-- name: Install monthly root.hints update
-  cron: name="Unbound root.hints" special_time=monthly
-    job="wget \"http://www.internic.net/domain/named.root\" -O /etc/unbound/root.hints"
 
 - name: Install monthly yoyo.org update
   cron: name="Unbound yoyo.org" special_time=monthly
