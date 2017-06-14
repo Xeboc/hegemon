@@ -21,6 +21,7 @@
     - intel-microcode
     - inxi
     - iotop
+    - kbd
     - libpq-dev
     - lm-sensors
     - mcelog
