@@ -13,14 +13,11 @@
   tags:
     - dependencies
 
-- name: Apticron email configuration
+- name: Apticron Email Configuration
   copy: src=etc_apticron_apticron.conf dest=/etc/apticron/apticron.conf
 
-- name: Copy unattended upgrades settings in place
-  copy: src={{ item.src }} dest={{ item.dest }} group=root owner=root
-  with_items:
-    - { src: 'etc_apt_apt.conf.d_20auto-upgrades', dest: '/etc/apt/apt.conf.d/20auto-upgrades' }
-    - { src: 'etc_apt_apt.conf.d_50unattended-upgrades', dest: '/etc/apt/apt.conf.d/50unattended-upgrades' }
+- name: Copy Unattended Upgrades Configuration File
+  copy: src=etc_apt_apt.conf.d_51unattended-upgrades dest=/etc/apt/apt.conf.d/51unattended-upgrades
 
-- name: Copy needrestart configuration file
+- name: Copy needrestart Configuration File
   copy: src=etc_needrestart_conf.d_local.conf dest=/etc/needrestart/conf.d/local.conf
