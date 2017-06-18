@@ -53,3 +53,8 @@
   service:
     name: rsyslog
     state: restarted
+
+- name: restart samhain
+  service:
+    name: samhain
+    state: restarted

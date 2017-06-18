@@ -1,7 +1,18 @@
-- name: Install samhain file integrity checking packages
+# This installs samhain, a file integrity checker.  Samhain creates a database
+# of file signatures to check for changes in binaries.  Samhain also has a port
+# scanner enabled by default, which we disable since it makes noisy logs about
+# ssh and dovecot connect/disconnect events.
+# Debian keeps the config file in /etc/samhain/samhainrc, while documentation
+# indicates it's stored at /etc/samhainrc.
+
+- name: Install samhain File Integrity Checker
   apt: pkg=samhain state=installed update_cache=yes
   tags:
     - dependencies
 
-- name: Ensure samhain is started
+- name: Copy samhain Configuration
+  copy: src=etc_samhain_samhainrc dest=/etc/samhain/samhainrc
+  notify: restart samhain
+
+- name: Ensure samhain is Enabled
   service: name=samhain state=started enabled=yes
