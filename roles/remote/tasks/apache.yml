@@ -1,5 +1,7 @@
----
-# Configures the Apache HTTP server with sane defaults.
+# Configures the Apache HTTP server with sane defaults.  The initial Apache2
+# configuration has been changed to prevent general access.  Headers is enabled
+# and site indexing is disabled.  UFW ports are opened, and fail2ban is setup on
+# those ports.
 
 - name: Install apache2
   apt: pkg={{ item }} state=installed
@@ -8,36 +10,36 @@
   tags:
     - dependencies
 
-- name: Disable default Apache site
+- name: Disable Default Apache Site
   command: a2dissite 000-default removes=/etc/apache2/sites-enabled/000-default.conf
   notify: restart apache
 
-- name: Enable Apache headers module
+- name: Enable Apache Headers Module
   command: a2enmod headers creates=/etc/apache2/mods-enabled/headers.load
   notify: restart apache
 
-- name: Create ServerName configuration file for Apache
+- name: Create ServerName Configuration File For Apache
   template: src=etc_apache2_conf-available_fqdn.conf.j2 dest=/etc/apache2/conf-available/fqdn.conf
 
 - name: Set ServerName for Apache
   command: a2enconf fqdn creates=/etc/apache2/conf-enabled/fqdn.conf
   notify: restart apache
 
-- name: Turn off site indexing
+- name: Turn Off Site Indexing
   command: a2dismod autoindex -f removes=/etc/apache2/mods-enabled/autoindex.conf
   notify: restart apache
 
-- name: Copy default Apache configuration
+- name: Copy Default Apache Configuration
   copy: src=etc_apache2_apache2.conf dest=/etc/apache2/apache2.conf
   notify: restart apache
 
-- name: Set firewall rules for web traffic
+- name: Set UFW Firewall Rules
   ufw: rule=allow port={{ item }} proto=tcp
   with_items:
     - http
     - https
   notify: restart ufw
 
-- name: Copy fail2ban configuration into place
+- name: Copy Apache fail2ban Configuration
   copy: src=etc_fail2ban_jail.d_apache.conf dest=/etc/fail2ban/jail.d/apache.conf
   notify: restart fail2ban

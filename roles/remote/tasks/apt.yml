@@ -1,7 +1,10 @@
----
-# Installs and configures apticron and unattended upgrades
+# Installs and configures apticron, unattended upgrades, and needrestart.
+# Apticron will send an email when there are packages that need upgrading.
+# Unattended upgrades will automatically run updates and upgrades on the system.
+# The configuration files upgrade every package.  Needrestart will automatically
+# restart programs that have been upgraded and is configured to do so.
 
-- name: Install apticron
+- name: Install Apticron
   apt: pkg={{ item }} state=installed
   with_items:
     - apticron

@@ -1,7 +1,8 @@
----
-# Defines tasks applicable for Google Authenticator.
+# Install time based two factor authentication using Google Authenticator or
+# similar.  This is setup as a PAM module and tied to sshd when a password is used.
+# This can also be used in other parts of the system.
 
-- name: Ensure required Google Authenicator packages are installed
+- name: Ensure Google Authenicator Packages are Installed
   apt: pkg={{ item }} state=present
   with_items:
     - libpam-google-authenticator
@@ -10,31 +11,31 @@
   tags:
     - dependencies
 
-- name: Update sshd config to enable challenge responses
+- name: Update sshd Config to Enable Challenge Responses
   lineinfile: dest=/etc/ssh/sshd_config
               regexp=^ChallengeResponseAuthentication
               line="ChallengeResponseAuthentication yes"
               state=present
   notify: restart ssh
 
-- name: Add Google authenticator to PAM
+- name: Add Google Authenticator to PAM
   lineinfile: dest=/etc/pam.d/sshd
               line="auth required pam_google_authenticator.so"
               insertbefore=BOF
               state=present
 
-- name: Generate a timed-based, no reuse, rate-limited (3 logins per 30 seconds) with one concurrently valid code for default user
+- name: Generate a Timed-based, no Reuse, Rate-limited (3/30s) With One Concurrently Valid Code for Default User
   command: /usr/bin/google-authenticator -t -f -d --label="{{ main_user_name }}@{{ domain }}" --qr-mode=ANSI -r 3 -R 30 -w 1 --secret=/home/{{ main_user_name }}/.google_authenticator
            creates=/home/{{ main_user_name }}/.google_authenticator
   become: yes
   become_user: "{{ main_user_name }}"
   when: ansible_ssh_user != "vagrant"
 
-- name: Retrieve generated keys from server
+- name: Retrieve Generated Keys From Server
   fetch: src=/home/{{ main_user_name }}/.google_authenticator
          dest=~/google-auth-files
   when: ansible_ssh_user != "vagrant"
 
-- name: "Google Authentication keys are in ~/google-auth-files."
+- name: "Google Authentication Keys are in ~/google-auth-files."
   pause: seconds=5
   when: ansible_ssh_user != "vagrant"

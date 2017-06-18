@@ -1,5 +1,8 @@
----
-# Installs a encfs folder set for several other services
+# Installs an encrypted encfs folder for several other services.  This isn't a
+# foolproof safety mechanism by any means, but it does add a layer of encryption
+# to all data at rest, discouraging easy access by others.  The password is
+# only stored locally in the vault encrypted file, and is needed for all
+# reboots or crashes.
 
 - name: Install encfs & fuse
   apt: pkg={{ item }} state=installed
@@ -10,24 +13,24 @@
   tags:
     - dependencies
 
-- name: Create decrypted directory
-  file: state=directory path=/decrypted group=mail mode=0775
+- name: Create Decrypted Directory
+  file: state=directory path=/decrypted mode=0775
 
-- name: Create encrypted directory
+- name: Create Encrypted Directory
   file: state=directory path=/encrypted
 
-- name: Check if /encrypted directory is empty
+- name: Check if /encrypted Directory is Empty
   find: paths=/encrypted hidden=True
   register: encfs_check
 
 # Using standard mode.  Paranoia mode prevents hard links, which are needed
 # for PostgreSQL to function.
-- name: If /encrypted is empty, create the encfs there
+- name: If /encrypted is Empty, Create encfs
   shell: printf "s\n{{ encfs_password }}" | encfs /encrypted /decrypted --public --stdinpass && touch /decrypted/lock
   when: encfs_check.matched == 0
   no_log: True
 
-- name: If /encrypted isn't empty and already mounted, mount it
+- name: If /encrypted Isn't Empty and Mounted, Mount it
   shell: printf "{{ encfs_password }}" | encfs /encrypted /decrypted --public --stdinpass
     creates="/decrypted/lock"
   when: encfs_check.matched != 0

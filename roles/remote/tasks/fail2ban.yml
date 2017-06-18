@@ -1,10 +1,9 @@
 # This will install and configure fail2ban.
 # fail2ban uses the inotify backend if installed with it's backend= auto configuration.
-# This also install a re-ban, where the fail2ban log is scanned and repeat
-# offenders are banned for even longer.
+# The fail2ban log is also scanned and repeat offenders are banned for even longer.
 # There is a daily cron report sent to the root user for monitoring.
 
-- name: Install fail2ban package
+- name: Install fail2ban and inotify Package
   apt: pkg={{ item }} state=installed update_cache=yes
   with_items:
     - fail2ban
@@ -12,19 +11,19 @@
   tags:
     - dependencies
 
-- name: get public IP
+- name: Get Public IP for fail2ban Configuration
   ipify_facts:
 
-- name: Copy fail2ban.jail configuration into place
+- name: Copy fail2ban.jail Configuration
   template: src=etc_fail2ban_jail.local.j2 dest=/etc/fail2ban/jail.local
   notify: restart fail2ban
 
-- name: Copy fail2ban.conf configuration into place
+- name: Copy fail2ban.conf Configuration
   copy: src=etc_fail2ban_fail2ban.local dest=/etc/fail2ban/fail2ban.local mode=0644
   notify: restart fail2ban
 
-- name: Create fail2ban daily cron report
+- name: Create fail2ban Daily cron Report
   copy: src=etc_cron.daily_fail2ban dest=/etc/cron.daily/fail2ban mode=0755
 
-- name: Ensure services are started
+- name: Ensure Services are Enabled
   service: name=fail2ban state=started enabled=yes
