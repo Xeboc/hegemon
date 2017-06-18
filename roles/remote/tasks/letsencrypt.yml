@@ -1,65 +1,61 @@
----
-# Sets up the regular updates of SSL certificates from LetsEncrypt
+# This generates initial SSL certificates and sets up the regular updates from
+# LetsEncrypt.  Let's Encrypt has a rate limit of 5 duplicate certificates per
+# week, which is waived for renewals.  Certificates must be renewed every 90
+# days, and we set up a cron task to do so weekly.  It's recommended to do so
+# 90 days before expiration, but weekly will give some time to catch errors, and
+# daily is too frequent.
 
-- name: Download LetsEncrypt release
+- name: Download Current Let's Encrypt Release
   git: repo=https://github.com/letsencrypt/letsencrypt
        dest=/root/letsencrypt
        version=master
        force=yes
 
-- name: Create directory for LetsEncrypt configuration and certificates
-  file: state=directory path=/etc/letsencrypt group=root owner=root
+- name: Create Directory for Let's Encrypt Configuration and Certificates
+  file: state=directory path=/etc/letsencrypt
 
 - name: Configure LetsEncrypt
   template:
     src=etc_letsencrypt_cli.conf.j2
     dest=/etc/letsencrypt/cli.conf
-    owner=root
-    group=root
 
-- name: Install LetsEncrypt package dependencies
+- name: Install LetsEncrypt Package Dependencies
   command: /root/letsencrypt/letsencrypt-auto --help
   register: le_deps_result
   changed_when: "'Bootstrapping dependencies' in le_deps_result.stdout"
 
-- name: Create directory for pre-renewal scripts
-  file: state=directory path=/etc/letsencrypt/prerenew group=root owner=root
+- name: Create Directory for Pre-Renewal Scripts
+  file: state=directory path=/etc/letsencrypt/prerenew
 
-- name: Create directory for post-renewal scripts
-  file: state=directory path=/etc/letsencrypt/postrenew group=root owner=root
+- name: Create Directory for Post-Renewal Scripts
+  file: state=directory path=/etc/letsencrypt/postrenew
 
-- name: Create pre-renew hook to stop apache
+- name: Create Pre-Renew Hook to Stop Apache
   copy:
     content: "#!/bin/bash\n\nservice apache2 stop\n"
     dest: /etc/letsencrypt/prerenew/apache
-    owner: root
-    group: root
     mode: 0755
 
-- name: Create post-renew hook to start apache
+- name: Create Post-Renew Hook to Start Apache
   copy:
     content: "#!/bin/bash\n\nservice apache2 start\n"
     dest: /etc/letsencrypt/postrenew/apache
-    owner: root
-    group: root
     mode: 0755
 
-- name: Install crontab entry for LetsEncrypt
+- name: Install crontab Entry for Let's Encrypt
   copy:
     src: etc_cron.weekly_letsencrypt-renew
     dest: /etc/cron.weekly/letsencrypt-renew
-    owner: root
-    group: root
     mode: 0755
 
-- name: Create live directory for LetsEncrypt cron job
-  file: state=directory path=/etc/letsencrypt/live group=root owner=root
+- name: Create Live Directory for Let's Encrypt cron Job
+  file: state=directory path=/etc/letsencrypt/live
 
-- name: Get an SSL certificate for {{ domain }} from Let's Encrypt
+- name: Get an SSL Certificate for {{ domain }} from Let's Encrypt
   script: letsencrypt-gencert {{ domain }} creates=/etc/letsencrypt/live/{{ domain }}/privkey.pem
   when: ansible_ssh_user != "vagrant"
 
-- name: Modify permissions to allow ssl-cert group access
+- name: Modify Permissions to Allow ssl-cert Group Access
   file: path=/etc/letsencrypt/archive owner=root group=ssl-cert mode=0750
   when: ansible_ssh_user != "vagrant"
 

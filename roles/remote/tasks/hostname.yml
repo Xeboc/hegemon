@@ -1,7 +1,7 @@
----
-# Changes hostname of systemd-logind
+# This changes hostname, mailname, and hosts file to match that of the domain.
+# The hosts file is without IPv6 as it's disabled system wide.
 
-- name: Set Hostname with hostname command
+- name: Set hostname With hostname Command
   hostname:
     name: "{{ domain }}"
   notify:
@@ -16,7 +16,7 @@
     owner: root
     group: root
 
-- name: Change hosts file
+- name: Change hosts File
   template:
     src: etc_hosts
     dest: /etc/hosts
@@ -24,5 +24,5 @@
     - restart systemd-hostnamed
     - restart systemd-logind
 
-- name: Re-gather facts
+- name: Re-gather Facts
   action: setup
