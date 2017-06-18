@@ -14,7 +14,7 @@ CRON_DB_UPDATE="true"
 
 # Set this to yes to enable reports of weekly database updates
 # (default: false)
-DB_UPDATE_EMAIL="true"
+DB_UPDATE_EMAIL="false"
 
 # Set this to the email address where reports and run output should be sent
 # (default: root)

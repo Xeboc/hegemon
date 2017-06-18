@@ -1,6 +1,10 @@
 #!/bin/bash
 
-LOGFILE="/var/log/clamav/clamav-$(date +'%Y-%m-%d').log";
+# This file will run a daily scan of the system using clamav.  Output will be
+# to /var/log/syslog with the clamav tag.  An email will be sent if any infected
+# files are found.  Clam isn't really designed to scan the entire filesystem, so
+# several excludes are included to avoid false positives.
+
 RECEIVER="root@{{ domain }}"
 DIRTOSCAN="/"
 EXCLUDE="^/sys|^/dev|^/proc|/usr/local/maldetect/|/var/log/clamav/|/var/lib/clamav/"
@@ -9,19 +13,18 @@ for D in ${DIRTOSCAN}; do
 
   DIRSIZE=$(du -sh "$D" 2>/dev/null | cut -f1)
 
-  printf "Starting a daily scan of "$D" directory.\n"
-  printf "Amount of data to be scanned is "$DIRSIZE". \n\n"
+  printf "Starting a daily scan of "$D" directory.\n" | /usr/bin/logger -t clamav
+  printf "Amount of data to be scanned is "$DIRSIZE". \n" | /usr/bin/logger -t clamav
 
-  clamscan -ri --exclude-dir="$EXCLUDE" "$D" 2>/dev/null > ${LOGFILE}
+  SCAN="$(clamscan -ri --exclude-dir="$EXCLUDE" "$D" 2>&1)"
 
-  cat $LOGFILE
-  printf "\n\n"
+  printf "$SCAN" | /usr/bin/logger -t clamav
 
-  MALWARE=$(tail "$LOGFILE" | grep Infected | cut -d" " -f3)
+  MALWARE="$(printf "$SCAN" | grep Infected | cut -d" " -f3)"
 
-  # if the value is not equal to zero, send an email with the log file attached
+  # if Infected is not equal to zero, send an email with the output attached
   if [ "$MALWARE" -ne "0" ]; then
-    cat $LOGFILE | mailx -s "Malware Found" $RECEIVER
+    echo "$SCAN" | mailx -s "Malware Found" $RECEIVER
   fi
 
 done

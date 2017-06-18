@@ -1,8 +1,9 @@
 #!/bin/sh
 
-# This script will download and make the current geoip tables
+# This script will download and make the current geoip tables.  Output is sent
+# to syslog rather than emailed via cron.
 
 mkdir -p /usr/share/xt_geoip
 cd /usr/lib/xtables-addons/
-/usr/lib/xtables-addons/xt_geoip_dl
-/usr/lib/xtables-addons/xt_geoip_build -D /usr/share/xt_geoip *.csv
+/usr/lib/xtables-addons/xt_geoip_dl 2>&1 | /usr/bin/logger -t xtables
+/usr/lib/xtables-addons/xt_geoip_build -D /usr/share/xt_geoip *.csv 2>&1 | /usr/bin/logger -t xtables

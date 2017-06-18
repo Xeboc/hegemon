@@ -18,3 +18,6 @@ script to encrypt vault files
 nextcloud redis caching
 add Grafana, and possibly influxDB
 https://github.com/extremeshok/clamav-unofficial-sigs
+ipset
+remove -> server/desktop
+apache to where it's needed
