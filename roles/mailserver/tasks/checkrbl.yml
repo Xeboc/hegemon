@@ -1,8 +1,16 @@
-- name: get public IP
+# This installed a RBL (Real-time Blackhole List), also called an DNSBL (DNS 
+# Blacklist), that checks the IP address for email blacklisting.  Once cronjob
+# outputs the full check to syslog, and the other will send an email if listed.
+# Pearl blacklist check provided by http://github.com/djinns/check-rbl
+
+- name: Get Public IP
   ipify_facts:
 
-- name: Install blacklist check program
+- name: Install Blacklist Check Program
   copy: src=opt_check-rbl.pl dest=/opt/check-rbl.pl
 
-- name: Install nightly check-rbl cronjob
-  cron: name="check-rbl" hour="2" minute="0" job="perl /opt/check-rbl.pl -i {{ ipify_public_ip }} -v"
+- name: Install Nightly Verbose check-rbl Cronjob With Syslog Output
+  cron: name="check-rbl-syslog" hour="2" minute="2" job="perl /opt/check-rbl.pl -i {{ ipify_public_ip }} -v -a | /usr/bin/logger -t check-rbl"
+
+- name: Install Nightly Error Only check-rbl Cronjob With Email Output
+  cron: name="check-rbl-email" hour="2" minute="19" job="perl /opt/check-rbl.pl -i {{ ipify_public_ip }} -a"
