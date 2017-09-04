@@ -1,9 +1,8 @@
 # This generates initial SSL certificates and sets up the regular updates from
 # LetsEncrypt.  Let's Encrypt has a rate limit of 5 duplicate certificates per
 # week, which is waived for renewals.  Certificates must be renewed every 90
-# days, and we set up a cron task to do so weekly.  It's recommended to do so
-# 90 days before expiration, but weekly will give some time to catch errors, and
-# daily is too frequent.
+# days, and we set up a cron task to do so monthly.  It's recommended to do so
+# 60 days before expiration, and we give ourselves some room to catch problems.
 
 - name: Download Current Let's Encrypt Release
   git: repo=https://github.com/letsencrypt/letsencrypt
@@ -44,8 +43,8 @@
 
 - name: Install crontab Entry for Let's Encrypt
   copy:
-    src: etc_cron.weekly_letsencrypt-renew
-    dest: /etc/cron.weekly/letsencrypt-renew
+    src: etc_cron.monthly_letsencrypt-renew
+    dest: /etc/cron.monthly/letsencrypt-renew
     mode: 0755
 
 - name: Create Live Directory for Let's Encrypt cron Job

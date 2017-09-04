@@ -1,5 +1,7 @@
 ---
-# Create a main user account with sudo powers
+# Create a main user account with sudo powers.  This is a specific setup
+# using a GitHub repo of dotfiles combined with the stow program.  These
+# dotfiles include a Vim setup including Vundle, plugins, and YouCompleteMe.
 
 - name: Create main user account
   user: name={{ main_user_name }} state=present shell={{ main_user_shell }} groups=sudo,adm

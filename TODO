@@ -1,25 +1,23 @@
 check for decrypted/lock directory before plays
 freenet, tor, i2p
-munin
-update z-push with caldav, carddav, and combined backend from mail in a box
+update z-push with caldav, carddav, and combined backend from mail-in-a-box
 one database? (roundcube from sqlite to postgres) (opendmarc from mysql to postgres)
 roundcube carddav config, password plugin, maybe others?
 apache mod_security & mod_evasive
-rewrite readme
 Consistent play structure, everything to yml in the same order
 add sha256sum to all downloads
 fail2ban re-ban other jails
 nextcloud collabora
-nextcloud occ app:install (probably in 13)
-monit nextcloud, z-push, opendkim, opendmarc, clamav-freshclam, clamsmtp, maldet, samhain, ntp, uwf, unbound, rmilter, redis, rspamd, mysql
+nextcloud occ app:install (not until version 13)
+monit nextcloud, z-push, opendkim, opendmarc, clamav-freshclam, clamsmtp, maldet, samhain, ntp, ufw, unbound, rmilter, redis, rspamd, mysql
 Titlecase all actions
 Document all tasks
 script to generate initial database passwords
 script to encrypt vault files
 nextcloud redis caching
-add Grafana, and possibly influxDB
+collectd -> Carbon -> Whisper -> Grafana
 https://github.com/extremeshok/clamav-unofficial-sigs
-ipset.  setup persistant IP blacklist for annoying IP addresses
+ipset.  setup persistent IP blacklist for annoying IP addresses
 remote task -> server and desktop tasks
 apache to where it's needed
 fix http2 for nextcloud.  mpm_prefork -> mpm_event, and make php7.0/php7.1 function.
@@ -29,4 +27,4 @@ fix daily scan and fail2ban report getting emailed instead of syslog
 https://monicahq.com/
 Add Google 2 step instructions to readme
 add sources.list with several options
-dynamic DNS trusted network script for fail2ban and other trusted networks
+expose monit with a username/password

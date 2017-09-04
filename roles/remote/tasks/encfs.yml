@@ -24,7 +24,9 @@
   register: encfs_check
 
 # Using standard mode.  Paranoia mode prevents hard links, which are needed
-# for PostgreSQL to function.
+# for PostgreSQL to function, and we store the PostgreSQL database in the
+# encrypted folder.
+
 - name: If /encrypted is Empty, Create encfs
   shell: printf "s\n{{ encfs_password }}" | encfs /encrypted /decrypted --public --stdinpass && touch /decrypted/lock
   when: encfs_check.matched == 0

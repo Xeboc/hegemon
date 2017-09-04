@@ -1,7 +1,7 @@
----
 # Installs and configures ufw, which in turn uses iptables for firewall management.
-# Standard ports are configured.  xtables is also installed, which allows for
-# ''-m geoip' use in UFW or iptables to block IP based on geography.
+# Standard ports are configured.  ufw defaults to blocking all incoming traffic.
+# xtables is also installed, which allows for '-m geoip' use in UFW or iptables
+# to block IP based on geography.
 
 - name: Install ufw and xtables packages
   apt: pkg={{ item }} state=installed update_cache=yes
@@ -34,7 +34,7 @@
 - name: Run initial download of geoip database
   command: /etc/cron.weekly/xtables creates=/usr/share/xt_geoip/ chdir=/usr/lib/xtables-addons/
 
-- name: Block and log SSH from anywhere except US
+- name: Block and log SSH and HTTP/HTTPS from anywhere except US
   lineinfile:
     dest: /etc/ufw/before.rules
     line: "{{ item }}"

@@ -1,3 +1,6 @@
+# collectd is a system and application performance collector.  It will gather
+# performance data and store for later analysis and metrics.
+
 - name: Install collectd
   apt: pkg=collectd state=installed
 

@@ -1,5 +1,4 @@
----
-# Variables used in multiple roles
+# Variables used in multiple roles.
 
 domain: "{{ vault_domain }}"
 main_user_name: "{{ vault_main_user_name }}"
@@ -7,7 +6,8 @@ admin_email: "{{ main_user_name }}@{{ domain }}"
 common_timezone: 'Etc/UTC'
 friendly_networks:
   - ""
-#  - "10.16.100.0/24"
+# - "10.16.100.0/24"
+# - "example.com"
 
 db_admin_username: 'postgres'
 # db_admin_password: "{{ lookup('password', secret + '/' + 'db_admin_password', length=32) }}"

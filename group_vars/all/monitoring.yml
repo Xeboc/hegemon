@@ -1,4 +1,8 @@
+# These are the variables for the montoring playbook.  Collectd can be optionally
+# used to send data to librato, a paid online monitoring solution.
+# We will setup a locally hosted Graphite/Graphina dashboard as well.
+
 collectd_version: 5.4.1
 collectd_librato_version: 0.0.10
-collectd_librato_email: "" # (optional)
-collectd_librato_api_token: "" # (optional)
+collectd_librato_email: ""
+collectd_librato_api_token: ""

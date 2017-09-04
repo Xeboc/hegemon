@@ -1,4 +1,6 @@
----
+# This task installs many commonly used packages, upgrades the system,
+# and makes sure the UTF-8 local is available.
+
 - name: Install commonly used software packages
   apt: pkg={{ item }} state=installed update_cache=yes
   with_items:
@@ -39,6 +41,7 @@
     - software-properties-common
     - smartmontools
     - sudo
+    - sysstat
     - traceroute
     - vim-nox
     - wget

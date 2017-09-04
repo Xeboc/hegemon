@@ -1,5 +1,5 @@
----
-# Reboot a computer and re-mount encfs
+# This task will reboot a computer, re-mount encfs, and restart services
+# that depend on the encrypted folder
 
 - name: Restart the server
   shell: sleep 2 && systemctl reboot
