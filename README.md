@@ -198,7 +198,7 @@ Example:
 
 > v=DKIM1; h=sha256; k=rsa; s=*; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDKKAQfMwKVx+oJripQI+Ag4uTwYnsXKjgBGtl7Tk6UMTUwhMqnitqbR/ZQEZjcNolTkNDtyKZY2Z6LqvM4KsrITpiMbkV1eX6GKczT8Lws5KXn+6BHCKULGdireTAUr3Id7mtjLrbi/E3248Pq0Zs39hkDxsDcve12WccjafJVwIDAQAB
 
-For DMARC, add a `txt` record. The name field should be `_dmarc.example.com` and the value should be `v=DMARC1; p=none`. More info on DMARC can be found [here](https://dmarc.org).
+For DMARC, add a `txt` record. The name field should be `_dmarc.example.com` and the value should be `v=DMARC1; p=reject; adkim=s; aspf=s`. More info on DMARC can be found [here](https://dmarc.org/overview).
 
 Add an SPF `txt` record.  The name should be `v=spf1 mx -all`.
 

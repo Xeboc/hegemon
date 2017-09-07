@@ -1,0 +1,54 @@
+# stable
+deb https://deb.debian.org/debian/ stable main contrib non-free
+# deb-src https://deb.debian.org/debian/ stable main contrib non-free
+
+# stable security fixes
+deb https://deb.debian.org/debian-security stable/updates main contrib non-free
+# deb-src https://deb.debian.org/debian-security stable/updates main contrib non-free
+
+# Some packages from proposed-updates may also be made available via
+# the stable-updates mechanism. This path will be used for updates
+# which many users may wish to install on their systems before the next
+# point release is made, such as updates to virus scanners and timezone data.
+# All packages from stable-updates will be included in point releases.
+
+# stable-updates (previously known as volatile)
+deb https://deb.debian.org/debian/ stable-updates main non-free contrib
+# deb-src https://deb.debian.org/debian/ stable-updates main non-free contrib
+
+# stable-proposed-updates
+
+# Contains the packages that are being prepared for the next Debian/Stable point release
+# The quality is usually very high (It should still be considered higher quality than Debian
+# Testing, Backports... ), and the apt pinning should be the same as the one for stable.
+
+deb https://deb.debian.org/debian proposed-updates main contrib non-free
+# deb-src https://deb.debian.org/debian/ stable-proposed-updates main non-free contrib
+
+# Backports are recompiled packages from testing (mostly) and unstable (in
+# a few cases only, e.g. security updates) in a stable environment so that
+# they will run without new libraries (whenever it is possible) on a Debian
+# stable distribution.  Due to https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=714726
+# stable-backports will cause apt to give a warning, so we use the named backport.
+
+# Stable backports
+deb https://deb.debian.org/debian stretch-backports main contrib non-free
+# deb-src https://deb.debian.org/debian stable-backports main contrib non-free
+
+# Debian testing is the current development state of the next stable Debian distribution
+
+# testing
+deb https://deb.debian.org/debian/ testing main contrib non-free
+# deb-src https://deb.debian.org/debian/ testing main contrib non-free
+
+# testing security fixes
+deb https://deb.debian.org/debian-security testing/updates main contrib non-free
+# deb-src https://deb.debian.org/debian-security testing/updates main contrib non-free
+
+# Unstable is where packages go after they've been uploaded by the maintainer,
+# and cleared for release by the FTP master.  When packages have met certain
+# criteria, they are automatically moved from unstable to the current "testing" branch.
+
+# unstable
+deb https://deb.debian.org/debian/ unstable main contrib non-free
+# deb-src https://deb.debian.org/debian/ unstable main contrib non-free

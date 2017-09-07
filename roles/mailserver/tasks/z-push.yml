@@ -7,7 +7,7 @@
     - dependencies
 
 - name: Add Z-push repository
-  apt_repository: repo='deb http://repo.z-hub.io/z-push:/final/Debian_8.0/ /'
+  apt_repository: repo='deb http://repo.z-hub.io/z-push:/final/Debian_9.0/ /'
   tags:
     - dependencies
 

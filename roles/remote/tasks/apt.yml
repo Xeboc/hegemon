@@ -1,10 +1,12 @@
 # Installs and configures apticron, unattended upgrades, and needrestart.
 # Apticron will send an email when there are packages that need upgrading.
 # Unattended upgrades will automatically run updates and upgrades on the system.
-# The configuration files upgrade every package.  Needrestart will automatically
-# restart programs that have been upgraded and is configured to do so.
+# The configuration files will upgrade every package.  Needrestart will
+# automatically restart programs that have been upgraded and is configured to do so.
+# Apt will use https and deb.debian.org to connect to the closest server using
+# a CDN.
 
-- name: Install Apticron
+- name: Install Apt Packages
   apt: pkg={{ item }} state=installed
   with_items:
     - apticron
@@ -13,7 +15,7 @@
   tags:
     - dependencies
 
-- name: Apticron Email Configuration
+- name: Copy Apticron Email Configuration File
   copy: src=etc_apticron_apticron.conf dest=/etc/apticron/apticron.conf
 
 - name: Copy Unattended Upgrades Configuration File
@@ -21,3 +23,9 @@
 
 - name: Copy needrestart Configuration File
   copy: src=etc_needrestart_conf.d_local.conf dest=/etc/needrestart/conf.d/local.conf
+
+- name: Copy Apt sources.list Configuration File
+  copy: src=etc_apt_sources.list dest=/etc/apt/sources.list
+
+- name: Copy Apt pinning Configuration File
+  copy: src=etc_apt_preferences.d_pinning dest=/etc/apt/preferences.d/pinning

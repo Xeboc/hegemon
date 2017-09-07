@@ -1,0 +1,31 @@
+# To use testing or unstable as the current release, adjust the priorities
+# below.  To install a testing or unstable version of a package, use this:
+# apt -t unstable install <package>
+
+Package: *
+Pin: release o=Debian,a=stable
+Pin-Priority: 550
+
+Package: *
+Pin: release o=Debian,a=stable-updates
+Pin-Priority: 550
+
+Package: *
+Pin: release o=Debian,a=proposed-updates
+Pin-Priority: 550
+
+Package: *
+Pin: release o=Debian Backports,a=stretch-backports
+Pin-Priority: 450
+
+Package: *
+Pin: release o=Debian,a=testing
+Pin-Priority: 400 
+
+Package: *
+Pin: release o=Debian,a=unstable
+Pin-Priority: 350
+
+Package: *
+Pin: release o=Debian,a=experimental
+Pin-Priority: 300

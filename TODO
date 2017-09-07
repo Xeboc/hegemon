@@ -21,10 +21,10 @@ ipset.  setup persistent IP blacklist for annoying IP addresses
 remote task -> server and desktop tasks
 apache to where it's needed
 fix http2 for nextcloud.  mpm_prefork -> mpm_event, and make php7.0/php7.1 function.
-remove UsePriviledgeSeparation depreciated option in sshd
 rewrite checkrbl to reduce verbosity.  possibly change frequency of check.
 fix daily scan and fail2ban report getting emailed instead of syslog
 https://monicahq.com/
 Add Google 2 step instructions to readme
 add sources.list with several options
 expose monit with a username/password
+fix systemd's /lib/systemd/system/apt-daily.timer with /etc/systemd/system/apt-daily.timer.d/custom.conf
