@@ -16,6 +16,7 @@
     - debsums
     - dnsutils
     - git
+    - grc
     - haveged
     - htop
     - iftop

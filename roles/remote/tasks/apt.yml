@@ -15,17 +15,26 @@
   tags:
     - dependencies
 
-- name: Copy Apticron Email Configuration File
+- name: Copy Apticron Configuration
   copy: src=etc_apticron_apticron.conf dest=/etc/apticron/apticron.conf
 
-- name: Copy Unattended Upgrades Configuration File
+- name: Copy Unattended Upgrades Configuration
   copy: src=etc_apt_apt.conf.d_51unattended-upgrades dest=/etc/apt/apt.conf.d/51unattended-upgrades
 
-- name: Copy needrestart Configuration File
+- name: Copy needrestart Configuration
   copy: src=etc_needrestart_conf.d_local.conf dest=/etc/needrestart/conf.d/local.conf
 
-- name: Copy Apt sources.list Configuration File
+- name: Copy Apt sources.list Configuration
   copy: src=etc_apt_sources.list dest=/etc/apt/sources.list
 
-- name: Copy Apt pinning Configuration File
+- name: Copy Apt pinning Configuration
   copy: src=etc_apt_preferences.d_pinning dest=/etc/apt/preferences.d/pinning
+
+- name: Adjust Unattended Upgrades Timing
+  copy: src=etc_systemd_system_apt-daily.timer.d_override.conf dest=/etc/systemd/system/apt-daily.timer.d/override.conf
+
+- name: Reload apt-daily
+  systemd:
+    name: apt-daily
+    state: restarted
+    daemon_reload: yes
