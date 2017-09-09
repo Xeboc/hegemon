@@ -43,3 +43,11 @@ PHP composer is used for downloading and installing plugins.  Configuration file
 ### Upgrade
 
 It's unknown how upgrades will be handled.  The best case is that an update can be installed over the current version, and code will automatically update the database the first time it connects.  This needs to be considered for plugins that store data also.
+
+### Software Sources
+
+As many packages as possible will come from the standard Debian repos.  The next choice is to use a private repository either because the software isn't available in the standard repos, or because it is dated in functionally important ways.  These two options allow for the software to be easily upgraded as new versions are released.  Some software, such as LMD, isn't available except as a .tar.gz, and can't be upgraded without a cron job. 
+
+### Configuration
+
+All software is attempted to be configured with .local and other overriding configurations.  This allows for upgrades to proceed without causing package maintainer conflicts and wiping out custom configurations.
