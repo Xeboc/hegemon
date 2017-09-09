@@ -1,5 +1,5 @@
-# This installed a RBL (Real-time Blackhole List), also called an DNSBL (DNS 
-# Blacklist), that checks the IP address for email blacklisting.  Once cronjob
+# This installs a RBL (Real-time Blackhole List), also called an DNSBL (DNS
+# Blacklist), that checks the IP address for email blacklisting.  One cronjob
 # outputs the full check to syslog, and the other will send an email if listed.
 # Pearl blacklist check provided by http://github.com/djinns/check-rbl
 

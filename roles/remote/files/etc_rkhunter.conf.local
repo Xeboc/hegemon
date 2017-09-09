@@ -363,7 +363,7 @@ AUTO_X_DETECT=1
 
 ENABLE_TESTS=ALL
 DISABLE_TESTS=
-DISABLE_TESTS=suspscan deleted_files
+#DISABLE_TESTS=deleted_files
 
 #
 # The HASH_CMD option can be used to specify the command to use for the file
@@ -661,9 +661,14 @@ ALLOWHIDDENDIR=/etc/.java
 #
 #ALLOWPROCDELFILE=/sbin/cardmgr
 #ALLOWPROCDELFILE=/usr/lib/libgconf2-4/gconfd-2
-#ALLOWPROCDELFILE=/usr/sbin/mysqld:/tmp/ib*
+ALLOWPROCDELFILE=/usr/sbin/mysqld:/tmp/ib*
 #ALLOWPROCDELFILE=/usr/lib/iceweasel/firefox-bin
 #ALLOWPROCDELFILE=/usr/bin/file-roller
+ALLOWPROCDELFILE=/usr/sbin/apache2:/run/lock/apache2/mpm-accept-*
+ALLOWPROCDELFILE=/usr/lib/dovecot/imap-login:/run/dovecot/login-master-*
+ALLOWPROCDELFILE=/usr/bin/inotifywait:/usr/local/maldetect/logs/*
+ALLOWPROCDELFILE=/usr/sbin/dovecot/imap-login:/run/dovecot/login-master-*
+ALLOWPROCDELFILE=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java:/var/log/tomcat8/catalina.*
 
 #
 # Allow the specified process to listen on any network interface.
@@ -711,6 +716,7 @@ ALLOWHIDDENDIR=/etc/.java
 #ALLOWDEVFILE=/dev/shm/pulse-shm-*
 #ALLOWDEVFILE=/dev/shm/sem.ADBE_*
 ALLOWDEVFILE=/dev/shm/PostgreSQL.*
+ALLOWDEVFILE=/dev/shm/rhm.*
 
 #
 # This option is used to indicate if the Phalanx2 test is to perform a basic
@@ -883,7 +889,7 @@ ALLOWDEVFILE=/dev/shm/PostgreSQL.*
 #
 # The default value is the '/tmp' and '/var/tmp' directories.
 #
-#SUSPSCAN_DIRS=/tmp /var/tmp
+SUSPSCAN_DIRS=/tmp /var/tmp /var/www /var/log/httpd
 
 #
 # This option specifies the directory for temporary files used by the
