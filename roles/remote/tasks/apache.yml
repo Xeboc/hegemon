@@ -7,6 +7,8 @@
   apt: pkg={{ item }} state=installed
   with_items:
     - apache2
+    - libapache2-mod-security2
+    - libapache2-mod-evasive
   tags:
     - dependencies
 
@@ -16,6 +18,22 @@
 
 - name: Enable Apache Headers Module
   command: a2enmod headers creates=/etc/apache2/mods-enabled/headers.load
+  notify: restart apache
+
+- name: Configure Apache mod-security
+  copy: src=etc_modsecurity_modsecurity.conf dest=/etc/modsecurity/modsecurity.conf
+  notify: restart apache
+
+- name: Enable Apache mod-security
+  command: a2enmod security2 creates=/etc/apache2/mods-enabled/security2.load
+  notify: restart apache
+
+- name: Configure Apache mod-evasive
+  template: src=etc_apache2_mods-available_evasive.conf dest=/etc/apache2/mods-available/evasive.conf
+  notify: restart apache
+
+- name: Enable Apache mod-evasive
+  command: a2enmod evasive creates=/etc/apache2/mods-enabled/evasive.load
   notify: restart apache
 
 - name: Create ServerName Configuration File For Apache
