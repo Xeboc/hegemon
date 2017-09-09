@@ -24,3 +24,4 @@ fix daily scan and fail2ban report getting emailed instead of syslog
 https://monicahq.com/
 Add Google 2 step instructions to readme
 expose monit with a username/password
+change shell: to command: if possible

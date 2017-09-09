@@ -1,8 +1,19 @@
 ---
 # This file will change certain common system variables.
+# IPv6 is disabled to reduce system complexity.
+# File limits are increased for various programs.
+# The random number generator is seeded as most cloud systems lack initial entropy.
+# fsck is configured to run on every boot.
+# machine-id is recreated because it might not match the dbus machine-id on a
+# cloud instance.
+# Ensures that journald can function
 
-- name: Turn off ipv6
-  sysctl: name="{{ item }}" value=1 sysctl_set=yes reload=yes
+- name: Turn Off IPv6
+  sysctl:
+    name: "{{ item }}"
+    value: 1
+    sysctl_set: yes
+    reload: yes
   with_items:
     - net.ipv6.conf.all.disable_ipv6
     - net.ipv6.conf.default.disable_ipv6
@@ -10,45 +21,49 @@
 
 # https://en.wikipedia.org/wiki/Syslog
 # console_loglevel, default_message_loglevel, minimum_console_loglevel, default_console_loglevel
-- name: Reduce console noise
+- name: Reduce Console Noise
   sysctl:
     name: kernel.printk
     value: 4 4 1 3
     sysctl_set: yes
     reload: yes
 
-- name: Increase max open folders for IMAP IDLE connections
+- name: Increase Max Open Folders For IMAP IDLE Connections
   sysctl:
     name: fs.inotify.max_user_instances
     value: 1024
     sysctl_set: yes
     reload: yes
 
-- name: Increase max watched files for maldet
+- name: Increase Max Watched Files For maldet
   sysctl:
     name: fs.inotify.max_user_watches
     value: 262144
     sysctl_set: yes
     reload: yes
 
-- name: Increase max open files
+- name: Increase Max Open Files
   sysctl:
     name: fs.file-max
     value: 203928
     sysctl_set: yes
     reload: yes
 
-- name: Copy over local security limits file
-  copy: src=etc_security_limits.d_local.conf dest=/etc/security/limits.d/local.conf
+- name: Copy Local Security Limits
+  copy:
+    src: etc_security_limits.d_local.conf
+    dest: /etc/security/limits.d/local.conf
 
-- name: Initilaize random number generator with seeds
-  command: dd if=/dev/random of=/dev/urandom bs=1 count=32
+- name: Initialize Random Number Generator With Seeds
+  command: "dd if=/dev/random of=/dev/urandom bs=1 count=32"
 
-- name: Enable primary drive fstab filesystem check on every boot
-  shell: tune2fs -c 1 $(blkid | cut -d":" -f1)
+- name: Enable Primary Drive fstab Filesystem Check On Every Boot
+  shell: 'tune2fs -c 1 $(findmnt -n -o source /)'
 
-- name: Remove exisiting systemd machine-id
-  file: path=/etc/machine-id state=absent
+- name: Remove Existing systemd machine-id
+  file:
+    path: /etc/machine-id
+    state: absent
   notify:
     - restart journald
     - restart tmpfiles
@@ -59,13 +74,15 @@
     - restart journald
     - restart tmpfiles
 
-- name: Make sure journald has logging directory
-  file: path=/var/log/journal state=directory
+- name: Confirm journald Has Logging Directory
+  file:
+    path: /var/log/journal
+    state: directory
   notify:
     - restart journald
     - restart tmpfiles
 
-- name: Set correct permissions on journal directory
+- name: Ensure Correct Permissions On journald Directory
   command: systemd-tmpfiles --create --prefix /var/log/journal
   notify:
     - restart journald
