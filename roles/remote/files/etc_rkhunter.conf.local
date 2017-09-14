@@ -889,7 +889,7 @@ ALLOWDEVFILE=/dev/shm/rhm.*
 #
 # The default value is the '/tmp' and '/var/tmp' directories.
 #
-SUSPSCAN_DIRS=/tmp /var/tmp /var/www /var/log/httpd
+SUSPSCAN_DIRS=/tmp /var/tmp /var/www /var/log /decrypted /home
 
 #
 # This option specifies the directory for temporary files used by the
