@@ -1,7 +1,12 @@
+---
 # This task will finalize the system after installing all packages
 
-- name: Update Samhain's database
+- name: Update Samhain's Database
   command: samhain -t update -l none
 
-- name: Update locate database
+- name: Update locate Database
   command: updatedb
+
+- name: Make Sure Systemd Is Updated With Changes
+  systemd:
+    daemon_reload: yes
