@@ -666,9 +666,11 @@ ALLOWPROCDELFILE=/usr/sbin/mysqld:/tmp/ib*
 #ALLOWPROCDELFILE=/usr/bin/file-roller
 ALLOWPROCDELFILE=/usr/sbin/apache2:/run/lock/apache2/mpm-accept-*
 ALLOWPROCDELFILE=/usr/lib/dovecot/imap-login:/run/dovecot/login-master-*
-ALLOWPROCDELFILE=/usr/bin/inotifywait:/usr/local/maldetect/logs/*
 ALLOWPROCDELFILE=/usr/sbin/dovecot/imap-login:/run/dovecot/login-master-*
+ALLOWPROCDELFILE=/usr/bin/inotifywait:/usr/local/maldetect/logs/*
 ALLOWPROCDELFILE=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java:/var/log/tomcat8/catalina.*
+ALLOWPROCDELFILE=/lib/systemd/systemd-logind:/lib/systemd/systemd-logind
+ALLOWPROCDELFILE=/usr/sbin/cron:/tmp/
 
 #
 # Allow the specified process to listen on any network interface.
@@ -717,6 +719,7 @@ ALLOWPROCDELFILE=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java:/var/log/tomcat8
 #ALLOWDEVFILE=/dev/shm/sem.ADBE_*
 ALLOWDEVFILE=/dev/shm/PostgreSQL.*
 ALLOWDEVFILE=/dev/shm/rhm.*
+ALLOWDEVFILE=/dev/suspscan.*
 
 #
 # This option is used to indicate if the Phalanx2 test is to perform a basic
@@ -889,7 +892,7 @@ ALLOWDEVFILE=/dev/shm/rhm.*
 #
 # The default value is the '/tmp' and '/var/tmp' directories.
 #
-SUSPSCAN_DIRS=/tmp /var/tmp /var/www /var/log /decrypted /home
+SUSPSCAN_DIRS=/tmp /var/tmp /var/log
 
 #
 # This option specifies the directory for temporary files used by the
