@@ -1,3 +1,4 @@
+---
 # Configures the Apache HTTP server with sane defaults.  The initial Apache2
 # configuration has been changed to prevent general access.  Headers is enabled
 # and site indexing is disabled.  UFW ports are opened, and fail2ban is setup on

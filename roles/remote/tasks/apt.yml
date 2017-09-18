@@ -1,5 +1,5 @@
 ---
-# Installs and configures apticron, unattended upgrades, and needrestart.
+# Installs and configures apticron (optional), unattended upgrades, and needrestart.
 # Apticron will send an email when there are packages that need upgrading.
 # Unattended upgrades will automatically run updates and upgrades on the system.
 # The configuration files will upgrade every package.  Needrestart will
@@ -10,14 +10,22 @@
 - name: Install Apt Packages
   apt: pkg={{ item }} state=installed
   with_items:
-    - apticron
     - needrestart
     - unattended-upgrades
   tags:
     - dependencies
 
+- name: Install apticron
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - apticron
+  tags:
+    - dependencies
+  when: install_apticron == true
+
 - name: Copy Apticron Configuration
   copy: src=etc_apticron_apticron.conf dest=/etc/apticron/apticron.conf
+  when: install_apticron == true
 
 - name: Copy Unattended Upgrades Configuration
   copy: src=etc_apt_apt.conf.d_51unattended-upgrades dest=/etc/apt/apt.conf.d/51unattended-upgrades
@@ -30,9 +38,6 @@
 
 - name: Copy Apt pinning Configuration
   copy: src=etc_apt_preferences.d_pinning dest=/etc/apt/preferences.d/pinning
-
-- name: Adjust Unattended Upgrades Timing
-  copy: src=etc_systemd_system_apt-daily.timer.d_override.conf dest=/etc/systemd/system/apt-daily.timer.d/override.conf
 
 - name: Reload apt-daily
   systemd:

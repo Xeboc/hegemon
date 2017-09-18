@@ -18,3 +18,6 @@ letsencrypt_server: "https://acme-v01.api.letsencrypt.org/directory"
 kex_algorithms: "diffie-hellman-group-exchange-sha256"
 ciphers: "aes256-ctr,aes192-ctr,aes128-ctr"
 macs: "hmac-sha2-512,hmac-sha2-256,hmac-ripemd160"
+
+# apt
+install_apticron: false

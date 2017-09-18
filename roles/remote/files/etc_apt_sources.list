@@ -1,3 +1,6 @@
+# To install from a pinned repository, run this command:
+# apt-get -t testing install packagename
+
 # stable
 deb https://deb.debian.org/debian/ stable main contrib non-free
 # deb-src https://deb.debian.org/debian/ stable main contrib non-free
@@ -52,3 +55,10 @@ deb https://deb.debian.org/debian-security testing/updates main contrib non-free
 # unstable
 deb https://deb.debian.org/debian/ unstable main contrib non-free
 # deb-src https://deb.debian.org/debian/ unstable main contrib non-free
+
+# Experimental contains packages and tools which are still being developed, and
+# are still in the alpha testing stage. Users shouldn't be using packages from
+# here, because they can be dangerous and harmful even for the most experienced people.
+
+# deb http://deb.debian.org/debian experimental main contrib non-free
+# deb-src http://deb.debian.org/debian experimental main contrib non-free
