@@ -666,11 +666,11 @@ ALLOWPROCDELFILE=/usr/sbin/mysqld:/tmp/ib*
 #ALLOWPROCDELFILE=/usr/bin/file-roller
 ALLOWPROCDELFILE=/usr/sbin/apache2:/run/lock/apache2/mpm-accept-*
 ALLOWPROCDELFILE=/usr/lib/dovecot/imap-login:/run/dovecot/login-master-*
-ALLOWPROCDELFILE=/usr/sbin/dovecot/imap-login:/run/dovecot/login-master-*
+ALLOWPROCDELFILE=/usr/sbin/dovecot:/run/dovecot/login-master-*
 ALLOWPROCDELFILE=/usr/bin/inotifywait:/usr/local/maldetect/logs/*
 ALLOWPROCDELFILE=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java:/var/log/tomcat8/catalina.*
 ALLOWPROCDELFILE=/lib/systemd/systemd-logind:/lib/systemd/systemd-logind
-ALLOWPROCDELFILE=/usr/sbin/cron:/tmp/
+ALLOWPROCDELFILE=/usr/sbin/cron:/tmp/*
 
 #
 # Allow the specified process to listen on any network interface.

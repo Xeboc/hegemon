@@ -24,7 +24,7 @@ for D in ${DIRTOSCAN}; do
 
   # if Infected is not equal to zero, send an email with the output attached
   if [ "$MALWARE" -ne "0" ]; then
-    printf "$SCAN" | mailx -s "Malware Found" $RECEIVER
+    printf "$SCAN" | mail -s "Malware Found" $RECEIVER
   fi
 
 done

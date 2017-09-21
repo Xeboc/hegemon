@@ -2,6 +2,8 @@
 ignoreip  = 127.0.0.1 {{ ansible_default_ipv4.address }} {{ ipify_public_ip }} {{ ' '.join(friendly_networks) }}
 bantime   = 86400
 destemail = {{ admin_email }}
+sendername = Fail2Ban
+mta = mail
 
 # JAILS
 [sshd]

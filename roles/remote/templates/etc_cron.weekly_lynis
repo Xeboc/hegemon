@@ -11,4 +11,4 @@ REPORT="$LOG_DIR/report-${HOST}.${DATE}"
 lynis audit system --auditor "${AUDITOR}" --cronjob > ${REPORT}
 
 # Send email
-cat /var/log/lynis/report-${HOST}.${DATE} | mailx -s Lynis-report_$HOST $RECEIVER
+cat /var/log/lynis/report-${HOST}.${DATE} | mail -s Lynis-report_$HOST $RECEIVER
