@@ -37,6 +37,7 @@
     - python-dev
     - python3-dev
     - python-software-properties
+    - rng-tools
     - ruby-full
     - silversearcher-ag
     - software-properties-common
