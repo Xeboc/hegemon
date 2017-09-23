@@ -363,7 +363,8 @@ AUTO_X_DETECT=1
 
 ENABLE_TESTS=ALL
 DISABLE_TESTS=
-#DISABLE_TESTS=deleted_files
+#DISABLE_TESTS=suspscan hidden_ports hidden_procs deleted_files packet_cap_apps
+DISABLE_TESTS=suspscan
 
 #
 # The HASH_CMD option can be used to specify the command to use for the file
@@ -438,6 +439,7 @@ DISABLE_TESTS=
 # about 4 times longer when it's set to DPKG
 #
 #PKGMGR=NONE
+PKGMGR=DPKG
 
 #
 # It is possible that a file, which is part of a package, may have been
