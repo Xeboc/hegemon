@@ -27,5 +27,6 @@ expose monit with a username/password
 change shell: to command: if possible
 Cachet status page
 /etc/z-push/z-push.conf.php to a .local if possible
+/etc/opendkim.conf to .local if possible
 Install a PAM module for password strength testing like pam_cracklib or pam_passwdqc
 Fix modsecurity for Nextcloud

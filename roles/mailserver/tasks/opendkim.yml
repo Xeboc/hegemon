@@ -1,7 +1,13 @@
 ---
-# Handy reference: http://stevejenkins.com/blog/2010/09/how-to-get-dkim-domainkeys-identified-mail-working-on-centos-5-5-and-postfix-using-opendkim/
+# OpenDKIM uses Unbound as part of it's configuration.  We use 1024 bit keys
+# for compatibility.  NameCheap, and possibly others, have a txt record limit
+# that prevents 2048 bit keys.  If using a nameserver that allows for 2048 bit
+# keys, change the variable to 2048.  OpenDKIM's socket is defined in
+# /etc/default/opendkim rather than it's configuration file due to the bug below.
+# Handy reference:
+# http://stevejenkins.com/blog/2010/09/how-to-get-dkim-domainkeys-identified-mail-working-on-centos-5-5-and-postfix-using-opendkim/
 
-- name: Install OpenDKIM and related packages
+- name: Install OpenDKIM
   apt: pkg={{ item }} state=installed
   with_items:
     - opendkim
@@ -9,49 +15,33 @@
   tags:
     - dependencies
 
-- name: get public IP
+- name: Get Public IP
   ipify_facts:
 
-- name: Create OpenDKIM config directory
+- name: Create OpenDKIM Config Directory
   file: state=directory path=/etc/opendkim group=opendkim owner=opendkim
 
-- name: Create OpenDKIM key directories
+- name: Create OpenDKIM Key Directories
   file: state=directory path=/etc/opendkim/keys/{{ item.name }} group=opendkim owner=opendkim
   with_items: "{{ mail_virtual_domains }}"
 
-- name: Generate OpenDKIM keys
-  command: opendkim-genkey -b 1024 -r -d {{ item.name }} -D /etc/opendkim/keys/{{ item.name }}/ creates=/etc/opendkim/keys/{{ item.name }}/default.private
+- name: Generate OpenDKIM Keys
+  command: opendkim-genkey -b {{ opendkim_key_length }} -r -d {{ item.name }} -D /etc/opendkim/keys/{{ item.name }}/ creates=/etc/opendkim/keys/{{ item.name }}/default.private
   with_items: "{{ mail_virtual_domains }}"
 
-- name: Put opendkim.conf into place
+- name: Copy opendkim.conf
   copy: src=etc_opendkim.conf dest=/etc/opendkim.conf owner=opendkim group=opendkim
   notify:
     - restart opendkim
     - restart postfix
 
-- name: Copy Opendkim defaults file into place
+- name: Copy Opendkim Defaults
   copy: src=etc_default_opendkim dest=/etc/default/opendkim owner=root group=root
   notify:
     - restart opendkim
     - restart postfix
 
-# https://bugs.debian.org/cgi-bin/bugreport.cgi?archive=no&bug=861169
-- name: Update systemd init scripts with Opendkim defaults
-  command: /lib/opendkim/opendkim.service.generate creates=/etc/systemd/system/opendkim.service.d/override.conf
-  notify:
-    - restart opendkim
-    - restart postfix
-
-- name: Change permissions on override.conf to reduce log spam
-  file: path=/etc/systemd/system/opendkim.service.d/override.conf mode=0644
-
-- name: Reload systemd daemon with new defaults
-  systemd: daemon_reload=yes name=opendkim.service
-  notify:
-    - restart opendkim
-    - restart postfix
-
-- name: Put additional OpenDKIM configuration files into place
+- name: Copy Additional OpenDKIM Configuration Files
   template: src=etc_opendkim_{{ item }}.j2 dest=/etc/opendkim/{{ item }} owner=opendkim group=opendkim
   with_items:
     - KeyTable
@@ -61,19 +51,32 @@
     - restart opendkim
     - restart postfix
 
-- name: Set OpenDKIM config directory permissions
+# https://bugs.debian.org/cgi-bin/bugreport.cgi?archive=no&bug=861169
+- name: Update systemd Init Scripts With Opendkim Default
+  command: /lib/opendkim/opendkim.service.generate creates=/etc/systemd/system/opendkim.service.d/override.conf
+  notify:
+    - restart opendkim
+    - restart postfix
+
+- name: Change Permissions On override.conf To Reduce Log Spam
+  file: path=/etc/systemd/system/opendkim.service.d/override.conf mode=0644
+
+- name: Set OpenDKIM Config Directory Permissions
   file: state=directory path=/etc/opendkim
         group=opendkim owner=opendkim mode=0700 recurse=yes
   notify:
     - restart opendkim
     - restart postfix
 
-- name: Start and enable openDKIM
-  service: name=opendkim state=started enabled=yes
+- name: Reload systemd Daemon With New Defaults & Enable Service
+  systemd: daemon_reload=yes enabled=yes state=started name=opendkim.service
+  notify:
+    - restart opendkim
+    - restart postfix
 
-- name: Retrieve OpenDKIM txt record from server
+- name: Retrieve OpenDKIM txt Record From Server
   fetch: src=/etc/opendkim/keys/{{ domain }}/default.txt
          dest=~/opendkim
 
-- name: "OpenDKIM txt record is at ~/opendkim."
+- name: "OpenDKIM txt Record Has Been Copied Locally To ~/opendkim"
   pause: seconds=5

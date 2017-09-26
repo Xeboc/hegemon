@@ -40,6 +40,9 @@ mail_db_opendmarc_database: opendmarc
 # mail_db_opendmarc_password: "{{ lookup('password', secret + '/' + 'mail_db_opendmarc_password', length=32) }}"
 mail_db_opendmarc_password: "{{ vault_mail_db_opendmarc_password }}"
 
+# openDKIM
+opendkim_key_length: 1024
+
 # zpush
 zpush_version: 2.1.1-1788
 zpush_timezone: "{{ common_timezone | default('Etc/UTC') }}"
