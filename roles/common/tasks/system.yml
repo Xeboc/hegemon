@@ -1,52 +1,18 @@
 ---
 # This file will change certain common system variables.
-# IPv6 is disabled to reduce system complexity.
-# File limits are increased for various programs.
 # The random number generator is seeded as most cloud systems lack initial entropy.
 # fsck is configured to run on every boot.
 # machine-id is recreated because it might not match the dbus machine-id on a
 # cloud instance.
 # Ensures that journald can function
 
-- name: Turn Off IPv6
-  sysctl:
-    name: "{{ item }}"
-    value: 1
-    sysctl_set: yes
-    reload: yes
-  with_items:
-    - net.ipv6.conf.all.disable_ipv6
-    - net.ipv6.conf.default.disable_ipv6
-    - net.ipv6.conf.lo.disable_ipv6
+- name: Copy Custom Kernel Configuration
+  copy:
+    src: etc_sysctl.d_local.conf
+    dest: /etc/sysctl.d/local.conf
 
-# https://en.wikipedia.org/wiki/Syslog
-# console_loglevel, default_message_loglevel, minimum_console_loglevel, default_console_loglevel
-- name: Reduce Console Noise
+- name: Reload Kernel Variables
   sysctl:
-    name: kernel.printk
-    value: 4 4 1 3
-    sysctl_set: yes
-    reload: yes
-
-- name: Increase Max Open Folders For IMAP IDLE Connections
-  sysctl:
-    name: fs.inotify.max_user_instances
-    value: 1024
-    sysctl_set: yes
-    reload: yes
-
-- name: Increase Max Watched Files For maldet
-  sysctl:
-    name: fs.inotify.max_user_watches
-    value: 262144
-    sysctl_set: yes
-    reload: yes
-
-- name: Increase Max Open Files
-  sysctl:
-    name: fs.file-max
-    value: 203928
-    sysctl_set: yes
     reload: yes
 
 - name: Copy Local Security Limits
@@ -60,19 +26,19 @@
 - name: Enable Primary Drive fstab Filesystem Check On Every Boot
   shell: 'tune2fs -c 1 $(findmnt -n -o source /)'
 
-- name: Remove Existing systemd machine-id
-  file:
-    path: /etc/machine-id
-    state: absent
-  notify:
-    - restart journald
-    - restart tmpfiles
-
-- name: Recreate machine-id
-  command: systemd-machine-id-setup
-  notify:
-    - restart journald
-    - restart tmpfiles
+# - name: Remove Existing systemd machine-id
+#   file:
+#     path: /etc/machine-id
+#     state: absent
+#   notify:
+#     - restart journald
+#     - restart tmpfiles
+# 
+# - name: Recreate machine-id
+#   command: systemd-machine-id-setup
+#   notify:
+#     - restart journald
+#     - restart tmpfiles
 
 - name: Confirm journald Has Logging Directory
   file:

@@ -30,3 +30,4 @@ Cachet status page
 /etc/opendkim.conf to .local if possible
 Install a PAM module for password strength testing like pam_cracklib or pam_passwdqc
 Fix modsecurity for Nextcloud
+Check if a new machine-id is needed
