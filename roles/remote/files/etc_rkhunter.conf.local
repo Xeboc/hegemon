@@ -663,16 +663,21 @@ ALLOWHIDDENDIR=/etc/.java
 #
 #ALLOWPROCDELFILE=/sbin/cardmgr
 #ALLOWPROCDELFILE=/usr/lib/libgconf2-4/gconfd-2
-ALLOWPROCDELFILE=/usr/sbin/mysqld:/tmp/ib*
 #ALLOWPROCDELFILE=/usr/lib/iceweasel/firefox-bin
 #ALLOWPROCDELFILE=/usr/bin/file-roller
-ALLOWPROCDELFILE=/usr/sbin/apache2:/run/lock/apache2/mpm-accept-*
-ALLOWPROCDELFILE=/usr/lib/dovecot/imap-login:/run/dovecot/login-master-*
-ALLOWPROCDELFILE=/usr/sbin/dovecot:/run/dovecot/login-master-*
-ALLOWPROCDELFILE=/usr/bin/inotifywait:/usr/local/maldetect/logs/*
-ALLOWPROCDELFILE=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java:/var/log/tomcat8/catalina.*
+ALLOWPROCDELFILE=/bin/dash:/tmp/tmp*
+ALLOWPROCDELFILE=/bin/run-parts:/tmp/tmp*
 ALLOWPROCDELFILE=/lib/systemd/systemd-logind:/lib/systemd/systemd-logind
+ALLOWPROCDELFILE=/sbin/agetty:/sbin/agetty
+ALLOWPROCDELFILE=/usr/bin/dbus-daemon:/usr/bin/dbus-daemon
+ALLOWPROCDELFILE=/usr/bin/encfs:/usr/bin/encfs
+ALLOWPROCDELFILE=/usr/bin/inotifywait:/usr/local/maldetect/logs/*
+ALLOWPROCDELFILE=/usr/lib/dovecot/imap-login:/run/dovecot/login-master-*
+ALLOWPROCDELFILE=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java:/var/log/tomcat8/catalina.*
+ALLOWPROCDELFILE=/usr/sbin/apache2:/run/lock/apache2/mpm-accept-*
 ALLOWPROCDELFILE=/usr/sbin/cron:/tmp/*
+ALLOWPROCDELFILE=/usr/sbin/dovecot:/run/dovecot/login-master-*
+ALLOWPROCDELFILE=/usr/sbin/mysqld:/tmp/ib*
 
 #
 # Allow the specified process to listen on any network interface.
@@ -894,7 +899,7 @@ ALLOWDEVFILE=/dev/suspscan.*
 #
 # The default value is the '/tmp' and '/var/tmp' directories.
 #
-SUSPSCAN_DIRS=/tmp /var/tmp /var/log
+SUSPSCAN_DIRS=/tmp /var/tmp
 
 #
 # This option specifies the directory for temporary files used by the
