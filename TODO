@@ -32,5 +32,5 @@ Install a PAM module for password strength testing like pam_cracklib or pam_pass
 Fix modsecurity for Nextcloud
 Check if a new machine-id is needed
 Encrypted SWAP and home directories
-ClamSMTP action script
 SSHD to sshd_local
+All templates need to end in .j2

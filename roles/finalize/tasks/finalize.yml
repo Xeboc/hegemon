@@ -10,3 +10,6 @@
 - name: Make Sure Systemd Is Updated With Changes
   systemd:
     daemon_reload: yes
+
+- name: Make Sure aliases.db Is Current
+  command: newaliases

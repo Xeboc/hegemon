@@ -121,19 +121,48 @@ dovecot   unix  -       n       n       -       -       pipe
   flags=DRhu user=vmail:vmail argv=/usr/lib/dovecot/lmtp -f ${sender} -d ${user}@${nexthop}
 
 scan      unix  -       -       n       -       16      smtp
-   -o smtp_data_done_timeout=1200
-   -o smtp_send_xforward_command=yes
-   -o disable_dns_lookups=yes
+  -o smtp_data_done_timeout=1200
+  -o smtp_send_xforward_command=yes
+  -o disable_dns_lookups=yes
 #  -o smtp_enforce_tls=no
 #  -o smtp_tls_security_level=none
+
+# ClamSMTP listener
+# The empty content_filter overrides other, globally set content_filter delegations.
+# Empty _maps override any other globally set map lookups. Procedures to enforce
+# settings specified in such maps have already taken place when Postfix accepted
+# the message from the external client. Doing them again will not produce new
+# results but only waste resources.
+# There's no need to apply any already enforced _restrictions_ another time.
+# It would also only waste resources.
+# To avoid abuse from remote hosts, the dedicated smtpd-daemon will only allow
+# clients from 127.0.0.0/8 to relay messages.
+# local_header_rewrite_clients would “rewrite message header addresses in mail
+# from these clients and update incomplete addresses with the domain name”. If
+# such action has already been taken by Postfix before the message went off to
+# clamsmtp, it should not be done a second time when it reenters the Postfix mail
+# system. Leaving this option empty disables local header rewrites and saves resources.
+# All remaining options either configure the dedicated smtpd-daemon to be more
+# failure tolerant or exist to avoid unnecessary use of resources
 127.0.0.1:10025 inet n  -       n       -       16      smtpd
-   -o content_filter=
-   -o local_recipient_maps=
-   -o relay_recipient_maps=
-   -o smtpd_restriction_classes=
-   -o smtpd_client_restrictions=
-   -o smtpd_helo_restrictions=
-   -o smtpd_sender_restrictions=
-   -o smtpd_recipient_restrictions=permit_mynetworks,reject
-   -o mynetworks_style=host
-   -o smtpd_authorized_xforward_hosts=127.0.0.0/8
+  -o content_filter=
+  -o smtpd_delay_reject=no
+  -o smtpd_client_restrictions=permit_mynetworks,reject
+  -o smtpd_helo_restrictions=
+  -o smtpd_sender_restrictions=
+  -o smtpd_recipient_restrictions=permit_mynetworks,reject
+  -o smtpd_data_restrictions=reject_unauth_pipelining
+  -o smtpd_end_of_data_restrictions=
+  -o smtpd_restriction_classes=
+  -o mynetworks=127.0.0.0/8
+  -o smtpd_error_sleep_time=0
+  -o smtpd_soft_error_limit=1001
+  -o smtpd_hard_error_limit=1000
+  -o smtpd_client_connection_count_limit=0
+  -o smtpd_client_connection_rate_limit=0
+  -o receive_override_options=no_header_body_checks,no_unknown_recipient_checks,no_milters
+  -o local_header_rewrite_clients=
+  -o local_recipient_maps=
+  -o relay_recipient_maps=
+  -o mynetworks_style=host
+  -o smtpd_authorized_xforward_hosts=127.0.0.0/8

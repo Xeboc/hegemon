@@ -1,0 +1,59 @@
+#!/bin/sh
+
+# A named pipe is used to pipe output to logger and syslog
+named_pipe=/tmp/$$.tmp
+
+# Remove named pipe on the exit signal
+trap "rm -f $named_pipe" EXIT
+
+# Create named pipe
+mknod $named_pipe p
+
+# Start logger process in background with STDIN coming from named pipe.
+logger <$named_pipe -t clamsmtp &
+
+# Redirect stderr and stdout to named_pipe
+exec 1>$named_pipe 2>&1
+
+# Gather subject from quarantined email
+SUBJECT="`awk '/[Ss][Uu][Bb][Jj][Ee][Cc][Tt]: /' $EMAIL`"
+
+# Email address where the notification email comes from
+MAILFROM="clamsmtp@{{ domain }}"
+
+notify_user() {
+  echo "HELO `hostname -f`"
+  echo "MAIL FROM:<$MAILFROM>"
+  for RCPT in $RECIPIENTS; do
+    echo "RCPT TO:<$RCPT>";
+  done
+  echo "DATA"
+  sleep 1
+  echo "From: $MAILFROM"
+  for RCPT in $RECIPIENTS; do
+    echo "To: <$RCPT>";
+  done
+  echo "Subject: Virus Found in Email"
+  echo "Greetings,"
+  echo ""
+  echo "A virus or spam email has been found by the mail system."
+  echo ""
+  echo "Date: `date`"
+  echo "To: $RECIPIENTS"
+  echo "From: $SENDER"
+  echo "$SUBJECT"
+  echo "Virus/spam name: $VIRUS"
+  echo ""
+  echo "Best,"
+  echo "ClamSMTP"
+  echo "."
+  echo "quit"
+}
+
+# Netcat is used to send directly to clamsmtp's smtpd listener to avoid an
+# endless loop. If mailx is used, the alert email contains $VIRUS, which the 
+# text can then trigger another alert email.
+notify_user | nc localhost 10025
+
+# Remove quarantined email file
+rm "$EMAIL"

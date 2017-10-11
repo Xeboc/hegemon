@@ -6,6 +6,7 @@
 # several excludes are included to avoid false positives.
 
 RECEIVER="root@{{ domain }}"
+MAILFROM="clamav@{{ domain }}"
 DIRTOSCAN="/"
 EXCLUDE="^/sys|^/dev|^/proc|/usr/local/maldetect/|/var/log/clamav/|/var/lib/clamav/"
 
@@ -24,7 +25,7 @@ for D in ${DIRTOSCAN}; do
 
   # if Infected is not equal to zero, send an email with the output attached
   if [ "$MALWARE" -ne "0" ]; then
-    printf "$SCAN" | mail -s "Malware Found" $RECEIVER
+    printf "$SCAN" | mail -s "Malware Found" -r "$MAILFROM" "$RECEIVER"
   fi
 
 done
