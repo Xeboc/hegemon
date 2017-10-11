@@ -56,4 +56,6 @@ notify_user() {
 notify_user | nc localhost 10025
 
 # Remove quarantined email file
-rm "$EMAIL"
+if [ -n "$EMAIL" ]; then
+  rm "$EMAIL"
+fi
