@@ -52,9 +52,10 @@
     - traceroute
     - vim-nox
     - wget
-    - zip
+    - whois
     - unrar
     - unzip
+    - zip
   tags:
     - dependencies
 
