@@ -20,14 +20,11 @@ ipset.  setup persistent IP blacklist for annoying IP addresses
 remote task -> server and desktop tasks
 apache to where it's needed
 fix http2 for nextcloud.  mpm_prefork -> mpm_event, and make php7.0/php7.1 function.
-fix daily scan and fail2ban report getting emailed instead of syslog
 https://monicahq.com/
 Add Google 2 step instructions to readme
 expose monit with a username/password
 change shell: to command: if possible
 Cachet status page
-/etc/z-push/z-push.conf.php to a .local if possible
-/etc/opendkim.conf to .local if possible
 Install a PAM module for password strength testing like pam_cracklib or pam_passwdqc
 Fix modsecurity for Nextcloud
 Check if a new machine-id is needed

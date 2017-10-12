@@ -1,6 +1,6 @@
 # Command-line options specified here will override the contents of
 # /etc/opendkim.conf. See dkim-filter(8) for a complete list of options.
-#DAEMON_OPTS=""
+DAEMON_OPTS="-x /etc/opendkim.conf.local"
 #
 # Uncomment to specify an alternate socket
 # Note that setting this will override any Socket value in dkim-filter.conf
