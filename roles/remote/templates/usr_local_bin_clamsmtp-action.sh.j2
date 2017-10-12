@@ -20,34 +20,31 @@ SUBJECT="`awk '/[Ss][Uu][Bb][Jj][Ee][Cc][Tt]: /' $EMAIL`"
 
 # Email address where the notification email comes from
 MAILFROM="clamsmtp@{{ domain }}"
+ADMIN="postmaster@{{ domain }}"
 
 notify_user() {
-  echo "HELO `hostname -f`"
-  echo "MAIL FROM:<$MAILFROM>"
-  for RCPT in $RECIPIENTS; do
-    echo "RCPT TO:<$RCPT>";
-  done
-  echo "DATA"
+  printf "HELO `hostname -f`\n"
+  printf "MAIL FROM:<$MAILFROM>\n"
+  printf "RCPT TO:<$ADMIN>\n"
+  printf "DATA\n"
   sleep 1
-  echo "From: $MAILFROM"
-  for RCPT in $RECIPIENTS; do
-    echo "To: <$RCPT>";
-  done
-  echo "Subject: Virus Found in Email"
-  echo "Greetings,"
-  echo ""
-  echo "A virus or spam email has been found by the mail system."
-  echo ""
-  echo "Date: `date`"
-  echo "To: $RECIPIENTS"
-  echo "From: $SENDER"
-  echo "$SUBJECT"
-  echo "Virus/spam name: $VIRUS"
-  echo ""
-  echo "Best,"
-  echo "ClamSMTP"
-  echo "."
-  echo "quit"
+  printf "From: $MAILFROM\n"
+  printf "To: <$ADMIN>\n"
+  printf "Subject: Virus Found in Email\n"
+  printf "Greetings,\n"
+  printf "\n"
+  printf "A virus or spam email has been found by the mail system.\n"
+  printf "\n"
+  printf "Date: `date`\n"
+  printf "To: $RECIPIENTS\n"
+  printf "From: $SENDER\n"
+  printf "$SUBJECT\n"
+  printf "Virus/spam name: $VIRUS\n"
+  printf "\n"
+  printf "Best,\n"
+  printf "ClamSMTP\n"
+  printf ".\n"
+  printf "quit\n"
 }
 
 # Netcat is used to send directly to clamsmtp's smtpd listener to avoid an
