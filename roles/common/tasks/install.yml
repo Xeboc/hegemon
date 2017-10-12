@@ -7,8 +7,10 @@
     - acl
     - aptitude
     - apt-transport-https
+    - atool
     - build-essential
     - ca-certificates
+    - caca-utils
     - curl
     - cmake
     - debian-goodies
@@ -18,6 +20,7 @@
     - git
     - grc
     - haveged
+    - highlight
     - htop
     - iftop
     - inxi
@@ -28,6 +31,7 @@
     - libpq-dev
     - lm-sensors
     - mcelog
+    - mediainfo
     - molly-guard
     - mosh
     - most
