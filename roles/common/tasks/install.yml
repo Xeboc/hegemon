@@ -36,6 +36,7 @@
     - p7zip-rar
     - python-dev
     - python3-dev
+    - ranger
     - rng-tools
     - ruby-full
     - silversearcher-ag

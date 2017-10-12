@@ -6,43 +6,51 @@ These playbooks strive to be reasonably secure, full featured, and low on mainte
 
 ## Services Provided
 
--   Common package installation with useful programs, including nice-to-have tools like [mosh](http://mosh.mit.edu) and [htop](http://htop.sourceforge.net).
--   User configuration with a remote git dotfiles directory, [Stow](https://www.gnu.org/software/stow/) linking, and Vim, Vundle, and Vim plugins.
--   [IMAP](https://en.wikipedia.org/wiki/Internet_Message_Access_Protocol) over SSL via [Dovecot](http://dovecot.org/), complete with full text search provided by [Solr](https://lucene.apache.org/solr/).
--   [POP3](https://en.wikipedia.org/wiki/Post_Office_Protocol) over SSL, also via Dovecot.
--   [SMTP](https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol) over SSL via [Postfix](http://www.postfix.org/)
--   [DNSBLs](https://en.wikipedia.org/wiki/DNSBL) to discard spam before it ever hits mail filters.
--   Webmail via [Roundcube](http://www.roundcube.net/), with Carddav, [ManageSieve](https://wiki1.dovecot.org/ManageSieve), and 2-factor authentication plugins.
--   Mobile push notifications via [Z-Push](http://z-push.org/).
--   Email client [automatic configuration](https://developer.mozilla.org/en-US/docs/Mozilla/Thunderbird/Autoconfiguration).
--   Mail server verification via [OpenDKIM](http://www.opendkim.org/) and [OpenDMARC](http://www.trusteddomain.org/opendmarc/) so the Internet knows the mailserver is legit.
--   Spam fighting via [Rspamd](https://www.rspamd.com/) and [Postgrey](http://postgrey.schweikert.ch/).
--   Virtual domains for email, backed by [PostgreSQL](http://www.postgresql.org/).
--   Private storage cloud via [nextCloud](https://nextcloud.com/).
--   [CalDAV](https://en.wikipedia.org/wiki/CalDAV) and [CardDAV](https://en.wikipedia.org/wiki/CardDAV) to keep calendars and contacts in sync, via nextCloud.
--   Jabber/[XMPP](http://xmpp.org/) instant messaging via [Prosody](http://prosody.im/).
--   An RSS Reader via [Selfoss](http://selfoss.aditu.de/).
--   An IRC bouncer via [ZNC](http://wiki.znc.in/ZNC).
--   Git hosting via [cgit](http://git.zx2c4.com/cgit/about/) and [gitolite](https://github.com/sitaramc/gitolite).
--   Read-it-later via [Wallabag](https://www.wallabag.org/)
--   Web hosting via [Apache](https://www.apache.org/).
--   SSL certificates obtained from [Let's Encrypt](https://letsencrypt.org/) automatically refreshed monthly.  Used by Apache2, Dovecot, Postfix, and Prosody.
--   [RFC6238](http://tools.ietf.org/html/rfc6238) two-factor authentication compatible with [Google Authenticator](http://en.wikipedia.org/wiki/Google_Authenticator) and various hardware tokens.
--   Secure on-disk storage for email and more via [EncFS](http://www.arg0.net/encfs).
--   VPN server via [OpenVPN](http://openvpn.net/index.php/open-source.html).
--   [Monit](http://mmonit.com/monit/) to keep everything running smoothly (and alert you when it’s not).
--   [collectd](http://collectd.org/) to collect system statistics, with optional integration to [librato](https://www.librato.com/), an hosted monitoring solution.
--   Locally hosted [Carbon](https://github.com/graphite-project/carbon) metric processing daemon and [Whisper](https://github.com/graphite-project/whisper) time-series database library funneling collectd data into a [Grafana](https://grafana.com/) metrics dashboard.
--   Validating, recursive, and caching DNS resolver provided by [unbound](https://www.unbound.net/).
--   Firewall management via [Uncomplicated Firewall (ufw)](https://wiki.ubuntu.com/UncomplicatedFirewall).
--   Intrusion prevention via [fail2ban](http://www.fail2ban.org/).
--   GeoIP blocking using [Xtables-addons](http://xtables-addons.sourceforge.net/).
--   Malware detection via [rkhunter](http://rkhunter.sourceforge.net), [ClamAV](https://www.clamav.net/), and [LMD](https://www.rfxn.com/projects/linux-malware-detect/).
--   SSH configuration preventing root login and insecure password authentication with improved defaults.
--   File integrity monitoring with [Samhain](http://www.la-samhna.de/samhain/index.html).
--   Improved security with weekly [lynis](https://cisofy.com/lynis/) checks, and [apparmor](http://wiki.apparmor.net) security.
--   NTP, Apticron, and unattended-upgrades for server maintenance.
--   Nightly backups to [Tarsnap](https://www.tarsnap.com/).
+-   **Email Services**
+  -   [IMAP](https://en.wikipedia.org/wiki/Internet_Message_Access_Protocol) over SSL via [Dovecot](http://dovecot.org/), complete with full text search provided by [Solr](https://lucene.apache.org/solr/).
+  -   [POP3](https://en.wikipedia.org/wiki/Post_Office_Protocol) over SSL, also via Dovecot.
+  -   [SMTP](https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol) over SSL via [Postfix](http://www.postfix.org/)
+  -   [DNSBLs](https://en.wikipedia.org/wiki/DNSBL) to discard spam before it ever hits mail filters.
+  -   Webmail via [Roundcube](http://www.roundcube.net/), with Carddav, [ManageSieve](https://wiki1.dovecot.org/ManageSieve), and 2-factor authentication plugins.
+  -   Mobile push notifications via [Z-Push](http://z-push.org/).
+  -   Email client [automatic configuration](https://developer.mozilla.org/en-US/docs/Mozilla/Thunderbird/Autoconfiguration).
+  -   Mail server verification via [OpenDKIM](http://www.opendkim.org/) and [OpenDMARC](http://www.trusteddomain.org/opendmarc/) so the Internet knows the mailserver is legit.
+  -   Spam fighting via [Rspamd](https://www.rspamd.com/) and [Postgrey](http://postgrey.schweikert.ch/).
+  -   Virtual domains for email, backed by [PostgreSQL](http://www.postgresql.org/).
+  -   Email virus alerts using [ClamSMTP](http://thewalter.net/stef/software/clamsmtp/).
+-   **Personal Cloud**
+  -   Private storage cloud via [nextCloud](https://nextcloud.com/).
+  -   [CalDAV](https://en.wikipedia.org/wiki/CalDAV) and [CardDAV](https://en.wikipedia.org/wiki/CardDAV) to keep calendars and contacts in sync, via nextCloud.
+-   **Chat Services**
+  -   Jabber/[XMPP](http://xmpp.org/) instant messaging via [Prosody](http://prosody.im/).
+  -   An IRC bouncer via [ZNC](http://wiki.znc.in/ZNC).
+-   **Internet Services**
+  -   An RSS Reader via [Selfoss](http://selfoss.aditu.de/).
+  -   Git hosting via [cgit](http://git.zx2c4.com/cgit/about/) and [gitolite](https://github.com/sitaramc/gitolite).
+  -   Read-it-later via [Wallabag](https://www.wallabag.org/)
+  -   Web hosting via [Apache](https://www.apache.org/).
+-   **User Setup**
+  -   User configuration with a remote git dotfiles directory, [Stow](https://www.gnu.org/software/stow/) linking, and Vim, Vundle, and Vim plugins.
+  -   [RFC6238](http://tools.ietf.org/html/rfc6238) two-factor authentication compatible with [Google Authenticator](http://en.wikipedia.org/wiki/Google_Authenticator) and various hardware tokens.
+  -   SSH configuration preventing root login and insecure password authentication with improved defaults.
+  -   VPN server via [OpenVPN](http://openvpn.net/index.php/open-source.html).
+-   **Security**
+  -   SSL certificates obtained from [Let's Encrypt](https://letsencrypt.org/) automatically refreshed monthly.  Used by Apache2, Dovecot, Postfix, and Prosody.
+  -   Secure on-disk storage for email and more via [EncFS](http://www.arg0.net/encfs).
+  -   Firewall management via [Uncomplicated Firewall (ufw)](https://wiki.ubuntu.com/UncomplicatedFirewall).
+  -   Validating, recursive, and caching DNS resolver provided by [unbound](https://www.unbound.net/).
+  -   Intrusion prevention via [fail2ban](http://www.fail2ban.org/).
+  -   GeoIP blocking using [Xtables-addons](http://xtables-addons.sourceforge.net/).
+  -   Malware detection via [rkhunter](http://rkhunter.sourceforge.net), [ClamAV](https://www.clamav.net/), and [LMD](https://www.rfxn.com/projects/linux-malware-detect/).
+  -   File integrity monitoring with [Samhain](http://www.la-samhna.de/samhain/index.html).
+  -   Improved security with weekly [lynis](https://cisofy.com/lynis/) checks, and [apparmor](http://wiki.apparmor.net) security.
+-   **Maintenance** 
+  -   Common package installation with useful programs, including nice-to-have tools like [mosh](http://mosh.mit.edu), [htop](http://htop.sourceforge.net), and [ranger](http://ranger.nongnu.org/).
+  -   NTP, Apticron, and unattended-upgrades for server maintenance.
+  -   Nightly backups to [Tarsnap](https://www.tarsnap.com/).
+  -   [Monit](http://mmonit.com/monit/) to keep everything running smoothly (and alert you when it’s not).
+  -   [collectd](http://collectd.org/) to collect system statistics, with optional integration to [librato](https://www.librato.com/), an hosted monitoring solution.
+  -   Locally hosted [Carbon](https://github.com/graphite-project/carbon) metric processing daemon and [Whisper](https://github.com/graphite-project/whisper) time-series database library funneling collectd data into a [Grafana](https://grafana.com/) metrics dashboard.
 
 ---
 # Usage
