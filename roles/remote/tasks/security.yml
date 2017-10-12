@@ -13,11 +13,11 @@
     - dependencies
 
 - name: Update sshd For More Secure Defaults
-  template: src=etc_ssh_sshd_local.j2 dest=/etc/ssh/sshd_local
+  template: src=etc_ssh_sshd_config.local.j2 dest=/etc/ssh/sshd_config.local
   notify: restart ssh
 
 - name: Configure SSHD To Use Custom Config
-  lineinfile: dest=/etc/default/ssh regexp=^SSHD_OPTS line="SSHD_OPTS=-f /etc/ssh/sshd_local" backup=yes state=present backrefs=yes
+  lineinfile: dest=/etc/default/ssh regexp=^SSHD_OPTS line="SSHD_OPTS=-f /etc/ssh/sshd_config.local" backup=yes state=present backrefs=yes
   notify: restart ssh
 
 - name: Update ssh For More Secure Defaults
