@@ -38,6 +38,7 @@
     - mtr
     - p7zip-full
     - p7zip-rar
+    - poppler-utils
     - python-dev
     - python3-dev
     - ranger
