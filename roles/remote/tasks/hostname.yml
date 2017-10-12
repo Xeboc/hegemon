@@ -18,7 +18,7 @@
 
 - name: Change hosts File
   template:
-    src: etc_hosts
+    src: etc_hosts.j2
     dest: /etc/hosts
   notify:
     - restart systemd-hostnamed

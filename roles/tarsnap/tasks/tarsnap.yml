@@ -37,7 +37,7 @@
 - name: Make the command that gets the current SHA
   when: tarsnap_installed|failed
   template:
-    src=getSha.sh
+    src=getSha.sh.j2
     dest=/root/getSha.sh
     mode=0755
 

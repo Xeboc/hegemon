@@ -17,7 +17,7 @@
   register: postgres_pid
 
 - name: Copy monit master config file into place
-  template: src=etc_monit_monitrc dest=/etc/monit/monitrc
+  template: src=etc_monit_monitrc.j2 dest=/etc/monit/monitrc
   notify: restart monit
 
 - name: Copy monit service config files into place
@@ -36,7 +36,7 @@
   notify: restart monit
 
 - name: Copy monit service config files into place
-  template: src=etc_monit_conf.d_pgsql dest=/etc/monit/conf.d/pgsql
+  template: src=etc_monit_conf.d_pgsql.j2 dest=/etc/monit/conf.d/pgsql
   notify: restart monit
 
 - name: Copy monit reduced rsyslog file into place
