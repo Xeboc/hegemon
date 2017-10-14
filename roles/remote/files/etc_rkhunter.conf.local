@@ -678,6 +678,7 @@ ALLOWPROCDELFILE=/usr/sbin/apache2:/run/lock/apache2/mpm-accept-*
 ALLOWPROCDELFILE=/usr/sbin/cron:/tmp/*
 ALLOWPROCDELFILE=/usr/sbin/dovecot:/run/dovecot/login-master-*
 ALLOWPROCDELFILE=/usr/sbin/mysqld:/tmp/ib*
+ALLOWPROCDELFILE=/usr/lib/dovecot/imap:/decrypted/*/*/dovecot.index 
 
 #
 # Allow the specified process to listen on any network interface.
