@@ -1,0 +1,6 @@
+# This file contains a ClamAV whitelist.  Add any troublesome false positives
+# here.
+
+# The virus definition is anything with the word 'Safe0ver', which triggers on
+# logs and emails.
+Safe0ver_Shell__Safe_Mod_Bypass_By_Evilc0der_php
