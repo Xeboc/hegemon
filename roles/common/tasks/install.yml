@@ -6,7 +6,6 @@
   with_items:
     - acl
     - aptitude
-    - apt-transport-https
     - atool
     - build-essential
     - ca-certificates
@@ -25,7 +24,6 @@
     - iftop
     - inxi
     - intel-microcode
-    - inxi
     - iotop
     - kbd
     - libpq-dev
