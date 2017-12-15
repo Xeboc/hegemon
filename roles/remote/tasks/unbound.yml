@@ -23,6 +23,9 @@
 - name: Flush handles to restart unbound immediately
   meta: flush_handlers
 
+- name: Disable systemd-resolved
+  systemd: daemon_reload=yes enabled=no state=stopped name=systemd-resolved.service
+
 - name: Install monthly yoyo.org update
   cron: name="Unbound yoyo.org" special_time=monthly
     job="wget \"http://pgl.yoyo.org/adservers/serverlist.php?hostformat=unbound&showintro=0&mimetype=plaintext\" -O /etc/unbound/unbound_ad_servers"
