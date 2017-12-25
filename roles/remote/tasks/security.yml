@@ -1,6 +1,8 @@
 ---
 # Install and configure packages related to security.  SSH and SSHD are
 # hardened, apparmor is installed, and umask is changed to be more secure.
+# apparmor was chosen over SELinux due to decreased complexity.  Generally
+# speaking, the 2 programs are very similar.
 
 - name: Install Security Related Packages
   apt: pkg={{ item }} state=installed update_cache=yes

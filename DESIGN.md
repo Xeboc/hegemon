@@ -36,7 +36,7 @@ Roundcube is stable and continues to be actively developed.
 
 The role installs roundcube from the source package released by the Roundcube team.  The version is pinned.  Old versions of this role installed Roundcube from apt packages, but the packages for Debian 8 do not install unattended correctly unless mysql is used at the backend.  We want to use only one database server (postgres) to save on RAM, so using packages is not an option for now.
 
-Roundcube is installed with sqlite3 for its persistence layer.  This eliminates dependency on a database server and likely improves performance given how little persistet data Roundcube keeps.  Roundcube automatically looks for the database file and initializes it if it is missing.  The file is kept on `/decrypted` since it contains user data, and the database will be backed up automatically if the tarsnap role is used.
+Roundcube is installed with sqlite3 for its persistence layer.  This eliminates dependency on a database server and likely improves performance given how little persistent data Roundcube keeps.  Roundcube automatically looks for the database file and initializes it if it is missing.  The file is kept on `/decrypted` since it contains user data, and the database will be backed up automatically if the tarsnap role is used.
 
 PHP composer is used for downloading and installing plugins.  Configuration files are kept with Hegemon.  The configuration files for `twofactor_gauthentication` and `carddav` are not modified from their defaults.  I chose to do this so that maintainers could recognize when configuration files change in future plugin versions and decide whether or not to change new defaults.
 
@@ -44,10 +44,14 @@ PHP composer is used for downloading and installing plugins.  Configuration file
 
 It's unknown how upgrades will be handled.  The best case is that an update can be installed over the current version, and code will automatically update the database the first time it connects.  This needs to be considered for plugins that store data also.
 
-### Software Sources
+# Software Sources
 
 As many packages as possible will come from the standard Debian repos.  The next choice is to use a private repository either because the software isn't available in the standard repos, or because it is dated in functionally important ways.  These two options allow for the software to be easily upgraded as new versions are released.  Some software, such as LMD, isn't available except as a .tar.gz, and can't be upgraded without a cron job. 
 
-### Configuration
+# Configuration
 
 All software is attempted to be configured with .local and other overriding configurations.  This allows for upgrades to proceed without causing package maintainer conflicts and wiping out custom configurations.
+
+# Software choices
+
+Apparmor was chosen over SELinux because it is a bit easier to work with.  The configuration files are more human readable.  The kernel support in could services is another factor, as some services do not have an SELinux kernel available.
